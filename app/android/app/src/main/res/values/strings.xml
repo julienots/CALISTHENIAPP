@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">GRAVITAS</string>
+    <string name="title_activity_main">GRAVITAS</string>
+    <string name="package_name">com.gravitas.calisthenics</string>
+    <string name="custom_url_scheme">com.gravitas.calisthenics</string>
+</resources>
