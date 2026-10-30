@@ -12,10 +12,20 @@ html,
 body,
 #root {
   height: 100%;
-  background: #100a07;
+  background: transparent;
   color: #e9ecf5;
   overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  background: #100a07;
+}
+
+#root {
+  position: relative;
+  z-index: 0;
+  isolation: isolate;
 }
 
 body {
@@ -116,4 +126,80 @@ body {
 
 input[type='range'] {
   accent-color: #ff7a1a;
+}
+
+/* ---------- Animations ---------- */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.card,
+.card-hi {
+  animation: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+:is(.space-y-1, .space-y-1\.5, .space-y-2, .space-y-3, .grid) > :nth-child(2) { animation-delay: 0.04s; }
+:is(.space-y-1, .space-y-1\.5, .space-y-2, .space-y-3, .grid) > :nth-child(3) { animation-delay: 0.08s; }
+:is(.space-y-1, .space-y-1\.5, .space-y-2, .space-y-3, .grid) > :nth-child(4) { animation-delay: 0.12s; }
+:is(.space-y-1, .space-y-1\.5, .space-y-2, .space-y-3, .grid) > :nth-child(5) { animation-delay: 0.16s; }
+:is(.space-y-1, .space-y-1\.5, .space-y-2, .space-y-3, .grid) > :nth-child(6) { animation-delay: 0.2s; }
+:is(.space-y-1, .space-y-1\.5, .space-y-2, .space-y-3, .grid) > :nth-child(n + 7) { animation-delay: 0.24s; }
+
+/* reflet qui balaie les boutons principaux */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: -40% auto -40% -60%;
+  width: 40%;
+  transform: skewX(-20deg);
+  background: linear-gradient(90deg, transparent, #ffffff88, transparent);
+  animation: shine 3.6s ease-in-out infinite;
+  z-index: -1;
+  pointer-events: none;
+}
+@keyframes shine {
+  0%,
+  60% {
+    left: -60%;
+  }
+  100% {
+    left: 130%;
+  }
+}
+
+/* fond vivant : halos chauds qui dérivent lentement */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ambient span {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.35;
+  animation: drift 18s ease-in-out infinite alternate;
+}
+.ambient span:nth-child(1) { width: 320px; height: 320px; background: #ff7a1a; top: -80px; right: -100px; }
+.ambient span:nth-child(2) { width: 260px; height: 260px; background: #ff3d6e; bottom: 10%; left: -120px; animation-duration: 22s; opacity: 0.22; }
+.ambient span:nth-child(3) { width: 220px; height: 220px; background: #ffb000; top: 45%; right: -90px; animation-duration: 26s; opacity: 0.16; }
+@keyframes drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(-40px, 60px) scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }

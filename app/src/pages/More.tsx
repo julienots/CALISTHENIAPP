@@ -1,43 +1,73 @@
+import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { IconTile, type IconName } from '../components/Icon'
+import { Icon, IconTile, type IconName } from '../components/Icon'
 import { Header, Page } from '../components/ui'
 
-const ITEMS: [string, IconName, string, string, string][] = [
-  ['/calendar', 'calendar', 'Calendrier', 'Tous tes jours, à l\'infini', '#ff7a1a'],
-  ['/stats', 'chart', 'Statistiques', 'Volume, radar, rang', '#ffcf3f'],
-  ['/coach', 'chat', 'Coach IA', 'Discute avec ton coach', '#ff3d6e'],
-  ['/programs', 'clipboard', 'Programmes', 'Générateur illimité + tableur', '#ffb000'],
-  ['/analyzer', 'camera', 'Analyseur', 'Vidéo, photo, direct', '#ff6b4a'],
-  ['/timers', 'timer', 'Timers', 'Hold, compét, EMOM, Tabata', '#ffcf3f'],
-  ['/combos', 'link', 'Combos', 'Conception d\'enchaînements', '#ff4fa0'],
-  ['/competition', 'swords', 'Prépa compét', 'Simulation & jury', '#ff3b30'],
-  ['/map', 'map', 'Carte compét', 'France & monde en direct', '#ff3d6e'],
-  ['/challenges', 'trophy', 'Défis', 'Quotidiens, hebdo, épreuves', '#ffb000'],
-  ['/voies', 'chart', 'Mes paliers', 'Push, Pull, Équilibre, Agilité', '#ff3b30'],
-  ['/ranks', 'gem', 'Rangs', 'Jusqu\'à GRAVITAS ZÉRO', '#ff7a1a'],
-  ['/gallery', 'sparkle', 'Galerie des figures', 'Toutes les figures illustrées', '#ff3d6e'],
-  ['/records', 'crown', 'Records du monde', 'Les sommets, sourcés', '#ffcf3f'],
-  ['/history', 'book', 'Journal', 'Toutes tes séances', '#ff6b4a'],
-  ['/coaches', 'whistle', 'Coachs', 'Annuaire & espace coach', '#ff4fa0'],
-  ['/profile', 'user', 'Profil', 'Niveau, objectifs, matériel', '#ff7a1a'],
-  ['/settings', 'gear', 'Réglages', 'Voix, sauvegarde, en ligne', '#c9a27e'],
+type Item = [to: string, icon: IconName, title: string, desc: string, color: string]
+
+const GROUPS: { title: string; items: Item[] }[] = [
+  {
+    title: "S'entraîner",
+    items: [
+      ['/programs', 'clipboard', 'Programmes', 'Générer et suivre', '#ff7a1a'],
+      ['/timers', 'timer', 'Timers', 'Hold, compét, EMOM', '#ffcf3f'],
+      ['/analyzer', 'camera', 'Analyseur', 'Note tes figures', '#ff6b4a'],
+      ['/combos', 'link', 'Combos', 'Tes enchaînements', '#ff4fa0'],
+      ['/competition', 'swords', 'Prépa compét', 'Simulation & jury', '#ff3b30'],
+      ['/coach', 'chat', 'Coach IA', 'Pose une question', '#ff3d6e'],
+    ],
+  },
+  {
+    title: 'Progresser',
+    items: [
+      ['/voies', 'chart', 'Mes paliers', 'Push, Pull, Équilibre…', '#ff3b30'],
+      ['/ranks', 'gem', 'Rangs', "Jusqu'au sommet", '#ff7a1a'],
+      ['/stats', 'chart', 'Statistiques', 'Volume et profil', '#ffcf3f'],
+      ['/challenges', 'trophy', 'Défis', 'Jour, semaine', '#ffb000'],
+      ['/records', 'crown', 'Records', 'Du monde', '#ffcf3f'],
+      ['/gallery', 'sparkle', 'Galerie', 'Toutes les figures', '#ff3d6e'],
+    ],
+  },
+  {
+    title: 'Sortir & partager',
+    items: [
+      ['/map', 'map', 'Compétitions', 'Carte France & monde', '#ff3d6e'],
+      ['/coaches', 'whistle', 'Coachs', 'Programmes de coachs', '#ff4fa0'],
+    ],
+  },
+  {
+    title: 'Mon compte',
+    items: [
+      ['/profile', 'user', 'Profil', 'Arène, skins, succès', '#ff7a1a'],
+      ['/history', 'book', 'Journal', 'Liste des séances', '#ff6b4a'],
+      ['/settings', 'gear', 'Réglages', 'Voix, sauvegarde', '#c9a27e'],
+    ],
+  },
 ]
 
 export default function More() {
   return (
     <Page>
-      <Header title="Tout GRAVITAS" />
-      <div className="grid grid-cols-2 gap-2.5">
-        {ITEMS.map(([to, icon, t, d, c]) => (
-          <Link key={to} to={to} className="card flex flex-col gap-2" style={{ background: `linear-gradient(160deg, ${c}1f, #21150f 70%)`, borderColor: c + '38' }}>
-            <IconTile name={icon} color={c} size={44} />
-            <div>
-              <div className="font-extrabold">{t}</div>
-              <div className="text-[11px] leading-tight text-white/65">{d}</div>
-            </div>
-          </Link>
-        ))}
-      </div>
+      <Header title="Plus" sub="Tout GRAVITAS, rangé par thème" />
+      {GROUPS.map((g, gi) => (
+        <section key={g.title} className="mb-5">
+          <h2 className="mb-2 text-[11px] font-black uppercase tracking-[0.22em] text-white/55">{g.title}</h2>
+          <div className="overflow-hidden rounded-2xl border border-[#ffb4801a] bg-ink-800/80">
+            {g.items.map(([to, icon, t, d, c], i) => (
+              <motion.div key={to} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: gi * 0.05 + i * 0.03 }}>
+                <Link to={to} className={`flex items-center gap-3 px-3 py-2.5 active:bg-white/[0.06] ${i ? 'border-t border-white/[0.05]' : ''}`}>
+                  <IconTile name={icon} color={c} size={40} />
+                  <div className="min-w-0 flex-1">
+                    <div className="font-extrabold">{t}</div>
+                    <div className="truncate text-[12px] text-white/60">{d}</div>
+                  </div>
+                  <Icon name="play" size={12} className="text-white/30" />
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      ))}
     </Page>
   )
 }

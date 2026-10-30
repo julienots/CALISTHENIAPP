@@ -6,6 +6,7 @@ import { Icon, IconTile, type IconName } from './components/Icon'
 import { RankUpOverlay } from './components/RankBadge'
 import { RANKS } from './data/ranks'
 import { computeRank, skillStatuses } from './lib/scoring'
+import { sectionOf } from './lib/sections'
 import { useStore } from './lib/store'
 import Home from './pages/Home'
 import Onboarding from './pages/Onboarding'
@@ -104,10 +105,17 @@ function Shell() {
   }, [loc.pathname, nav])
 
   if (!profile && loc.pathname !== '/onboarding') return <Navigate to="/onboarding" replace />
+  if (profile && loc.pathname === '/onboarding') return <Navigate to="/" replace />
   const hideNav = loc.pathname === '/onboarding' || loc.pathname.startsWith('/workout')
+  const section = sectionOf(loc.pathname)
 
   return (
     <>
+      <div className="ambient" aria-hidden>
+        <span />
+        <span />
+        <span />
+      </div>
       <Suspense fallback={<div className="grid h-screen place-items-center text-white/55">…</div>}>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -155,8 +163,13 @@ function Shell() {
                   <span className="mt-1 text-[10px] font-bold text-volt">{n.label}</span>
                 </button>
               ) : (
-                <NavLink key={n.to} to={n.to} end className={({ isActive }) => `flex w-14 flex-col items-center gap-1 py-1 text-[10px] font-semibold ${isActive ? 'text-volt' : 'text-white/60'}`}>
-                  <Icon name={n.icon} size={25} />
+                <NavLink key={n.to} to={n.to} end className={`relative flex w-16 flex-col items-center gap-1 py-1 text-[10px] font-bold transition-colors ${section.tab === n.to ? 'text-volt' : 'text-white/60'}`}>
+                  {section.tab === n.to && (
+                    <motion.span layoutId="nav-pill" className="absolute inset-x-1 -top-1 bottom-0 -z-10 rounded-2xl bg-volt/15 shadow-[inset_0_0_0_1px_#ff7a1a55]" transition={{ type: 'spring', damping: 26, stiffness: 340 }} />
+                  )}
+                  <motion.span animate={section.tab === n.to ? { y: [0, -4, 0], scale: [1, 1.15, 1] } : { y: 0, scale: 1 }} transition={{ duration: 0.4 }}>
+                    <Icon name={n.icon} size={25} />
+                  </motion.span>
                   {n.label}
                 </NavLink>
               ),

@@ -1,19 +1,32 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { useMemo, useState, type ReactNode } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { animate, useMotionValue, useTransform } from 'framer-motion'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { sectionOf } from '../lib/sections'
+import { Icon } from './Icon'
 import { IconTile, type IconName } from './Icon'
 import { CATEGORIES, SKILLS, TIER_COLOR, TIER_LABEL, type Skill } from '../data/skills'
 
 export function Header({ title, sub, back, right }: { title: string; sub?: string; back?: boolean; right?: ReactNode }) {
   const nav = useNavigate()
+  const sec = sectionOf(useLocation().pathname)
   return (
-    <div className="sticky top-0 z-30 -mx-4 mb-4 flex items-center gap-3 bg-ink-950/80 px-4 pb-3 backdrop-blur-xl" style={{ paddingTop: 'calc(var(--safe-top) + 12px)' }}>
+    <div className="sticky top-0 z-30 -mx-4 mb-4 flex items-center gap-3 bg-ink-950/85 px-4 pb-3 backdrop-blur-xl" style={{ paddingTop: 'calc(var(--safe-top) + 10px)' }}>
       {back && (
-        <button onClick={() => nav(-1)} className="grid h-9 w-9 place-items-center rounded-xl border border-white/10 bg-white/5 text-lg" aria-label="Retour">
-          ‹
-        </button>
+        <motion.button whileTap={{ scale: 0.88 }} onClick={() => nav(-1)} className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-white/10 bg-white/5" aria-label="Retour">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 5l-7 7 7 7" />
+          </svg>
+        </motion.button>
       )}
       <div className="min-w-0 flex-1">
+        {sec.name.toLowerCase() !== title.toLowerCase() && (
+          <motion.div initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} className="mb-0.5 flex items-center gap-1 text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: sec.color }}>
+            <Icon name={sec.icon} size={12} strokeWidth={2.6} />
+            {sec.name}
+            <span className="text-white/35">›</span>
+          </motion.div>
+        )}
         <h1 className="h-display truncate text-3xl leading-none text-white">{title}</h1>
         {sub && <p className="mt-0.5 truncate text-xs text-white/65">{sub}</p>}
       </div>
@@ -25,9 +38,9 @@ export function Header({ title, sub, back, right }: { title: string; sub?: strin
 export function Page({ children }: { children: ReactNode }) {
   return (
     <motion.main
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.22 }}
+      initial={{ opacity: 0, y: 16, filter: 'blur(6px)' }}
+      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+      transition={{ duration: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
       className="mx-auto w-full max-w-xl px-4"
       style={{ paddingBottom: 'calc(var(--safe-bottom) + 96px)' }}
     >
@@ -48,12 +61,23 @@ export function Section({ title, right, children, className = '' }: { title: str
   )
 }
 
+/** Nombre qui défile de 0 à sa valeur à l'affichage. */
+export function CountUp({ value, decimals = 0 }: { value: number; decimals?: number }) {
+  const mv = useMotionValue(0)
+  const text = useTransform(mv, (v) => v.toLocaleString('fr-FR', { maximumFractionDigits: decimals, minimumFractionDigits: decimals }))
+  useEffect(() => {
+    const c = animate(mv, value, { duration: 0.9, ease: [0.2, 0.8, 0.2, 1] })
+    return () => c.stop()
+  }, [value, mv])
+  return <motion.span>{text}</motion.span>
+}
+
 export function Stat({ label, value, sub, accent = '#ff7a1a' }: { label: string; value: ReactNode; sub?: ReactNode; accent?: string }) {
   return (
     <div className="card !p-3">
       <div className="text-[10px] font-bold uppercase tracking-wider text-white/60">{label}</div>
       <div className="h-display mt-1 text-3xl leading-none" style={{ color: accent }}>
-        {value}
+        {typeof value === 'number' ? <CountUp value={value} decimals={Number.isInteger(value) ? 0 : 1} /> : value}
       </div>
       {sub && <div className="mt-1 text-[11px] text-white/65">{sub}</div>}
     </div>
