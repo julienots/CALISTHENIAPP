@@ -99,6 +99,19 @@ describe('rangs', () => {
   })
 })
 
+describe('séances', () => {
+  it('une série assistée ne crée pas de record de figure', async () => {
+    const { useStore } = await import('../lib/store')
+    const st = useStore.getState()
+    st.resetAll()
+    const base = { date: new Date().toISOString(), title: 'x', durationMin: 60, type: 'skills' as const, rpe: 7, feeling: 3 }
+    st.saveSession({ ...base, id: 'a', exercises: [{ name: 'Full planche', skillId: 'full-planche', sets: [{ seconds: 9 }], band: 'fort' }] })
+    expect(useStore.getState().records.filter((r) => r.skillId === 'full-planche')).toHaveLength(0)
+    st.saveSession({ ...base, id: 'b', exercises: [{ name: 'Tuck planche', skillId: 'tuck-planche', sets: [{ seconds: 9 }] }] })
+    expect(useStore.getState().records.filter((r) => r.skillId === 'tuck-planche')).toHaveLength(1)
+  })
+})
+
 describe('statistiques', () => {
   it('régression linéaire exacte', () => {
     const r = linReg([{ x: 0, y: 1 }, { x: 1, y: 3 }, { x: 2, y: 5 }])!

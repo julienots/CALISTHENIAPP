@@ -41,12 +41,26 @@ export interface SetLog {
   done?: boolean
 }
 
+export type Band = 'léger' | 'moyen' | 'fort'
+export type Variant = 'négatives' | 'partielle'
+
 export interface ExerciseLog {
   name: string
   skillId?: string
   exerciseId?: string
   sets: SetLog[]
   notes?: string
+  /** Élastique d'assistance utilisé sur cet exercice. */
+  band?: Band
+  /** Variantes facilitées : la performance ne compte pas comme record de figure. */
+  variants?: Variant[]
+}
+
+export interface ComboLog {
+  comboId?: string
+  name: string
+  /** Passages réussis proprement. */
+  clean: number
 }
 
 export interface SessionLog {
@@ -66,6 +80,9 @@ export interface SessionLog {
   programId?: string
   dayKey?: string
   location?: string
+  /** 1 frais · 2 normal · 3 fatigué · 4 épuisé */
+  fatigue?: number
+  combos?: ComboLog[]
 }
 
 export interface Analysis {

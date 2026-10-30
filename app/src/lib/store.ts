@@ -40,7 +40,11 @@ const idbStorage: StateStorage = {
         /* rien */
       }
     } catch {
-      localStorage.setItem(name, value)
+      try {
+        localStorage.setItem(name, value)
+      } catch {
+        /* aucun stockage disponible : l'appli continue en mémoire */
+      }
     }
   },
   removeItem: async (name) => {
@@ -165,7 +169,8 @@ export const useStore = create<State>()(
           const exists = s.sessions.some((x) => x.id === session.id)
           // Chaque série sur une figure alimente l'historique de la figure.
           const fromSession: SkillRecord[] = session.exercises.flatMap((ex) => {
-            if (!ex.skillId) return []
+            // une série assistée (élastique, négatives, amplitude partielle) n'est pas un vrai record de figure
+            if (!ex.skillId || ex.band || ex.variants?.length) return []
             const best = Math.max(0, ...ex.sets.filter((st) => st.done !== false).map((st) => st.seconds ?? st.reps ?? 0))
             return best > 0 ? [{ id: uid(), skillId: ex.skillId, date: session.date, value: best, source: 'seance' as const }] : []
           })

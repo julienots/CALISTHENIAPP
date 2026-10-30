@@ -10,7 +10,7 @@ import { SKILL_BY_ID } from '../data/skills'
 import { buzz, endBeep } from '../lib/feedback'
 import { sessionXp } from '../lib/scoring'
 import { uid, useStore } from '../lib/store'
-import type { ExerciseLog, SessionLog, SetLog } from '../lib/types'
+import type { Band, ExerciseLog, SessionLog, SetLog, Variant } from '../lib/types'
 
 const PAINS = ['Poignets', 'Coudes', 'Épaules', 'Bas du dos', 'Genoux', 'Doigts']
 const TYPES: { v: SessionLog['type']; l: string; i: IconName }[] = [
@@ -21,6 +21,8 @@ const TYPES: { v: SessionLog['type']; l: string; i: IconName }[] = [
   { v: 'mobilite', l: 'Mobilité', i: 'sparkle' },
   { v: 'libre', l: 'Libre', i: 'target' },
 ]
+const FATIGUE = ['', 'Frais', 'Normal', 'Fatigué', 'Épuisé']
+const BANDS: (Band | undefined)[] = [undefined, 'léger', 'moyen', 'fort']
 const EFFORT = ['', 'Très facile', 'Facile', 'Facile', 'Modéré', 'Modéré', 'Soutenu', 'Dur', 'Très dur', 'Extrême', 'Maximum']
 
 const toLocalInput = (iso: string) => {
@@ -78,6 +80,8 @@ export default function LogSession() {
   )
   const [picker, setPicker] = useState(false)
   const [exSheet, setExSheet] = useState(false)
+  const [comboSheet, setComboSheet] = useState(false)
+  const [comboName, setComboName] = useState('')
   const [exQ, setExQ] = useState('')
   const [details, setDetails] = useState<string | null>(null)
   const [burst, setBurst] = useState<number | null>(null)
@@ -175,6 +179,24 @@ export default function LogSession() {
         </div>
       </div>
 
+      {/* Fatigue, en une ligne */}
+      <div className="card mt-3 !p-3">
+        <div className="mb-1.5 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-white/60">
+          <Icon name="moon" size={13} /> Fatigue avant la séance
+        </div>
+        <div className="grid grid-cols-4 gap-1.5">
+          {[1, 2, 3, 4].map((v) => {
+            const on = sess.fatigue === v
+            const c = ['', '#ffcf3f', '#ff7a1a', '#ff3d6e', '#ff3b30'][v]
+            return (
+              <motion.button key={v} whileTap={{ scale: 0.92 }} onClick={() => set('fatigue', on ? undefined : v)} className="rounded-xl border py-2 text-[12px] font-bold transition" style={{ borderColor: on ? c : '#ffffff1a', background: on ? c + '2e' : '#ffffff08', color: on ? c : '#ffffffb3' }}>
+                {FATIGUE[v]}
+              </motion.button>
+            )
+          })}
+        </div>
+      </div>
+
       {/* Exercices */}
       <div className="mb-2 mt-5 flex items-end justify-between">
         <h2 className="h-display text-xl tracking-wider">Ce que tu as fait</h2>
@@ -194,6 +216,25 @@ export default function LogSession() {
                     <Icon name="cross" size={16} />
                   </button>
                 </div>
+                <div className="mb-2 flex flex-wrap gap-1.5">
+                  <button
+                    className={ex.band ? 'chip-on' : 'chip'}
+                    onClick={() => setEx(i, { ...ex, band: BANDS[(BANDS.indexOf(ex.band) + 1) % BANDS.length] })}
+                  >
+                    Élastique{ex.band ? ` · ${ex.band}` : ''}
+                  </button>
+                  {(['négatives', 'partielle'] as Variant[]).map((v) => {
+                    const on = ex.variants?.includes(v)
+                    return (
+                      <button key={v} className={on ? 'chip-on' : 'chip'} onClick={() => setEx(i, { ...ex, variants: on ? ex.variants!.filter((x) => x !== v) : [...(ex.variants ?? []), v] })}>
+                        {v === 'négatives' ? 'Négatives' : 'Amplitude partielle'}
+                      </button>
+                    )
+                  })}
+                </div>
+                {ex.skillId && (ex.band || ex.variants?.length) ? (
+                  <p className="mb-2 text-[11px] text-white/50">Assisté : compté dans ta séance, pas comme record de la figure.</p>
+                ) : null}
                 <div className="space-y-2">
                   {ex.sets.map((st, k) => {
                     const key = `${i}-${k}`
@@ -242,12 +283,31 @@ export default function LogSession() {
           })}
         </AnimatePresence>
 
-        <div className="grid grid-cols-2 gap-2">
-          <button className="btn-primary !py-4" onClick={() => setPicker(true)}>
+        {(sess.combos ?? []).map((cb, ci) => (
+          <motion.div key={ci} layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="card !p-3">
+            <div className="flex items-center gap-2">
+              <Icon name="link" size={18} className="text-[#ff4fa0]" />
+              <div className="min-w-0 flex-1 text-sm font-extrabold">{cb.name}</div>
+              <button className="grid h-8 w-8 place-items-center text-white/50" aria-label="Retirer" onClick={() => set('combos', (sess.combos ?? []).filter((_, j) => j !== ci))}>
+                <Icon name="cross" size={15} />
+              </button>
+            </div>
+            <div className="mt-1 flex items-center justify-between">
+              <span className="text-[11px] font-bold uppercase text-white/55">Passages réussis</span>
+              <Num value={cb.clean} unit="propres" onChange={(v) => set('combos', (sess.combos ?? []).map((x, j) => (j === ci ? { ...x, clean: v } : x)))} />
+            </div>
+          </motion.div>
+        ))}
+
+        <div className="grid grid-cols-3 gap-2">
+          <button className="btn-primary !px-2 !py-4" onClick={() => setPicker(true)}>
             <Icon name="star" size={18} /> Figure
           </button>
-          <button className="btn-ghost !py-4" onClick={() => setExSheet(true)}>
+          <button className="btn-ghost !px-2 !py-4" onClick={() => setExSheet(true)}>
             <Icon name="bolt" size={18} /> Exercice
+          </button>
+          <button className="btn-ghost !px-2 !py-4" onClick={() => setComboSheet(true)}>
+            <Icon name="link" size={18} /> Combo
           </button>
         </div>
       </div>
@@ -320,6 +380,24 @@ export default function LogSession() {
       </AnimatePresence>
 
       <SkillPicker open={picker} onClose={() => setPicker(false)} onPick={(sk) => addExercise({ name: sk.name, skillId: sk.id, sets: [{ done: true }] })} />
+      <Sheet open={comboSheet} onClose={() => setComboSheet(false)} title="Ajouter un combo">
+        <div className="space-y-1.5">
+          {s.combos.map((c) => (
+            <button key={c.id} className="flex w-full items-center gap-2 rounded-xl bg-white/[0.04] px-3 py-3 text-left text-sm" onClick={() => (set('combos', [...(sess.combos ?? []), { comboId: c.id, name: c.name, clean: 1 }]), setComboSheet(false))}>
+              <Icon name="link" size={16} className="text-[#ff4fa0]" />
+              <span className="flex-1 font-semibold">{c.name}</span>
+              <span className="text-[11px] text-white/50">{c.steps.length} figures</span>
+            </button>
+          ))}
+          {!s.combos.length && <p className="text-xs text-white/55">Aucun combo enregistré : écris son nom ci-dessous, ou crée-le dans « Plus › Combos ».</p>}
+          <div className="flex gap-2 pt-1">
+            <input className="input" placeholder="Combo libre (ex : HS → planche → press)" value={comboName} onChange={(e) => setComboName(e.target.value)} />
+            <button className="btn-primary shrink-0" disabled={!comboName.trim()} onClick={() => (set('combos', [...(sess.combos ?? []), { name: comboName.trim(), clean: 1 }]), setComboName(''), setComboSheet(false))}>
+              Ajouter
+            </button>
+          </div>
+        </div>
+      </Sheet>
       <Sheet open={exSheet} onClose={() => setExSheet(false)} title="Ajouter un exercice">
         <input className="input mb-2" placeholder="Rechercher (tractions, dips, squats…)" value={exQ} onChange={(e) => setExQ(e.target.value)} />
         <div className="space-y-1">

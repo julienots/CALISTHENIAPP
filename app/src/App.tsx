@@ -115,6 +115,10 @@ function Shell() {
   const rank = useMemo(() => computeRank(skillStatuses(records, analyses), sessions, bonusXp).rank, [records, analyses, sessions, bonusXp])
   const [celebrate, setCelebrate] = useState<number | null>(null)
   const hydrated = useHydrated()
+  // chaque nouvel écran s'ouvre en haut de page
+  useEffect(() => {
+    if (!loc.search.includes('jump=')) window.scrollTo(0, 0)
+  }, [loc.pathname, loc.search])
   const [backup, setBackup] = useState<Record<string, unknown> | null>(null)
   const [backupDismissed, setBackupDismissed] = useState(false)
 

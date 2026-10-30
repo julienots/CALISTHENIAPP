@@ -91,7 +91,7 @@ export default function Settings() {
       <Section title="Zone sensible">
         <button className="btn-danger w-full" onClick={() => confirm('Effacer TOUTES les données ? Action irréversible.') && (s.resetAll(), nav('/onboarding', { replace: true }))}>Réinitialiser l'application</button>
       </Section>
-      <p className="text-center text-[11px] text-white/45">GRAVITAS v1.1 · 100 % hors ligne · Défie la gravité</p>
+      <p className="text-center text-[11px] text-white/45">GRAVITAS v1.2 · 100 % hors ligne · Défie la gravité</p>
     </Page>
   )
 }

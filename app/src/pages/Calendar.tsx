@@ -154,6 +154,15 @@ export default function Calendar() {
                           {s.exercises.length > 5 && <span className="text-[10px] text-white/55">+{s.exercises.length - 5}</span>}
                         </div>
                       )}
+                      {(s.combos?.length || s.fatigue && s.fatigue >= 3 || s.exercises.some((e) => e.band)) && (
+                        <div className="mt-1 flex flex-wrap gap-1">
+                          {(s.combos ?? []).map((c, j) => (
+                            <span key={j} className="rounded bg-[#ff4fa0]/15 px-1.5 py-0.5 text-[10px] font-bold text-[#ff8fbf]">Combo {c.name} ×{c.clean}</span>
+                          ))}
+                          {s.exercises.some((e) => e.band) && <span className="rounded bg-volt/15 px-1.5 py-0.5 text-[10px] font-bold text-volt">élastique</span>}
+                          {s.fatigue && s.fatigue >= 3 && <span className="rounded bg-ember/15 px-1.5 py-0.5 text-[10px] font-bold text-ember">{s.fatigue === 4 ? 'épuisé' : 'fatigué'}</span>}
+                        </div>
+                      )}
                     </Link>
                   ))}
                   {!ss.length && isRest && (

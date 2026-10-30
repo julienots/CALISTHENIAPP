@@ -28,6 +28,7 @@ export function readiness(s: S) {
     if (last.sleepHours) score += (last.sleepHours - 7.5) * 5
     if (last.feeling) score += (last.feeling - 3) * 3
     if (last.pain?.length) score -= 10 * last.pain.length
+    if (last.fatigue && hours < 36) score -= (last.fatigue - 2) * 7
   }
   if (ratio > 1.5) score -= 18
   else if (ratio > 1.3) score -= 8
@@ -110,6 +111,19 @@ export function coachInsights(s: S): Insight[] {
     }
     const top = [...tally.entries()].sort((a, b) => b[1].n - a[1].n)[0]
     if (top) out.push({ tone: 'warn', title: `Point technique n°1 : ${top[0].toLowerCase()}`, text: `Revient dans ${top[1].n} analyse(s). ${top[1].tip}`, to: '/analyzer', cta: 'Nouvelle analyse' })
+  }
+
+  // Fatigue répétée : 3 dernières séances notées fatigué ou épuisé
+  const lastFat = sessions.slice(0, 3).map((x) => x.fatigue ?? 0)
+  if (lastFat.length === 3 && lastFat.every((f) => f >= 3))
+    out.push({ tone: 'alert', title: 'Fatigue accumulée', text: 'Tes 3 dernières séances ont démarré fatigué. Prends 2 jours de repos ou une séance légère (technique, mobilité) avant de reprendre le lourd.' })
+
+  // Élastique : si une figure objectif n'est travaillée qu'assistée depuis longtemps
+  for (const g of s.profile?.goalSkills ?? []) {
+    const banded = s.sessions.filter((x) => x.exercises.some((e) => e.skillId === g.skillId && e.band))
+    const free = s.sessions.filter((x) => x.exercises.some((e) => e.skillId === g.skillId && !e.band && !e.variants?.length))
+    if (banded.length >= 6 && free.length === 0)
+      out.push({ tone: 'warn', title: `Sors de l'élastique sur ${SKILL_BY_ID[g.skillId]?.name ?? 'ta figure'}`, text: '6 séances assistées et aucune sans aide : garde l\'élastique en fin de séance, mais commence par 3-5 tentatives libres ou des négatives lentes.' })
   }
 
   // Équilibre push / pull sur 14 jours

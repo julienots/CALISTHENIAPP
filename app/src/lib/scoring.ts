@@ -47,7 +47,8 @@ export function skillStatuses(records: SkillRecord[], analyses: Analysis[]): Rec
 
 export function sessionXp(s: SessionLog) {
   const sets = s.exercises.reduce((n, e) => n + e.sets.filter((x) => x.done !== false).length, 0)
-  return Math.round(15 + s.durationMin * 0.6 + sets * 2 + s.rpe * 2)
+  const combos = (s.combos ?? []).reduce((n, c) => n + c.clean, 0)
+  return Math.round(15 + s.durationMin * 0.6 + sets * 2 + s.rpe * 2 + combos * 4)
 }
 
 export interface RankState {
