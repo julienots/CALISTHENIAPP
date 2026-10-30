@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FigureArt } from '../components/FigureArt'
+import { FigureTabs } from '../components/FigureTabs'
 import { Header, Page, Segmented, TierBadge } from '../components/ui'
 import { CATEGORIES, SKILLS } from '../data/skills'
 import { MASTERY, skillStatuses } from '../lib/scoring'
@@ -26,6 +27,7 @@ export default function Skills() {
   return (
     <Page>
       <Header title="Figures" sub={`${validated} / ${SKILLS.length} validées · ${SKILLS.filter((s) => statuses[s.id].certified).length} certifiées`} />
+      <FigureTabs />
       <Segmented value={disc} onChange={setDisc} options={[{ v: 'tout', l: 'Tout' }, { v: 'statique', l: 'Statique' }, { v: 'agilite', l: 'Agilité' }]} />
       <input className="input mt-2" placeholder="Rechercher une figure…" value={q} onChange={(e) => setQ(e.target.value)} />
       <div className="mt-2 flex gap-1.5">

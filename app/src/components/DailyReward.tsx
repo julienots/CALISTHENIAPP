@@ -24,7 +24,7 @@ export function dailyState(claims: string[]) {
 export function DailyReward() {
   const claims = useStore((s) => s.dailyClaims)
   const claimDaily = useStore((s) => s.claimDaily)
-  const tourDone = useStore((s) => s.toursSeen.includes('home'))
+  const tourDone = useStore((s) => s.toursSeen.includes('home') || s.toursSeen.includes('home2'))
   const [closed, setClosed] = useState(false)
   const st = dailyState(claims)
   const open = tourDone && !st.claimedToday && !closed

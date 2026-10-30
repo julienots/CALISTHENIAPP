@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CoachTour } from '../components/CoachTour'
 import { FigureArt } from '../components/FigureArt'
+import { FigureTabs } from '../components/FigureTabs'
 import { Icon } from '../components/Icon'
 import { Bar, Header, Page, TierBadge } from '../components/ui'
 import { unitOf } from '../data/skills'
@@ -43,7 +44,8 @@ export default function Voies() {
 
   return (
     <Page>
-      <Header title="Mes paliers" sub="Une échelle par voie. Chaque palier : l'une OU l'autre figure." back />
+      <Header title="Figures" sub="Chaque palier se valide avec l'une OU l'autre figure" />
+      <FigureTabs />
 
       <div className="grid grid-cols-4 gap-1.5">
         {VOIES.map((v) => {

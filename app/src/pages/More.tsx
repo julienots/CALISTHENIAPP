@@ -10,22 +10,17 @@ const GROUPS: { title: string; items: Item[] }[] = [
     title: "S'entraîner",
     items: [
       ['/programs', 'clipboard', 'Programmes', 'Générer et suivre', '#ff7a1a'],
-      ['/timers', 'timer', 'Timers', 'Hold, compét, EMOM', '#ffcf3f'],
-      ['/analyzer', 'camera', 'Analyseur', 'Note tes figures', '#ff6b4a'],
       ['/combos', 'link', 'Combos', 'Tes enchaînements', '#ff4fa0'],
       ['/competition', 'swords', 'Prépa compét', 'Simulation & jury', '#ff3b30'],
-      ['/coach', 'chat', 'Coach IA', 'Pose une question', '#ff3d6e'],
     ],
   },
   {
     title: 'Progresser',
     items: [
-      ['/voies', 'chart', 'Mes paliers', 'Push, Pull, Équilibre…', '#ff3b30'],
       ['/ranks', 'gem', 'Rangs', "Jusqu'au sommet", '#ff7a1a'],
       ['/stats', 'chart', 'Statistiques', 'Volume et profil', '#ffcf3f'],
       ['/challenges', 'trophy', 'Défis', 'Jour, semaine', '#ffb000'],
       ['/records', 'crown', 'Records', 'Du monde', '#ffcf3f'],
-      ['/gallery', 'sparkle', 'Galerie', 'Toutes les figures', '#ff3d6e'],
     ],
   },
   {
@@ -39,7 +34,7 @@ const GROUPS: { title: string; items: Item[] }[] = [
     title: 'Mon compte',
     items: [
       ['/profile', 'user', 'Profil', 'Arène, skins, succès', '#ff7a1a'],
-      ['/history', 'book', 'Journal', 'Liste des séances', '#ff6b4a'],
+      ['/coach', 'chat', 'Coach IA', 'Pose une question', '#ff3d6e'],
       ['/settings', 'gear', 'Réglages', 'Voix, sauvegarde', '#c9a27e'],
     ],
   },

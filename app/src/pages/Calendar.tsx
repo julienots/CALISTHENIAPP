@@ -2,11 +2,12 @@
 // Séance → carte ; repos marqué → lune ; rien → croix rouge, ligne barrée.
 import { motion } from 'framer-motion'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { TrainingGrid } from '../components/TrainingGrid'
 import { CoachTour } from '../components/CoachTour'
 import { Header, Page } from '../components/ui'
 import { sessionXp } from '../lib/scoring'
-import { DAY, dayKey, streak } from '../lib/stats'
+import { DAY, dayKey } from '../lib/stats'
 import { useStore } from '../lib/store'
 import type { SessionLog } from '../lib/types'
 import { Icon } from '../components/Icon'
@@ -23,37 +24,6 @@ const TYPE_COLOR: Record<SessionLog['type'], string> = {
 
 const startOfDay = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate())
 const addDays = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n)
-
-/** Grille façon « contributions » sur les 18 dernières semaines. */
-function Heatmap({ byDay, rest }: { byDay: Map<string, SessionLog[]>; rest: Set<string> }) {
-  const today = startOfDay(new Date())
-  const weeks = 18
-  const lastMonday = addDays(today, -((today.getDay() + 6) % 7))
-  const first = addDays(lastMonday, -(weeks - 1) * 7)
-  const cols = Array.from({ length: weeks }, (_, w) => Array.from({ length: 7 }, (_, d) => addDays(first, w * 7 + d)))
-  const color = (d: Date) => {
-    if (d > today) return 'transparent'
-    const k = dayKey(d)
-    const ss = byDay.get(k)
-    if (ss?.length) {
-      const load = ss.reduce((n, s) => n + s.durationMin * s.rpe, 0)
-      return load > 700 ? '#ff7a1a' : load > 400 ? '#e85d04' : '#8f3209'
-    }
-    if (rest.has(k)) return '#ffcf3f55'
-    return '#ff3b3026'
-  }
-  return (
-    <div className="flex gap-[3px] overflow-hidden">
-      {cols.map((col, i) => (
-        <div key={i} className="flex flex-1 flex-col gap-[3px]">
-          {col.map((d) => (
-            <div key={d.getTime()} className="aspect-square w-full rounded-[3px]" style={{ background: color(d) }} title={dayKey(d)} />
-          ))}
-        </div>
-      ))}
-    </div>
-  )
-}
 
 export default function Calendar() {
   const sessions = useStore((s) => s.sessions)
@@ -115,27 +85,24 @@ export default function Calendar() {
     setTimeout(() => document.getElementById(`day-${value}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 80)
   }
 
+  const [params] = useSearchParams()
+  const jumpParam = params.get('jump')
+  useEffect(() => {
+    if (jumpParam) goTo(jumpParam)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [jumpParam])
+
   const cur = monthStats(today.getFullYear(), today.getMonth())
   const elapsed = today.getDate()
 
   return (
     <Page>
-      <Header title="Calendrier" sub="Chaque jour compte. Défile à l'infini." back right={<Link to="/log" className="btn-primary !py-2">+ Séance</Link>} />
+      <Header title="Calendrier" sub="Chaque jour compte. Défile à l'infini." right={<Link to="/log" className="btn-primary !py-2">+ Séance</Link>} />
 
       <div className="card-hi">
-        <div className="grid grid-cols-4 gap-2 text-center">
-          <div><div className="h-display text-3xl text-volt">{cur.done}</div><div className="text-[10px] uppercase tracking-wider text-white/60">Séances</div></div>
-          <div><div className="h-display text-3xl text-ice">{cur.rested}</div><div className="text-[10px] uppercase tracking-wider text-white/60">Repos</div></div>
-          <div><div className="h-display text-3xl text-ember">{cur.missed}</div><div className="text-[10px] uppercase tracking-wider text-white/60">Ratés</div></div>
-          <div><div className="h-display text-3xl text-gold"><span className="inline-flex items-center gap-1">{streak(sessions)}<Icon name="flame" size={22} /></span></div><div className="text-[10px] uppercase tracking-wider text-white/60">Série</div></div>
-        </div>
+        <TrainingGrid weeks={18} />
         <div className="mt-1 text-center text-[11px] text-white/60">
           Ce mois-ci · régularité {Math.round(((cur.done + cur.rested) / Math.max(1, elapsed)) * 100)} % · {Math.round(cur.minutes / 60)} h d'entraînement
-        </div>
-        <div className="mt-3"><Heatmap byDay={byDay} rest={rest} /></div>
-        <div className="mt-2 flex justify-between text-[10px] text-white/55">
-          <span>18 dernières semaines</span>
-          <span><span className="text-volt">■</span> séance <span className="text-ice">■</span> repos <span className="text-ember">■</span> rien</span>
         </div>
       </div>
 
