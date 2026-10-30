@@ -5,12 +5,13 @@ import { Header, Page, Section, Segmented } from '../components/ui'
 import { cloudEnabled, compStatus, loadCompetitions, publishCompetition } from '../lib/cloud'
 import { uid, useStore } from '../lib/store'
 import type { Competition } from '../lib/types'
+import { Icon } from '../components/Icon'
 
-const COLORS = { live: '#ff5c39', upcoming: '#c6ff3d', past: '#5a6080' }
+const COLORS = { live: '#ff3b30', upcoming: '#ff7a1a', past: '#7a665a' }
 const icon = (st: keyof typeof COLORS) =>
   L.divIcon({
     className: '',
-    html: `<div class="${st === 'live' ? 'pin-live' : ''}" style="width:18px;height:18px;border-radius:50%;background:${COLORS[st]};border:3px solid #05060a;box-shadow:0 0 12px ${COLORS[st]}"></div>`,
+    html: `<div class="${st === 'live' ? 'pin-live' : ''}" style="width:18px;height:18px;border-radius:50%;background:${COLORS[st]};border:3px solid #100a07;box-shadow:0 0 12px ${COLORS[st]}"></div>`,
     iconSize: [18, 18],
     iconAnchor: [9, 9],
   })
@@ -81,7 +82,7 @@ export default function MapPage() {
     if (cloudEnabled() && confirm('Publier pour toute la communauté ?')) {
       try {
         await publishCompetition(c)
-        alert('Publiée ✅')
+        alert('Compétition publiée.')
       } catch (e) {
         alert((e as Error).message)
       }
@@ -91,9 +92,9 @@ export default function MapPage() {
 
   return (
     <Page>
-      <Header title="Compétitions" sub={`${status.loading ? 'Actualisation…' : status.online ? '🟢 En ligne' : '🟠 Hors ligne (cache)'} · MAJ ${ago(s.feedCache?.at)}`} back right={<button className="chip" onClick={refresh}>↻</button>} />
+      <Header title="Compétitions" sub={`${status.loading ? 'Actualisation…' : status.online ? '● En ligne' : '● Hors ligne (cache)'} · MAJ ${ago(s.feedCache?.at)}`} back right={<button className="chip" onClick={refresh}>↻</button>} />
       <div className="grid grid-cols-2 gap-2">
-        <Segmented value={zone} onChange={(v) => (setZone(v), setFly(v === 'france' ? [46.6, 2.4, 5] : [30, 10, 2]))} options={[{ v: 'france', l: '🇫🇷 France' }, { v: 'monde', l: '🌍 Monde' }]} />
+        <Segmented value={zone} onChange={(v) => (setZone(v), setFly(v === 'france' ? [46.6, 2.4, 5] : [30, 10, 2]))} options={[{ v: 'france', l: 'France' }, { v: 'monde', l: <span className="inline-flex items-center gap-1"><Icon name="globe" size={15} />Monde</span> }]} />
         <Segmented value={when} onChange={setWhen} options={[{ v: 'avenir', l: 'À venir' }, { v: 'tout', l: 'Tout' }]} />
       </div>
 
@@ -121,7 +122,7 @@ export default function MapPage() {
           {adding?.lat !== undefined && <Marker position={[adding.lat, adding.lng!]} icon={icon('live')} />}
         </MapContainer>
       </div>
-      <div className="mt-2 flex gap-3 text-[11px] text-white/50">
+      <div className="mt-2 flex gap-3 text-[11px] text-white/65">
         <span><span style={{ color: COLORS.live }}>●</span> En direct</span>
         <span><span style={{ color: COLORS.upcoming }}>●</span> À venir</span>
         <span><span style={{ color: COLORS.past }}>●</span> Passée</span>
@@ -129,8 +130,8 @@ export default function MapPage() {
       
         {adding && (
           <div className="card-hi mt-3 space-y-2">
-            <div className="flex items-center justify-between"><span className="h-display text-xl">Ajouter une compétition</span><button className="text-white/40" onClick={() => setAdding(null)}>✕</button></div>
-            <p className="text-xs text-white/50">Touche la carte pour placer le point. Position : {adding.lat ? `${adding.lat.toFixed(3)}, ${adding.lng!.toFixed(3)}` : 'non définie'}</p>
+            <div className="flex items-center justify-between"><span className="h-display text-xl">Ajouter une compétition</span><button className="text-white/55" onClick={() => setAdding(null)}>✕</button></div>
+            <p className="text-xs text-white/65">Touche la carte pour placer le point. Position : {adding.lat ? `${adding.lat.toFixed(3)}, ${adding.lng!.toFixed(3)}` : 'non définie'}</p>
             <input className="input" placeholder="Nom" value={adding.name ?? ''} onChange={(e) => setAdding({ ...adding, name: e.target.value })} />
             <div className="grid grid-cols-2 gap-2">
               <input className="input" placeholder="Ville" value={adding.city ?? ''} onChange={(e) => setAdding({ ...adding, city: e.target.value })} />
@@ -141,7 +142,7 @@ export default function MapPage() {
             <input className="input" placeholder="Disciplines (séparées par des virgules)" onChange={(e) => setAdding({ ...adding, disciplines: e.target.value.split(',').map((x) => x.trim()).filter(Boolean) })} />
             <input className="input" placeholder="Lien (site, Instagram…)" value={adding.url ?? ''} onChange={(e) => setAdding({ ...adding, url: e.target.value })} />
             <div className="grid grid-cols-2 gap-2">
-              <button className="btn-ghost" onClick={() => navigator.geolocation?.getCurrentPosition((p) => setAdding({ ...adding, lat: p.coords.latitude, lng: p.coords.longitude }))}>📍 Ma position</button>
+              <button className="btn-ghost" onClick={() => navigator.geolocation?.getCurrentPosition((p) => setAdding({ ...adding, lat: p.coords.latitude, lng: p.coords.longitude }))}><Icon name="pin" size={16} /> Ma position</button>
               <button className="btn-primary" onClick={saveNew}>Enregistrer</button>
             </div>
           </div>
@@ -157,7 +158,7 @@ export default function MapPage() {
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <div className="font-bold">{c.name}</div>
-                    <div className="text-xs text-white/55">
+                    <div className="text-xs text-white/70">
                       {c.city}, {c.country} · {new Date(c.start).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' })}
                       {c.end && c.end !== c.start ? ` → ${new Date(c.end).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })}` : ''}
                     </div>
@@ -172,11 +173,11 @@ export default function MapPage() {
                   </span>
                 </div>
                 {c.url && <a href={c.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="mt-2 inline-block text-xs font-bold text-volt">Site / inscriptions →</a>}
-                {c.userAdded && <span className="ml-3 text-xs text-white/40" onClick={(e) => (e.stopPropagation(), confirm('Supprimer ?') && s.deleteCompetition(c.id))}>Supprimer</span>}
+                {c.userAdded && <span className="ml-3 text-xs text-white/55" onClick={(e) => (e.stopPropagation(), confirm('Supprimer ?') && s.deleteCompetition(c.id))}>Supprimer</span>}
               </button>
             )
           })}
-          {!list.length && <p className="text-sm text-white/40">Aucune compétition pour ce filtre.</p>}
+          {!list.length && <p className="text-sm text-white/55">Aucune compétition pour ce filtre.</p>}
         </div>
       </Section>
 
@@ -191,7 +192,7 @@ export default function MapPage() {
           ].map(([l, u]) => (
             <a key={u} href={u} target="_blank" rel="noreferrer" className="block text-volt">{l} →</a>
           ))}
-          {status.errors.length > 0 && <p className="pt-2 text-[11px] text-white/40">{status.errors.join(' · ')}</p>}
+          {status.errors.length > 0 && <p className="pt-2 text-[11px] text-white/55">{status.errors.join(' · ')}</p>}
         </div>
       </Section>
 

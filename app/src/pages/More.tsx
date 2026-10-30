@@ -1,32 +1,38 @@
 import { Link } from 'react-router-dom'
+import { IconTile, type IconName } from '../components/Icon'
 import { Header, Page } from '../components/ui'
 
-const ITEMS = [
-  ['/coach', '🧠', 'Coach IA', 'Discute avec ton coach'],
-  ['/programs', '📋', 'Programmes', 'Générateur illimité + tableur'],
-  ['/analyzer', '🎥', 'Analyseur', 'Vidéo, photo, direct'],
-  ['/timers', '⏱️', 'Timers', 'Hold, compét, EMOM, Tabata'],
-  ['/combos', '🔗', 'Combos', 'Conception d\'enchaînements'],
-  ['/competition', '⚔️', 'Prépa compét', 'Simulation & jury'],
-  ['/map', '🗺️', 'Carte compét', 'France & monde en direct'],
-  ['/challenges', '🏆', 'Défis', 'Quotidiens, hebdo, épreuves'],
-  ['/ranks', '💠', 'Rangs', 'Jusqu\'à GRAVITAS ZÉRO'],
-  ['/history', '📓', 'Journal', 'Toutes tes séances'],
-  ['/coaches', '🧑‍🏫', 'Coachs', 'Annuaire & espace coach'],
-  ['/profile', '👤', 'Profil', 'Niveau, objectifs, matériel'],
-  ['/settings', '⚙️', 'Réglages', 'Voix, sauvegarde, en ligne'],
+const ITEMS: [string, IconName, string, string, string][] = [
+  ['/calendar', 'calendar', 'Calendrier', 'Tous tes jours, à l\'infini', '#ff7a1a'],
+  ['/stats', 'chart', 'Statistiques', 'Volume, radar, rang', '#ffcf3f'],
+  ['/coach', 'chat', 'Coach IA', 'Discute avec ton coach', '#ff3d6e'],
+  ['/programs', 'clipboard', 'Programmes', 'Générateur illimité + tableur', '#ffb000'],
+  ['/analyzer', 'camera', 'Analyseur', 'Vidéo, photo, direct', '#ff6b4a'],
+  ['/timers', 'timer', 'Timers', 'Hold, compét, EMOM, Tabata', '#ffcf3f'],
+  ['/combos', 'link', 'Combos', 'Conception d\'enchaînements', '#ff4fa0'],
+  ['/competition', 'swords', 'Prépa compét', 'Simulation & jury', '#ff3b30'],
+  ['/map', 'map', 'Carte compét', 'France & monde en direct', '#ff3d6e'],
+  ['/challenges', 'trophy', 'Défis', 'Quotidiens, hebdo, épreuves', '#ffb000'],
+  ['/ranks', 'gem', 'Rangs', 'Jusqu\'à GRAVITAS ZÉRO', '#ff7a1a'],
+  ['/records', 'crown', 'Records du monde', 'Les sommets, sourcés', '#ffcf3f'],
+  ['/history', 'book', 'Journal', 'Toutes tes séances', '#ff6b4a'],
+  ['/coaches', 'whistle', 'Coachs', 'Annuaire & espace coach', '#ff4fa0'],
+  ['/profile', 'user', 'Profil', 'Niveau, objectifs, matériel', '#ff7a1a'],
+  ['/settings', 'gear', 'Réglages', 'Voix, sauvegarde, en ligne', '#c9a27e'],
 ]
 
 export default function More() {
   return (
     <Page>
       <Header title="Tout GRAVITAS" />
-      <div className="grid grid-cols-2 gap-2">
-        {ITEMS.map(([to, i, t, d]) => (
-          <Link key={to} to={to} className="card active:scale-[0.98]">
-            <div className="text-2xl">{i}</div>
-            <div className="mt-1 font-bold">{t}</div>
-            <div className="text-[11px] text-white/50">{d}</div>
+      <div className="grid grid-cols-2 gap-2.5">
+        {ITEMS.map(([to, icon, t, d, c]) => (
+          <Link key={to} to={to} className="card flex flex-col gap-2" style={{ background: `linear-gradient(160deg, ${c}1f, #21150f 70%)`, borderColor: c + '38' }}>
+            <IconTile name={icon} color={c} size={44} />
+            <div>
+              <div className="font-extrabold">{t}</div>
+              <div className="text-[11px] leading-tight text-white/65">{d}</div>
+            </div>
           </Link>
         ))}
       </div>

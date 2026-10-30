@@ -383,7 +383,7 @@ export const BONES: [number, number][] = [
 
 export function drawSkeleton(ctx: CanvasRenderingContext2D, f: Frame, scale: number) {
   if (!f.pts) return
-  const color = f.ok ? '#c6ff3d' : '#ff5c39'
+  const color = f.ok ? '#ff7a1a' : '#ff3b30'
   ctx.lineWidth = Math.max(3, 4 * scale)
   ctx.lineCap = 'round'
   ctx.strokeStyle = color
@@ -411,7 +411,7 @@ export function drawSkeleton(ctx: CanvasRenderingContext2D, f: Frame, scale: num
     const label = (i: number, txt: string) => {
       const p = f.pts![i]
       ctx.font = `bold ${Math.max(12, 15 * scale)}px Inter, sans-serif`
-      ctx.fillStyle = '#05060acc'
+      ctx.fillStyle = '#100a07cc'
       const w = ctx.measureText(txt).width
       ctx.fillRect(p.x * scale + 8, p.y * scale - 18, w + 10, 22)
       ctx.fillStyle = '#fff'

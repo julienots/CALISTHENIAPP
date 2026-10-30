@@ -2,11 +2,13 @@ import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { LineChart, Ring } from '../components/charts'
 import { Bar, Header, Page, Section, Stat, Stepper, TierBadge } from '../components/ui'
+import { knowledgeFor } from '../data/knowledge'
 import { EX_BY_ID, LINE_DRILLS } from '../data/exercises'
 import { CUES, lineOf, SKILL_BY_ID, skillBasePoints, unitOf } from '../data/skills'
 import { MASTERY, skillStatuses } from '../lib/scoring'
 import { dailyBest, DAY, fmtDate, linReg, projection } from '../lib/stats'
 import { useStore } from '../lib/store'
+import { Icon } from '../components/Icon'
 
 export default function SkillDetail() {
   const { id = '' } = useParams()
@@ -47,21 +49,21 @@ export default function SkillDetail() {
       <Header title={skill.name} sub={`${skill.category} · ${skill.discipline}`} back right={<TierBadge tier={skill.tier} size="lg" />} />
 
       <div className="card-hi flex items-center gap-4">
-        <Ring value={Math.min(1, st.best / target)} size={86} color={st.mastery >= 2 ? '#c6ff3d' : '#7c5cff'}>
+        <Ring value={Math.min(1, st.best / target)} size={86} color={st.mastery >= 2 ? '#ff7a1a' : '#ff3d6e'}>
           <div className="text-center">
             <div className="h-display text-2xl leading-none">{st.best}</div>
-            <div className="text-[9px] text-white/50">{unit}</div>
+            <div className="text-[9px] text-white/65">{unit}</div>
           </div>
         </Ring>
         <div className="flex-1">
-          <div className="text-xs font-bold uppercase tracking-wider text-white/45">Statut</div>
-          <div className="h-display text-3xl" style={{ color: ['#ffffff70', '#7c5cff', '#c6ff3d', '#ffc83d'][st.mastery] }}>
+          <div className="text-xs font-bold uppercase tracking-wider text-white/60">Statut</div>
+          <div className="h-display text-3xl" style={{ color: ['#ffffff70', '#ff3d6e', '#ff7a1a', '#ffb000'][st.mastery] }}>
             {MASTERY[st.mastery]} {st.certified && <span className="text-gold">· CERTIFIÉ</span>}
           </div>
-          <div className="text-xs text-white/55">
+          <div className="text-xs text-white/70">
             Standard : {skill.standard} {unit} · Maîtrise : {skill.standard * 2} {unit}
           </div>
-          <div className="text-xs text-white/55">Valeur : {skillBasePoints(skill.tier).toLocaleString('fr-FR')} PR (×1.4 maîtrisé, ×1.25 certifié)</div>
+          <div className="text-xs text-white/70">Valeur : {skillBasePoints(skill.tier).toLocaleString('fr-FR')} PR (×1.4 maîtrisé, ×1.25 certifié)</div>
         </div>
       </div>
 
@@ -76,23 +78,23 @@ export default function SkillDetail() {
         <div className="mt-3 grid grid-cols-2 gap-2">
           {skill.kind === 'hold' && (
             <Link to={`/timers?mode=hold&skill=${skill.id}`} className="btn-ghost">
-              ⏱️ Chrono hold
+              <Icon name="timer" size={18} /> Chrono hold
             </Link>
           )}
           <Link to={`/analyzer?skill=${skill.id}`} className={`btn-ghost ${skill.kind !== 'hold' ? 'col-span-2' : ''}`}>
-            🎥 Analyser / certifier
+            <Icon name="camera" size={18} /> Analyser / certifier
           </Link>
         </div>
       </div>
 
       <div className="mt-3 grid grid-cols-3 gap-2">
-        <Stat label="Marge" value={margin > 0 ? `${margin}` : '0'} sub={`${unit} jusqu'à ${st.mastery >= 2 ? 'maîtrise' : 'validation'}`} accent="#ffc83d" />
-        <Stat label="Tendance" value={reg ? `${reg.slope * 7 >= 0 ? '+' : ''}${(reg.slope * 7).toFixed(1)}` : '—'} sub={`${unit} / semaine`} accent="#3dd6ff" />
-        <Stat label="Régularité" value={st.best ? `${Math.round(consistency * 100)}%` : '—'} sub="moy. 5 dernières / record" accent="#7c5cff" />
+        <Stat label="Marge" value={margin > 0 ? `${margin}` : '0'} sub={`${unit} jusqu'à ${st.mastery >= 2 ? 'maîtrise' : 'validation'}`} accent="#ffb000" />
+        <Stat label="Tendance" value={reg ? `${reg.slope * 7 >= 0 ? '+' : ''}${(reg.slope * 7).toFixed(1)}` : '—'} sub={`${unit} / semaine`} accent="#ffcf3f" />
+        <Stat label="Régularité" value={st.best ? `${Math.round(consistency * 100)}%` : '—'} sub="moy. 5 dernières / record" accent="#ff3d6e" />
       </div>
       <div className="mt-2 grid grid-cols-3 gap-2">
         <Stat label="Tentatives" value={st.attempts} />
-        <Stat label="Note max" value={st.bestScore !== undefined ? st.bestScore : '—'} sub="/10 analyseur" accent="#ffc83d" />
+        <Stat label="Note max" value={st.bestScore !== undefined ? st.bestScore : '—'} sub="/10 analyseur" accent="#ffb000" />
         <Stat label="Analyses" value={ans.length} accent="#ff5ca8" />
       </div>
 
@@ -103,7 +105,7 @@ export default function SkillDetail() {
             {!proj
               ? 'Enregistre au moins 2 jours de performances pour obtenir une projection.'
               : proj.reached
-                ? `Objectif atteint 🎉 Prochain palier : ${skill.standard * 2} ${unit}.`
+                ? `Objectif atteint ! Prochain palier : ${skill.standard * 2} ${unit}.`
                 : proj.date
                   ? `Projection : ${target} ${unit} vers le ${proj.date.toLocaleDateString('fr-FR')} (~${Math.ceil(proj.weeks)} sem., fiabilité ${Math.round(proj.r2 * 100)} %).`
                   : 'Tendance plate ou négative : change de stimulus (voir exercices d\'assistance).'}
@@ -114,7 +116,7 @@ export default function SkillDetail() {
       {ans.length > 0 && (
         <Section title="Notes de l'analyseur">
           <div className="card">
-            <LineChart data={scorePts} color="#ffc83d" format={(v) => v.toFixed(1)} unit="/10" />
+            <LineChart data={scorePts} color="#ffb000" format={(v) => v.toFixed(1)} unit="/10" />
             <div className="mt-3 space-y-2.5">
               {crit.map((c) => (
                 <div key={c.label}>
@@ -122,7 +124,7 @@ export default function SkillDetail() {
                     <span className="text-white/75">{c.label}</span>
                     <span className="font-bold">{c.avg.toFixed(1)}/10</span>
                   </div>
-                  <Bar value={c.avg / 10} color={c.avg >= 8 ? '#c6ff3d' : c.avg >= 6 ? '#ffc83d' : '#ff5c39'} />
+                  <Bar value={c.avg / 10} color={c.avg >= 8 ? '#ff7a1a' : c.avg >= 6 ? '#ffb000' : '#ff3b30'} />
                 </div>
               ))}
             </div>
@@ -137,9 +139,37 @@ export default function SkillDetail() {
             <Link key={x.id} to={`/skill/${x.id}`} className={`flex items-center gap-3 rounded-xl border p-2.5 ${x.id === skill.id ? 'border-volt/50 bg-volt/10' : 'border-white/5 bg-ink-800/70'}`}>
               <TierBadge tier={x.tier} />
               <span className="flex-1 text-sm font-semibold">{x.name}</span>
-              <span className="text-xs text-white/50">{MASTERY[statuses[x.id].mastery]}</span>
+              <span className="text-xs text-white/65">{MASTERY[statuses[x.id].mastery]}</span>
             </Link>
           ))}
+        </div>
+      </Section>
+
+      <Section title="Fiche technique">
+        <div className="card space-y-3 text-sm">
+          {(() => {
+            const k = knowledgeFor(skill.line)
+            return (
+              <>
+                <div>
+                  <div className="label">Muscles sollicités</div>
+                  <div className="flex flex-wrap gap-1.5">{k.muscles.map((m) => <span key={m} className="chip">{m}</span>)}</div>
+                </div>
+                <div>
+                  <div className="label">Prérequis</div>
+                  {k.prereq.map((m) => <div key={m} className="text-white/75">✓ {m}</div>)}
+                </div>
+                <div>
+                  <div className="label">Erreurs fréquentes</div>
+                  {k.mistakes.map((m) => <div key={m} className="text-ember/90">✕ {m}</div>)}
+                </div>
+                <div>
+                  <div className="label">Durée d'apprentissage indicative</div>
+                  <div className="text-white/75">{k.timeline}</div>
+                </div>
+              </>
+            )
+          })()}
         </div>
       </Section>
 
@@ -151,7 +181,7 @@ export default function SkillDetail() {
               {c}
             </div>
           ))}
-          {skill.danger && <div className="rounded-xl bg-ember/10 p-3 text-xs text-ember">⚠️ Figure à haut risque articulaire / tendineux. Progression très lente, échauffement spécifique obligatoire.</div>}
+          {skill.danger && <div className="rounded-xl bg-ember/10 p-3 text-xs text-ember">Attention : figure à haut risque articulaire / tendineux. Progression très lente, échauffement spécifique obligatoire.</div>}
         </div>
       </Section>
 
@@ -172,16 +202,16 @@ export default function SkillDetail() {
           {[...recs].reverse().slice(0, 30).map((r) => (
             <div key={r.id} className="flex items-center justify-between rounded-lg bg-white/[0.03] px-3 py-2 text-sm">
               <span className="text-white/60">{fmtDate(r.date, { day: 'numeric', month: 'short', year: '2-digit' })}</span>
-              <span className="text-xs text-white/40">{r.source}</span>
+              <span className="text-xs text-white/55">{r.source}</span>
               <span className="font-bold">
                 {r.value} {unit} {r.score !== undefined && <span className="text-gold">· {r.score}/10</span>}
               </span>
-              <button className="text-white/30" onClick={() => confirm('Supprimer ce record ?') && s.deleteRecord(r.id)}>
+              <button className="text-white/45" onClick={() => confirm('Supprimer ce record ?') && s.deleteRecord(r.id)}>
                 ✕
               </button>
             </div>
           ))}
-          {!recs.length && <p className="text-sm text-white/40">Aucune donnée pour l'instant.</p>}
+          {!recs.length && <p className="text-sm text-white/55">Aucune donnée pour l'instant.</p>}
         </div>
       </Section>
     </Page>

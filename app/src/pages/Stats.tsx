@@ -34,11 +34,11 @@ export default function Stats() {
       <Header title="Statistiques" sub="Ton profil d'athlète, chiffré" right={<Link to="/history" className="chip">Journal</Link>} />
       <div className="grid grid-cols-3 gap-2">
         <Stat label="Séances" value={s.sessions.length} sub={`${Math.round(totalMin / 60)} h au total`} />
-        <Stat label="Temps sous tension" value={`${Math.round(totalHold / 60)}`} sub="min de holds" accent="#3dd6ff" />
-        <Stat label="Série" value={streak(s.sessions)} sub="jours" accent="#ff5c39" />
-        <Stat label="Figures" value={rank.validatedCount} sub={`validées / ${SKILLS.length}`} accent="#7c5cff" />
-        <Stat label="Note moy." value={avgScore ? avgScore.toFixed(1) : '—'} sub="/10 analyseur" accent="#ffc83d" />
-        <Stat label="ACWR" value={ac.ratio ? ac.ratio.toFixed(2) : '—'} sub={ac.ratio > 1.5 ? 'risque ⚠️' : ac.ratio > 0.8 ? 'zone optimale' : 'charge basse'} accent={ac.ratio > 1.5 ? '#ff5c39' : '#c6ff3d'} />
+        <Stat label="Temps sous tension" value={`${Math.round(totalHold / 60)}`} sub="min de holds" accent="#ffcf3f" />
+        <Stat label="Série" value={streak(s.sessions)} sub="jours" accent="#ff3b30" />
+        <Stat label="Figures" value={rank.validatedCount} sub={`validées / ${SKILLS.length}`} accent="#ff3d6e" />
+        <Stat label="Note moy." value={avgScore ? avgScore.toFixed(1) : '—'} sub="/10 analyseur" accent="#ffb000" />
+        <Stat label="ACWR" value={ac.ratio ? ac.ratio.toFixed(2) : '—'} sub={ac.ratio > 1.5 ? 'zone de risque' : ac.ratio > 0.8 ? 'zone optimale' : 'charge basse'} accent={ac.ratio > 1.5 ? '#ff3b30' : '#ff7a1a'} />
       </div>
 
       <Section title="Volume hebdomadaire" className="mt-5">
@@ -47,7 +47,7 @@ export default function Stats() {
           <div className="mt-3">
             <BarChart data={w.map((x) => ({ label: x.label, value: x[metric] }))} />
           </div>
-          <p className="text-[11px] text-white/40">Charge = durée × RPE (méthode sRPE). RPE moyen : {rpeAvg.toFixed(1)}.</p>
+          <p className="text-[11px] text-white/55">Charge = durée × RPE (méthode sRPE). RPE moyen : {rpeAvg.toFixed(1)}.</p>
         </div>
       </Section>
 
@@ -63,11 +63,11 @@ export default function Stats() {
             <Link key={x.skill.id} to={`/skill/${x.skill.id}`} className="flex items-center gap-3 rounded-xl bg-ink-800/70 p-2.5">
               <TierBadge tier={x.skill.tier} />
               <span className="flex-1 truncate text-sm font-semibold">{x.skill.name}</span>
-              <span className="text-xs text-white/50">{x.best}{x.skill.kind === 'hold' ? ' s' : ''}</span>
+              <span className="text-xs text-white/65">{x.best}{x.skill.kind === 'hold' ? ' s' : ''}</span>
               <span className="w-16 text-right text-xs font-black text-volt">{x.points} PR</span>
             </Link>
           ))}
-          {!topSkills.length && <p className="text-sm text-white/40">Enregistre tes premières performances.</p>}
+          {!topSkills.length && <p className="text-sm text-white/55">Enregistre tes premières performances.</p>}
         </div>
       </Section>
 

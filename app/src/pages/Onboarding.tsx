@@ -7,6 +7,7 @@ import { generateProgram } from '../lib/generator'
 import { estimateLevel, LEVEL_NAMES, skillStatuses } from '../lib/scoring'
 import { useStore } from '../lib/store'
 import type { Goal, Profile, Specialty } from '../lib/types'
+import { IconTile } from '../components/Icon'
 
 const EQUIP = ['barre', 'parallèles', 'parallettes', 'anneaux', 'élastique', 'lest', 'espalier', 'banc', 'box']
 const QUICK_SKILLS = ['pull-up', 'dips', 'muscle-up', 'l-sit', 'handstand', 'tuck-planche', 'adv-tuck-planche', 'straddle-planche', 'full-planche', 'tuck-front-lever', 'adv-tuck-front-lever', 'straddle-front-lever', 'full-front-lever', 'full-back-lever', 'human-flag', 'v-sit', 'freestanding-hspu', 'swing-360', 'muscle-up-180', 'backflip', 'giant', 'one-arm-handstand']
@@ -14,8 +15,8 @@ const QUICK_SKILLS = ['pull-up', 'dips', 'muscle-up', 'l-sit', 'handstand', 'tuc
 export function Logo({ size = 64 }: { size?: number }) {
   return (
     <svg viewBox="0 0 64 64" width={size} height={size}>
-      <motion.path d="M32 6 58 54H6Z" fill="none" stroke="#c6ff3d" strokeWidth={4.5} strokeLinejoin="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.2 }} />
-      <motion.path d="M19 40h26" stroke="#7c5cff" strokeWidth={4.5} strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.9, duration: 0.5 }} />
+      <motion.path d="M32 6 58 54H6Z" fill="none" stroke="#ff7a1a" strokeWidth={4.5} strokeLinejoin="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 1.2 }} />
+      <motion.path d="M19 40h26" stroke="#ff3d6e" strokeWidth={4.5} strokeLinecap="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ delay: 0.9, duration: 0.5 }} />
     </svg>
   )
 }
@@ -89,16 +90,16 @@ export default function Onboarding() {
       <div className="space-y-2">
         {(
           [
-            ['statique', 'STATIQUE', 'Planche, levers, handstand, anneaux. La force pure.', '🧱'],
-            ['agilite', 'AGILITÉ', 'Freestyle : swings, 360, lâchers, flips. Le flow.', '🌀'],
-            ['mixte', 'LES DEUX', 'L\'athlète complet. Le format compétition.', '⚔️'],
+            ['statique', 'STATIQUE', 'Planche, levers, handstand, anneaux. La force pure.', 'brick'],
+            ['agilite', 'AGILITÉ', 'Freestyle : swings, 360, lâchers, flips. Le flow.', 'spiral'],
+            ['mixte', 'LES DEUX', 'L\'athlète complet. Le format compétition.', 'swords'],
           ] as const
         ).map(([v, t, d, i]) => (
-          <button key={v} onClick={() => setSpecialty(v)} className={`card flex w-full items-center gap-3 text-left transition ${specialty === v ? '!border-volt/70 shadow-[0_0_30px_#c6ff3d22]' : ''}`}>
-            <span className="text-3xl">{i}</span>
+          <button key={v} onClick={() => setSpecialty(v)} className={`card flex w-full items-center gap-3 text-left transition ${specialty === v ? '!border-volt/70 shadow-[0_0_30px_#ff7a1a22]' : ''}`}>
+            <IconTile name={i} color={specialty === v ? '#ff7a1a' : '#c9a27e'} size={50} />
             <div>
               <div className={`h-display text-2xl ${specialty === v ? 'text-volt' : ''}`}>{t}</div>
-              <div className="text-xs text-white/55">{d}</div>
+              <div className="text-xs text-white/70">{d}</div>
             </div>
           </button>
         ))}
@@ -106,7 +107,7 @@ export default function Onboarding() {
     </div>,
     <div key="2">
       <h2 className="h-display text-4xl">Tes fondamentaux</h2>
-      <p className="text-sm text-white/55">Max de répétitions strictes, d'une traite.</p>
+      <p className="text-sm text-white/70">Max de répétitions strictes, d'une traite.</p>
       {(
         [
           ['maxPullups', 'Tractions'],
@@ -133,7 +134,7 @@ export default function Onboarding() {
     </div>,
     <div key="3">
       <h2 className="h-display text-4xl">Ce que tu maîtrises</h2>
-      <p className="text-sm text-white/55">Touche les figures que tu tiens déjà (au standard). Tu pourras affiner chaque record plus tard.</p>
+      <p className="text-sm text-white/70">Touche les figures que tu tiens déjà (au standard). Tu pourras affiner chaque record plus tard.</p>
       <div className="mt-4 flex flex-wrap gap-2">
         {QUICK_SKILLS.map((id) => {
           const s = SKILL_BY_ID[id]
@@ -179,7 +180,7 @@ export default function Onboarding() {
           <div key={id} className="card flex items-center gap-3 !p-3">
             <TierBadge tier={SKILL_BY_ID[id].tier} />
             <span className="flex-1 font-semibold">{SKILL_BY_ID[id].name}</span>
-            <button className="text-white/40" onClick={() => setGoalSkills(goalSkills.filter((g) => g !== id))}>
+            <button className="text-white/55" onClick={() => setGoalSkills(goalSkills.filter((g) => g !== id))}>
               ✕
             </button>
           </div>
@@ -190,7 +191,7 @@ export default function Onboarding() {
           </button>
         )}
       </div>
-      <p className="mt-3 text-xs text-white/40">Suggestion : {SKILLS.filter((s) => s.tier === Math.min(10, level * 2 + 1) && (specialty === 'mixte' || s.discipline === specialty)).slice(0, 4).map((s) => s.name).join(', ')}</p>
+      <p className="mt-3 text-xs text-white/55">Suggestion : {SKILLS.filter((s) => s.tier === Math.min(10, level * 2 + 1) && (specialty === 'mixte' || s.discipline === specialty)).slice(0, 4).map((s) => s.name).join(', ')}</p>
       <SkillPicker open={picker} onClose={() => setPicker(false)} onPick={(s) => setGoalSkills([...new Set([...goalSkills, s.id])].slice(0, 3))} />
     </div>,
     <div key="5">
@@ -240,7 +241,7 @@ export default function Onboarding() {
           </button>
         )}
         <button className="btn-primary flex-1" onClick={() => (last ? finish() : setStep(step + 1))}>
-          {step === 0 ? 'Commencer' : last ? 'Générer mon programme 🚀' : 'Continuer'}
+          {step === 0 ? 'Commencer' : last ? 'Générer mon programme' : 'Continuer'}
         </button>
       </div>
     </div>

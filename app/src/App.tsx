@@ -2,6 +2,7 @@ import { App as CapApp } from '@capacitor/app'
 import { AnimatePresence, motion } from 'framer-motion'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { HashRouter, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { Icon, IconTile, type IconName } from './components/Icon'
 import { RankUpOverlay } from './components/RankBadge'
 import { RANKS } from './data/ranks'
 import { computeRank, skillStatuses } from './lib/scoring'
@@ -29,25 +30,27 @@ const Profile = lazy(() => import('./pages/Profile'))
 const Settings = lazy(() => import('./pages/Settings'))
 const CoachChat = lazy(() => import('./pages/CoachChat'))
 const More = lazy(() => import('./pages/More'))
+const Calendar = lazy(() => import('./pages/Calendar'))
+const Records = lazy(() => import('./pages/Records'))
 
-const NAV = [
-  { to: '/', label: 'Accueil', icon: 'M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z' },
-  { to: '/skills', label: 'Figures', icon: 'M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z' },
-  { to: '#train', label: 'Entraîner', icon: '' },
-  { to: '/stats', label: 'Stats', icon: 'M4 20V10M10 20V4M16 20v-7M22 20H2' },
-  { to: '/more', label: 'Plus', icon: 'M4 6h16M4 12h16M4 18h16' },
+const NAV: { to: string; label: string; icon: IconName }[] = [
+  { to: '/', label: 'Accueil', icon: 'home' },
+  { to: '/calendar', label: 'Calendrier', icon: 'calendar' },
+  { to: '#train', label: 'Entraîner', icon: 'plus' },
+  { to: '/skills', label: 'Figures', icon: 'star' },
+  { to: '/more', label: 'Plus', icon: 'menu' },
 ]
 
 function TrainSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   const nav = useNavigate()
   const go = (p: string) => (onClose(), nav(p))
   const items = [
-    { t: 'Séance du programme', d: 'Guidée pas à pas avec voix et timers', p: '/programs', i: '🎯' },
-    { t: 'Séance libre guidée', d: 'Choisis tes figures, le coach te suit', p: '/workout/free/free', i: '⚡' },
-    { t: 'Noter une séance', d: 'Tout enregistrer : séries, RPE, sommeil…', p: '/log', i: '📝' },
-    { t: 'Timers', d: 'Hold, intervalles, compétition 45/45, EMOM', p: '/timers', i: '⏱️' },
-    { t: 'Analyser une figure', d: 'Vidéo, photo ou caméra en direct', p: '/analyzer', i: '🎥' },
-    { t: 'Combos', d: 'Concevoir et répéter tes enchaînements', p: '/combos', i: '🔗' },
+    { t: 'Séance du programme', d: 'Guidée pas à pas avec voix et timers', p: '/programs', i: 'target' as IconName, c: '#ff7a1a' },
+    { t: 'Séance libre guidée', d: 'Choisis tes figures, le coach te suit', p: '/workout/free/free', i: 'bolt' as IconName, c: '#ffb000' },
+    { t: 'Noter une séance', d: 'Tout enregistrer : séries, RPE, sommeil…', p: '/log', i: 'pencil' as IconName, c: '#ff3d6e' },
+    { t: 'Timers', d: 'Hold, intervalles, compétition 45/45, EMOM', p: '/timers', i: 'timer' as IconName, c: '#ffcf3f' },
+    { t: 'Analyser une figure', d: 'Vidéo, photo ou caméra en direct', p: '/analyzer', i: 'camera' as IconName, c: '#ff6b4a' },
+    { t: 'Combos', d: 'Concevoir et répéter tes enchaînements', p: '/combos', i: 'link' as IconName, c: '#ff4fa0' },
   ]
   return (
     <AnimatePresence>
@@ -58,9 +61,9 @@ function TrainSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
             <div className="grid grid-cols-2 gap-2">
               {items.map((x) => (
                 <button key={x.t} onClick={() => go(x.p)} className="card text-left active:scale-[0.98]">
-                  <div className="text-2xl">{x.i}</div>
+                  <IconTile name={x.i} color={x.c} size={42} />
                   <div className="mt-1 text-sm font-bold">{x.t}</div>
-                  <div className="text-[11px] leading-tight text-white/50">{x.d}</div>
+                  <div className="text-[11px] leading-tight text-white/65">{x.d}</div>
                 </button>
               ))}
             </div>
@@ -103,7 +106,7 @@ function Shell() {
 
   return (
     <>
-      <Suspense fallback={<div className="grid h-screen place-items-center text-white/40">…</div>}>
+      <Suspense fallback={<div className="grid h-screen place-items-center text-white/55">…</div>}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/onboarding" element={<Onboarding />} />
@@ -128,6 +131,8 @@ function Shell() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/coach" element={<CoachChat />} />
           <Route path="/more" element={<More />} />
+          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/records" element={<Records />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Suspense>
@@ -138,16 +143,14 @@ function Shell() {
             {NAV.map((n) =>
               n.to === '#train' ? (
                 <button key={n.to} onClick={() => setTrain((v) => !v)} className="-mt-7 flex flex-col items-center" aria-label="Entraîner">
-                  <motion.div whileTap={{ scale: 0.9 }} animate={{ rotate: train ? 45 : 0 }} className="grid h-14 w-14 place-items-center rounded-2xl bg-volt text-3xl font-black text-ink-950 shadow-[0_0_30px_#c6ff3d66]">
-                    +
+                  <motion.div whileTap={{ scale: 0.9 }} animate={{ rotate: train ? 45 : 0 }} className="grid h-[60px] w-[60px] place-items-center rounded-[20px] bg-gradient-to-br from-[#ffa13d] via-volt to-[#ff3d6e] text-[#1a0b04] shadow-[0_8px_30px_-4px_#ff7a1acc,inset_0_1px_0_#ffffff77]">
+                    <Icon name="plus" size={30} strokeWidth={3} />
                   </motion.div>
                   <span className="mt-1 text-[10px] font-bold text-volt">{n.label}</span>
                 </button>
               ) : (
-                <NavLink key={n.to} to={n.to} end className={({ isActive }) => `flex w-14 flex-col items-center gap-1 py-1 text-[10px] font-semibold ${isActive ? 'text-volt' : 'text-white/45'}`}>
-                  <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-                    <path d={n.icon} />
-                  </svg>
+                <NavLink key={n.to} to={n.to} end className={({ isActive }) => `flex w-14 flex-col items-center gap-1 py-1 text-[10px] font-semibold ${isActive ? 'text-volt' : 'text-white/60'}`}>
+                  <Icon name={n.icon} size={25} />
                   {n.label}
                 </NavLink>
               ),

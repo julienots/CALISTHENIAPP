@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useMemo, useState, type ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { IconTile, type IconName } from './Icon'
 import { CATEGORIES, SKILLS, TIER_COLOR, TIER_LABEL, type Skill } from '../data/skills'
 
 export function Header({ title, sub, back, right }: { title: string; sub?: string; back?: boolean; right?: ReactNode }) {
@@ -14,7 +15,7 @@ export function Header({ title, sub, back, right }: { title: string; sub?: strin
       )}
       <div className="min-w-0 flex-1">
         <h1 className="h-display truncate text-3xl leading-none text-white">{title}</h1>
-        {sub && <p className="mt-0.5 truncate text-xs text-white/50">{sub}</p>}
+        {sub && <p className="mt-0.5 truncate text-xs text-white/65">{sub}</p>}
       </div>
       {right}
     </div>
@@ -47,14 +48,14 @@ export function Section({ title, right, children, className = '' }: { title: str
   )
 }
 
-export function Stat({ label, value, sub, accent = '#c6ff3d' }: { label: string; value: ReactNode; sub?: ReactNode; accent?: string }) {
+export function Stat({ label, value, sub, accent = '#ff7a1a' }: { label: string; value: ReactNode; sub?: ReactNode; accent?: string }) {
   return (
     <div className="card !p-3">
-      <div className="text-[10px] font-bold uppercase tracking-wider text-white/45">{label}</div>
+      <div className="text-[10px] font-bold uppercase tracking-wider text-white/60">{label}</div>
       <div className="h-display mt-1 text-3xl leading-none" style={{ color: accent }}>
         {value}
       </div>
-      {sub && <div className="mt-1 text-[11px] text-white/50">{sub}</div>}
+      {sub && <div className="mt-1 text-[11px] text-white/65">{sub}</div>}
     </div>
   )
 }
@@ -91,7 +92,7 @@ export function Stepper({ value, onChange, min = 0, max = 999, step = 1, unit }:
       </button>
       <div className="min-w-14 text-center">
         <span className="h-display text-2xl">{value}</span>
-        {unit && <span className="ml-1 text-xs text-white/50">{unit}</span>}
+        {unit && <span className="ml-1 text-xs text-white/65">{unit}</span>}
       </div>
       <button className="btn-ghost !h-10 !w-10 !p-0 text-lg" onClick={() => onChange(Math.min(max, +(value + step).toFixed(2)))}>
         +
@@ -124,12 +125,12 @@ export function Sheet({ open, onClose, title, children }: { open: boolean; onClo
   )
 }
 
-export function Empty({ icon, title, text, action }: { icon: string; title: string; text: string; action?: ReactNode }) {
+export function Empty({ icon, title, text, action }: { icon: IconName; title: string; text: string; action?: ReactNode }) {
   return (
     <div className="card flex flex-col items-center py-8 text-center">
-      <div className="mb-2 text-4xl">{icon}</div>
+      <div className="mb-3"><IconTile name={icon} color="#ff7a1a" size={60} /></div>
       <div className="font-bold">{title}</div>
-      <p className="mt-1 max-w-xs text-sm text-white/55">{text}</p>
+      <p className="mt-1 max-w-xs text-sm text-white/70">{text}</p>
       {action && <div className="mt-4">{action}</div>}
     </div>
   )
@@ -161,7 +162,7 @@ export function SkillPicker({ open, onClose, onPick, filter, title = 'Choisir un
             <TierBadge tier={s.tier} />
             <div className="min-w-0 flex-1">
               <div className="truncate text-sm font-semibold">{s.name}</div>
-              <div className="text-[11px] text-white/45">{s.category}</div>
+              <div className="text-[11px] text-white/60">{s.category}</div>
             </div>
           </button>
         ))}
@@ -170,7 +171,7 @@ export function SkillPicker({ open, onClose, onPick, filter, title = 'Choisir un
   )
 }
 
-export function Bar({ value, color = '#c6ff3d', h = 6 }: { value: number; color?: string; h?: number }) {
+export function Bar({ value, color = '#ff7a1a', h = 6 }: { value: number; color?: string; h?: number }) {
   return (
     <div className="w-full overflow-hidden rounded-full bg-white/[0.07]" style={{ height: h }}>
       <motion.div className="h-full rounded-full" style={{ background: color, boxShadow: `0 0 12px ${color}88` }} initial={{ width: 0 }} animate={{ width: `${Math.max(0, Math.min(1, value)) * 100}%` }} transition={{ duration: 0.8, ease: 'easeOut' }} />
@@ -178,4 +179,4 @@ export function Bar({ value, color = '#c6ff3d', h = 6 }: { value: number; color?
   )
 }
 
-export const toneColor = { good: '#c6ff3d', warn: '#ffc83d', info: '#3dd6ff', alert: '#ff5c39' } as const
+export const toneColor = { good: '#ff7a1a', warn: '#ffb000', info: '#ffcf3f', alert: '#ff3b30' } as const

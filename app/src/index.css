@@ -12,7 +12,7 @@ html,
 body,
 #root {
   height: 100%;
-  background: #05060a;
+  background: #100a07;
   color: #e9ecf5;
   overscroll-behavior: none;
   -webkit-tap-highlight-color: transparent;
@@ -21,27 +21,32 @@ body,
 body {
   font-family: Inter, system-ui, sans-serif;
   background:
-    radial-gradient(1200px 600px at 110% -10%, #7c5cff22, transparent 60%),
-    radial-gradient(900px 500px at -20% 10%, #c6ff3d14, transparent 60%),
-    #05060a;
+    radial-gradient(1100px 600px at 110% -10%, #ff3d6e2e, transparent 60%),
+    radial-gradient(900px 520px at -20% 5%, #ff7a1a26, transparent 60%),
+    radial-gradient(800px 600px at 50% 120%, #ffb00014, transparent 60%),
+    #100a07;
   background-attachment: fixed;
 }
 
 @layer components {
   .card {
-    @apply rounded-2xl border border-white/[0.06] bg-ink-800/80 p-4 backdrop-blur;
+    @apply rounded-2xl border border-[#ffb4801a] bg-gradient-to-br from-ink-800/95 to-ink-900/90 p-4 shadow-[0_8px_24px_-14px_#000] backdrop-blur transition;
+  }
+  a.card,
+  button.card {
+    @apply active:scale-[0.98] active:border-volt/40;
   }
   .card-hi {
-    @apply rounded-2xl border border-volt/25 bg-gradient-to-br from-ink-700 to-ink-800 p-4;
+    @apply rounded-2xl border border-volt/35 bg-gradient-to-br from-[#3a1f12] via-ink-800 to-[#2a1218] p-4 shadow-[0_12px_40px_-18px_#ff7a1a];
   }
   .btn {
-    @apply inline-flex select-none items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition active:scale-[0.97] disabled:opacity-40;
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-2xl px-4 py-3 text-sm font-extrabold transition active:scale-[0.96] disabled:opacity-40;
   }
   .btn-primary {
-    @apply btn bg-volt text-ink-950 shadow-[0_0_24px_#c6ff3d44];
+    @apply btn bg-gradient-to-br from-[#ffa13d] via-volt to-[#ff3d6e] text-[#1a0b04] shadow-[0_8px_28px_-6px_#ff7a1acc,inset_0_1px_0_#ffffff66];
   }
   .btn-ghost {
-    @apply btn border border-white/10 bg-white/[0.04] text-white;
+    @apply btn border border-[#ffb48033] bg-[#ff7a1a0f] text-white;
   }
   .btn-danger {
     @apply btn border border-ember/40 bg-ember/10 text-ember;
@@ -50,13 +55,13 @@ body {
     @apply inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-semibold text-white/80 transition;
   }
   .chip-on {
-    @apply chip border-volt/60 bg-volt/15 text-volt;
+    @apply chip border-volt/70 bg-volt/20 text-[#ffb27a] shadow-[0_0_14px_-4px_#ff7a1a];
   }
   .input {
-    @apply w-full rounded-xl border border-white/10 bg-ink-900 px-3 py-2.5 text-sm text-white outline-none placeholder:text-white/30 focus:border-volt/60;
+    @apply w-full rounded-xl border border-white/10 bg-ink-900 px-3 py-2.5 text-sm text-white outline-none placeholder:text-white/45 focus:border-volt/60;
   }
   .label {
-    @apply mb-1 block text-[11px] font-bold uppercase tracking-wider text-white/45;
+    @apply mb-1 block text-[11px] font-bold uppercase tracking-wider text-white/60;
   }
   .h-display {
     @apply font-display tracking-wide;
@@ -65,7 +70,7 @@ body {
     @apply w-full border-collapse text-left text-xs;
   }
   .table-x th {
-    @apply sticky top-0 z-10 whitespace-nowrap border-b border-white/10 bg-ink-800 px-2 py-2 text-[10px] font-bold uppercase tracking-wider text-white/50;
+    @apply sticky top-0 z-10 whitespace-nowrap border-b border-white/10 bg-ink-800 px-2 py-2 text-[10px] font-bold uppercase tracking-wider text-white/65;
   }
   .table-x td {
     @apply whitespace-nowrap border-b border-white/[0.05] px-2 py-2 align-top;
@@ -80,21 +85,21 @@ body {
 }
 
 .leaflet-container {
-  background: #0a0c14;
+  background: #180f0b;
   font-family: Inter, sans-serif;
 }
 .leaflet-popup-content-wrapper,
 .leaflet-popup-tip {
-  background: #11141f;
+  background: #21150f;
   color: #e9ecf5;
   border: 1px solid #ffffff1a;
 }
 .leaflet-control-attribution {
-  background: #05060acc !important;
+  background: #100a07cc !important;
   color: #ffffff80 !important;
 }
 .leaflet-control-attribution a {
-  color: #c6ff3d !important;
+  color: #ff7a1a !important;
 }
 .pin-live {
   animation: pinPulse 1.4s ease-in-out infinite;
@@ -102,13 +107,13 @@ body {
 @keyframes pinPulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 #ff5c39aa;
+    box-shadow: 0 0 0 0 #ff3b30aa;
   }
   50% {
-    box-shadow: 0 0 0 10px #ff5c3900;
+    box-shadow: 0 0 0 10px #ff3b3000;
   }
 }
 
 input[type='range'] {
-  accent-color: #c6ff3d;
+  accent-color: #ff7a1a;
 }

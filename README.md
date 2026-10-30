@@ -14,7 +14,7 @@ Application mobile Android de calisthenics : coach, programmes générés à l'i
 | Module | Contenu |
 |---|---|
 | **Spécialités** | Statique, Agilité (freestyle) ou les deux, choisies à l'onboarding et modifiables dans le profil |
-| **Figures** | 180+ figures : les 124 statiques et dynamiques (planche, levers, Victorian, Hefesto, Pelican, 2 fingers, thumb planche…) + freestyle barre, acrobatie au sol et fondamentaux. Tiers F → SSS |
+| **Figures** | 168 figures : les 124 statiques et dynamiques (planche, levers, Victorian, Hefesto, Pelican, 2 fingers, thumb planche…) + freestyle barre, acrobatie au sol et fondamentaux. Tiers F → SSS |
 | **Fiche figure** | Record, statut (en cours / validé / maîtrisé / certifié), marge de progression, tendance par semaine, régularité, projection de date, courbe, notes de l'analyseur par critère, ligne de progression, points techniques |
 | **Générateur de programmes** | Périodisation (accumulation, intensification, réalisation, décharge, affûtage), charges calculées sur tes records réels, progressions adaptées, matériel, durée. Nouvelle graine à chaque génération, donc des programmes illimités. Vue tableur, édition des cellules, export CSV, partage par code |
 | **Séance guidée** | Le coach annonce chaque exercice à la voix, lance un compte à rebours 3-2-1, chronomètre les holds, enchaîne les repos avec bips et vibrations, enregistre chaque série puis le bilan (RPE, sommeil, douleurs) |

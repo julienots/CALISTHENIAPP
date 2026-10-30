@@ -8,11 +8,12 @@ import { analyzePhoto, analyzeVideo, drawSkeleton, getLandmarker, liveCheck, typ
 import { fmtDate } from '../lib/stats'
 import { useStore } from '../lib/store'
 import type { Analysis } from '../lib/types'
+import { Icon } from '../components/Icon'
 
 type Result = Analysis & { frames: Frame[]; videoUrl?: string; imageUrl?: string; size: { w: number; h: number } }
 
 function scoreColor(v: number) {
-  return v >= 8 ? '#c6ff3d' : v >= 6 ? '#ffc83d' : '#ff5c39'
+  return v >= 8 ? '#ff7a1a' : v >= 6 ? '#ffb000' : '#ff3b30'
 }
 
 function ResultView({ r, onSave, saved }: { r: Result; onSave: () => void; saved: boolean }) {
@@ -57,14 +58,14 @@ function ResultView({ r, onSave, saved }: { r: Result; onSave: () => void; saved
         <Ring value={r.score / 10} size={96} stroke={9} color={scoreColor(r.score)}>
           <div className="text-center">
             <div className="h-display text-4xl leading-none">{r.score}</div>
-            <div className="text-[9px] text-white/50">/10</div>
+            <div className="text-[9px] text-white/65">/10</div>
           </div>
         </Ring>
         <div className="flex-1 text-sm">
           <div className="flex items-center gap-2"><TierBadge tier={skill.tier} /><b>{skill.name}</b></div>
           {r.mode === 'video' && r.reps === undefined && <div className="mt-1">Hold valide : <b className="text-volt">{r.holdSeconds} s</b> / {skill.standard} s</div>}
           {r.reps !== undefined && <div className="mt-1">Répétitions détectées : <b className="text-volt">{r.reps}</b></div>}
-          <div className="mt-1 text-xs text-white/55">Jury : difficulté {r.judge.difficulty} × exécution {r.judge.execution} = <b className="text-gold">{r.judge.total}</b></div>
+          <div className="mt-1 text-xs text-white/70">Jury : difficulté {r.judge.difficulty} × exécution {r.judge.execution} = <b className="text-gold">{r.judge.total}</b></div>
         </div>
       </div>
       <p className="mt-3 rounded-xl bg-white/[0.04] p-3 text-sm text-white/80">{r.verdict}</p>
@@ -78,8 +79,8 @@ function ResultView({ r, onSave, saved }: { r: Result; onSave: () => void; saved
                 <b style={{ color: scoreColor(c.score) }}>{c.score}/10</b>
               </div>
               <div className="my-1"><Bar value={c.score / 10} color={scoreColor(c.score)} /></div>
-              <div className="flex justify-between text-[11px] text-white/45"><span>mesuré : {c.value}</span><span>cible : {c.target}</span></div>
-              {c.score < 8 && <div className="mt-1 text-[11px] text-white/65">💡 {c.tip}</div>}
+              <div className="flex justify-between text-[11px] text-white/60"><span>mesuré : {c.value}</span><span>cible : {c.target}</span></div>
+              {c.score < 8 && <div className="mt-1 flex gap-1.5 text-[11px] text-white/75"><Icon name="bulb" size={14} className="mt-px text-gold" /><span>{c.tip}</span></div>}
             </div>
           ))}
         </div>
@@ -176,14 +177,14 @@ function Live({ skillId }: { skillId: string }) {
 
   return (
     <div>
-      <p className="mb-2 text-xs text-white/55">Pose le téléphone au sol, de profil, corps entier visible. Le chrono démarre seul quand ta forme est valide et s'arrête quand elle casse.</p>
+      <p className="mb-2 text-xs text-white/70">Pose le téléphone au sol, de profil, corps entier visible. Le chrono démarre seul quand ta forme est valide et s'arrête quand elle casse.</p>
       <div className="relative min-h-40 overflow-hidden rounded-2xl border border-white/10 bg-black">
         <video ref={vid} className="block w-full" playsInline muted />
         <canvas ref={cv} className="pointer-events-none absolute left-0 top-0 w-full" />
         {on && (
           <div className="absolute right-2 top-2 rounded-xl bg-ink-950/80 px-3 py-2 text-center">
-            <div className="h-display text-4xl leading-none" style={{ color: feedback?.ok ? '#c6ff3d' : '#ff5c39' }}>{hold.toFixed(1)}</div>
-            <div className="text-[10px] text-white/50">record séance {best} s</div>
+            <div className="h-display text-4xl leading-none" style={{ color: feedback?.ok ? '#ff7a1a' : '#ff3b30' }}>{hold.toFixed(1)}</div>
+            <div className="text-[10px] text-white/65">record séance {best} s</div>
           </div>
         )}
       </div>
@@ -200,7 +201,7 @@ function Live({ skillId }: { skillId: string }) {
       )}
       <div className="mt-3 grid grid-cols-2 gap-2">
         <button className="btn-primary" onClick={() => setOn(!on)}>{on ? '■ Arrêter' : '▶ Caméra en direct'}</button>
-        <button className="btn-ghost" disabled={!best} onClick={() => (addRecord({ skillId, value: best, date: new Date().toISOString(), source: 'analyse' }), alert('Record enregistré'))}>💾 Enregistrer {best || ''} s</button>
+        <button className="btn-ghost" disabled={!best} onClick={() => (addRecord({ skillId, value: best, date: new Date().toISOString(), source: 'analyse' }), alert('Record enregistré'))}><Icon name="save" size={18} /> Enregistrer {best || ''} s</button>
       </div>
     </div>
   )
@@ -250,15 +251,15 @@ export default function Analyzer() {
       <button className="card flex w-full items-center gap-3 text-left" onClick={() => setPicker(true)}>
         <TierBadge tier={skill.tier} size="lg" />
         <div className="flex-1">
-          <div className="text-[10px] font-bold uppercase tracking-wider text-white/45">Figure analysée</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-white/60">Figure analysée</div>
           <div className="font-bold">{skill.name}</div>
-          <div className="text-xs text-white/45">Standard : {skill.standard} {unitOf(skill)}</div>
+          <div className="text-xs text-white/60">Standard : {skill.standard} {unitOf(skill)}</div>
         </div>
-        <span className="text-white/40">›</span>
+        <span className="text-white/55">›</span>
       </button>
 
       <div className="mt-3">
-        <Segmented value={mode} onChange={(m) => (setMode(m), setResult(null))} options={[{ v: 'video', l: '🎬 Vidéo' }, { v: 'photo', l: '📸 Photo' }, { v: 'live', l: '🔴 Direct' }]} />
+        <Segmented value={mode} onChange={(m) => (setMode(m), setResult(null))} options={[{ v: 'video', l: <span className="inline-flex items-center gap-1.5"><Icon name="film" size={16} />Vidéo</span> }, { v: 'photo', l: <span className="inline-flex items-center gap-1.5"><Icon name="photo" size={16} />Photo</span> }, { v: 'live', l: <span className="inline-flex items-center gap-1.5"><Icon name="live" size={16} />Direct</span> }]} />
       </div>
 
       <div className="mt-3">
@@ -293,10 +294,10 @@ export default function Analyzer() {
                 {a.thumbnail ? <img src={a.thumbnail} className="h-14 w-14 rounded-lg object-cover" /> : <div className="h-14 w-14 rounded-lg bg-white/5" />}
                 <div className="min-w-0 flex-1">
                   <div className="truncate text-sm font-semibold">{SKILL_BY_ID[a.skillId]?.name}</div>
-                  <div className="text-[11px] text-white/45">{fmtDate(a.date)} · {a.mode} {a.holdSeconds ? `· ${a.holdSeconds} s` : ''} {a.reps !== undefined ? `· ${a.reps} reps` : ''}</div>
+                  <div className="text-[11px] text-white/60">{fmtDate(a.date)} · {a.mode} {a.holdSeconds ? `· ${a.holdSeconds} s` : ''} {a.reps !== undefined ? `· ${a.reps} reps` : ''}</div>
                 </div>
                 <div className="h-display text-3xl" style={{ color: scoreColor(a.score) }}>{a.score}</div>
-                <button className="text-white/30" onClick={() => confirm('Supprimer ?') && s.deleteAnalysis(a.id)}>✕</button>
+                <button className="text-white/45" onClick={() => confirm('Supprimer ?') && s.deleteAnalysis(a.id)}>✕</button>
               </div>
             ))}
           </div>

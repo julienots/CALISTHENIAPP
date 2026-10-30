@@ -30,8 +30,8 @@ export default function Challenges() {
             <motion.div key={c.id} layout className={`card flex items-center gap-3 ${isDone ? 'opacity-50' : ready ? '!border-volt/60' : ''}`}>
               <div className="min-w-0 flex-1">
                 <div className="font-bold">{c.title}</div>
-                <div className="text-xs text-white/55">{c.text}</div>
-                <div className="mt-1 text-[10px] uppercase tracking-wider text-white/35">{auto ? 'vérifié automatiquement' : 'sur l\'honneur'}</div>
+                <div className="text-xs text-white/70">{c.text}</div>
+                <div className="mt-1 text-[10px] uppercase tracking-wider text-white/50">{auto ? 'vérifié automatiquement' : 'sur l\'honneur'}</div>
               </div>
               <div className="flex flex-col items-end gap-1">
                 <span className="text-sm font-black text-gold">+{c.xp}</span>
@@ -52,7 +52,7 @@ export default function Challenges() {
       {group('jour', 'Aujourd\'hui')}
       {group('semaine', 'Cette semaine')}
       {group('épreuve', 'Épreuves de figures')}
-      <p className="text-[11px] text-white/40">L'XP des défis compte dans tes points de rang, mais plafonnée : seules les figures validées permettent d'atteindre les rangs supérieurs.</p>
+      <p className="text-[11px] text-white/55">L'XP des défis compte dans tes points de rang, mais plafonnée : seules les figures validées permettent d'atteindre les rangs supérieurs.</p>
     </Page>
   )
 }

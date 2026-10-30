@@ -36,7 +36,7 @@ export function RankBadge({ rank, size = 120, still = false }: { rank: Rank; siz
         {id >= 6 && (
           <motion.circle cx={50} cy={50} r={44} fill="none" stroke={rank.color} strokeWidth={1} strokeDasharray="2 6" animate={still ? {} : { rotate: -360 }} transition={{ duration: 18, repeat: Infinity, ease: 'linear' }} style={{ originX: '50px', originY: '50px' }} />
         )}
-        <polygon points="50,10 84,30 84,70 50,90 16,70 16,30" fill="#0a0c14" stroke={`url(#rg${id})`} strokeWidth={3} />
+        <polygon points="50,10 84,30 84,70 50,90 16,70 16,30" fill="#180f0b" stroke={`url(#rg${id})`} strokeWidth={3} />
         <polygon points="50,18 77,34 77,66 50,82 23,66 23,34" fill={rank.color + '18'} stroke={rank.color} strokeOpacity={0.35} strokeWidth={1} />
         {/* Symbole central : triangle ascendant = défier la gravité */}
         <path d="M50 30 L66 60 H34 Z" fill="none" stroke={rank.color} strokeWidth={3} strokeLinejoin="round" />
@@ -75,12 +75,12 @@ export function RankUpOverlay({ rank, onClose }: { rank: Rank | null; onClose: (
             <RankBadge rank={rank} size={220} />
           </motion.div>
           <motion.div initial={{ y: 30, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.5 }}>
-            <div className="mt-6 text-xs font-bold uppercase tracking-[0.4em] text-white/50">Nouveau rang</div>
+            <div className="mt-6 text-xs font-bold uppercase tracking-[0.4em] text-white/65">Nouveau rang</div>
             <div className="h-display mt-2 text-6xl" style={{ color: rank.color, textShadow: `0 0 30px ${rank.glow}` }}>
               {rank.name}
             </div>
             <div className="mt-2 text-white/70">{rank.title}</div>
-            <div className="mt-8 text-xs text-white/40">Touchez pour continuer</div>
+            <div className="mt-8 text-xs text-white/55">Touchez pour continuer</div>
           </motion.div>
         </motion.div>
       )}

@@ -4,6 +4,7 @@ import { Header, Page, Section } from '../components/ui'
 import { say } from '../lib/feedback'
 import { exportFile, pickFile } from '../lib/share'
 import { useStore } from '../lib/store'
+import { Icon } from '../components/Icon'
 
 function Toggle({ on, onChange, label }: { on: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
@@ -37,7 +38,7 @@ export default function Settings() {
       delete data.version
       delete data.exportedAt
       s.importAll(data)
-      alert('Sauvegarde restaurée ✅')
+      alert('Sauvegarde restaurée.')
     } catch {
       alert('Fichier de sauvegarde invalide.')
     }
@@ -63,10 +64,10 @@ export default function Settings() {
 
       <Section title="Coach IA (en ligne)">
         <div className="card space-y-2">
-          <p className="text-xs text-white/55">Ajoute ta clé API Anthropic pour discuter avec un coach Claude qui connaît toutes tes données. Sans clé, le coach fonctionne hors ligne avec son moteur d'analyse.</p>
+          <p className="text-xs text-white/70">Ajoute ta clé API Anthropic pour discuter avec un coach Claude qui connaît toutes tes données. Sans clé, le coach fonctionne hors ligne avec son moteur d'analyse.</p>
           <input className="input font-mono text-xs" type="password" placeholder="sk-ant-…" value={key} onChange={(e) => setKey(e.target.value)} />
           <button className="btn-primary w-full" onClick={() => (s.setSettings({ anthropicKey: key.trim() }), alert('Clé enregistrée sur cet appareil.'))}>Enregistrer la clé</button>
-          <p className="text-[11px] text-white/40">La clé reste stockée localement sur ton téléphone et n'est envoyée qu'à l'API Anthropic.</p>
+          <p className="text-[11px] text-white/55">La clé reste stockée localement sur ton téléphone et n'est envoyée qu'à l'API Anthropic.</p>
         </div>
       </Section>
 
@@ -77,22 +78,22 @@ export default function Settings() {
           <div className="label pt-2">Backend communautaire Supabase (optionnel)</div>
           <input className="input text-xs" placeholder="https://xxxx.supabase.co" value={s.settings.supabaseUrl} onChange={(e) => s.setSettings({ supabaseUrl: e.target.value })} />
           <input className="input text-xs" placeholder="Clé publique (anon / publishable)" value={s.settings.supabaseKey} onChange={(e) => s.setSettings({ supabaseKey: e.target.value })} />
-          <p className="text-[11px] text-white/40">Avec Supabase : compétitions ajoutées par la communauté et annuaire de coachs partagé, en temps réel. Schéma SQL fourni dans le dépôt (supabase/schema.sql).</p>
+          <p className="text-[11px] text-white/55">Avec Supabase : compétitions ajoutées par la communauté et annuaire de coachs partagé, en temps réel. Schéma SQL fourni dans le dépôt (supabase/schema.sql).</p>
         </div>
       </Section>
 
       <Section title="Sauvegarde & export">
         <div className="grid grid-cols-2 gap-2">
-          <button className="btn-ghost" onClick={backup}>💾 Sauvegarder</button>
-          <button className="btn-ghost" onClick={restore}>📂 Restaurer</button>
-          <button className="btn-ghost col-span-2" onClick={sessionsCsv}>📊 Exporter toutes les séances (CSV / tableur)</button>
+          <button className="btn-ghost" onClick={backup}><Icon name="save" size={18} /> Sauvegarder</button>
+          <button className="btn-ghost" onClick={restore}><Icon name="folder" size={18} /> Restaurer</button>
+          <button className="btn-ghost col-span-2" onClick={sessionsCsv}><Icon name="table" size={18} /> Exporter toutes les séances (CSV / tableur)</button>
         </div>
       </Section>
 
       <Section title="Zone sensible">
         <button className="btn-danger w-full" onClick={() => confirm('Effacer TOUTES les données ? Action irréversible.') && (s.resetAll(), nav('/onboarding', { replace: true }))}>Réinitialiser l'application</button>
       </Section>
-      <p className="text-center text-[11px] text-white/30">GRAVITAS v1.0 · Défie la gravité</p>
+      <p className="text-center text-[11px] text-white/45">GRAVITAS v1.0 · Défie la gravité</p>
     </Page>
   )
 }

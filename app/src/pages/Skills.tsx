@@ -4,8 +4,9 @@ import { Header, Page, Segmented, TierBadge } from '../components/ui'
 import { CATEGORIES, SKILLS } from '../data/skills'
 import { MASTERY, skillStatuses } from '../lib/scoring'
 import { useStore } from '../lib/store'
+import { Icon } from '../components/Icon'
 
-const MCOL = ['#ffffff30', '#7c5cff', '#c6ff3d', '#ffc83d']
+const MCOL = ['#ffffff30', '#ff3d6e', '#ff7a1a', '#ffb000']
 
 export default function Skills() {
   const records = useStore((s) => s.records)
@@ -53,9 +54,9 @@ export default function Skills() {
                     <TierBadge tier={s.tier} />
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-sm font-semibold">
-                        {s.name} {s.danger && <span title="Risque élevé">⚠️</span>}
+                        {s.name} {s.danger && <span title="Risque élevé" className="text-ember"><Icon name="warning" size={14} /></span>}
                       </div>
-                      <div className="flex items-center gap-2 text-[11px] text-white/45">
+                      <div className="flex items-center gap-2 text-[11px] text-white/60">
                         <span style={{ color: MCOL[st.mastery] }}>● {MASTERY[st.mastery]}</span>
                         {st.best > 0 && <span>record {st.best}{s.kind === 'hold' ? ' s' : ''}</span>}
                         {st.bestScore !== undefined && <span>note {st.bestScore}/10</span>}

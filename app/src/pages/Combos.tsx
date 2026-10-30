@@ -45,7 +45,7 @@ export default function Combos() {
   return (
     <Page>
       <Header title="Combos" sub="Conçois, note et répète tes enchaînements" back right={<button className="btn-primary !py-2" onClick={newCombo}>+ Combo</button>} />
-      {!s.combos.length && <Empty icon="🔗" title="Aucun combo" text="Enchaîne tes figures (ex : handstand → planche → press), je calcule la difficulté et te fais répéter au timer." action={<button className="btn-primary" onClick={newCombo}>Créer un combo</button>} />}
+      {!s.combos.length && <Empty icon="link" title="Aucun combo" text="Enchaîne tes figures (ex : handstand → planche → press), je calcule la difficulté et te fais répéter au timer." action={<button className="btn-primary" onClick={newCombo}>Créer un combo</button>} />}
       <div className="space-y-2">
         {s.combos.map((c) => {
           const sc = comboScore(c, statuses)
@@ -54,17 +54,17 @@ export default function Combos() {
               <div className="flex items-start justify-between">
                 <div>
                   <div className="font-bold">{c.name}</div>
-                  <div className="text-xs text-white/50">{c.steps.length} figures · ~{sc.seconds} s · faisable à {Math.round(sc.feasible * 100)} %</div>
+                  <div className="text-xs text-white/65">{c.steps.length} figures · ~{sc.seconds} s · faisable à {Math.round(sc.feasible * 100)} %</div>
                 </div>
                 <div className="text-right">
                   <div className="h-display text-3xl text-gold">{sc.total}</div>
-                  <div className="text-[10px] text-white/40">pts difficulté</div>
+                  <div className="text-[10px] text-white/55">pts difficulté</div>
                 </div>
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-1 text-xs">
                 {c.steps.map((st, i) => (
                   <span key={i} className="flex items-center gap-1">
-                    {i > 0 && <span className="text-white/30">→</span>}
+                    {i > 0 && <span className="text-white/45">→</span>}
                     <span className="rounded-md bg-white/5 px-1.5 py-0.5">{SKILL_BY_ID[st.skillId]?.name} {st.seconds}s</span>
                   </span>
                 ))}
@@ -95,9 +95,9 @@ export default function Combos() {
                   <div className="flex items-center gap-2">
                     <TierBadge tier={sk.tier} />
                     <span className="flex-1 text-sm font-semibold">{sk.name}</span>
-                    <button className="px-1 text-white/50" onClick={() => move(i, -1)}>↑</button>
-                    <button className="px-1 text-white/50" onClick={() => move(i, 1)}>↓</button>
-                    <button className="px-1 text-white/40" onClick={() => setEdit({ ...edit, steps: edit.steps.filter((_, j) => j !== i) })}>✕</button>
+                    <button className="px-1 text-white/65" onClick={() => move(i, -1)}>↑</button>
+                    <button className="px-1 text-white/65" onClick={() => move(i, 1)}>↓</button>
+                    <button className="px-1 text-white/55" onClick={() => setEdit({ ...edit, steps: edit.steps.filter((_, j) => j !== i) })}>✕</button>
                   </div>
                   <div className="mt-2 flex items-center justify-between text-xs text-white/60">
                     <span>{sk.kind === 'hold' ? 'Durée du hold' : 'Durée estimée'}</span>

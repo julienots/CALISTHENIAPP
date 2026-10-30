@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Header, Page, Section, SkillPicker, Stepper } from '../components/ui'
 import { EXERCISES } from '../data/exercises'
 import { SKILL_BY_ID } from '../data/skills'
@@ -19,8 +19,10 @@ export default function LogSession() {
   const s = useStore()
   const nav = useNavigate()
   const existing = s.sessions.find((x) => x.id === id)
+  const [params] = useSearchParams()
+  const forDay = params.get('date') // YYYY-MM-DD depuis le calendrier
   const [sess, setSess] = useState<SessionLog>(
-    existing ?? { id: uid(), date: new Date().toISOString(), title: 'Séance', durationMin: 60, type: 'skills', exercises: [], rpe: 7, feeling: 4, energy: 3, sleepHours: 7.5, bodyweight: s.profile?.bodyweight, pain: [], notes: '', location: '' },
+    existing ?? { id: uid(), date: forDay ? new Date(`${forDay}T18:00:00`).toISOString() : new Date().toISOString(), title: 'Séance', durationMin: 60, type: 'skills', exercises: [], rpe: 7, feeling: 4, energy: 3, sleepHours: 7.5, bodyweight: s.profile?.bodyweight, pain: [], notes: '', location: '' },
   )
   const [picker, setPicker] = useState(false)
   const [exQ, setExQ] = useState('')
@@ -31,7 +33,7 @@ export default function LogSession() {
   const save = () => {
     s.saveSession(sess)
     if (sess.bodyweight) s.patchProfile({ bodyweight: sess.bodyweight })
-    nav('/history', { replace: true })
+    nav(forDay ? '/calendar' : '/history', { replace: true })
   }
 
   return (
@@ -71,16 +73,16 @@ export default function LogSession() {
             <div key={i} className="card">
               <div className="mb-2 flex items-center justify-between">
                 <div className="font-bold">{ex.name}</div>
-                <button className="text-xs text-white/40" onClick={() => set('exercises', sess.exercises.filter((_, j) => j !== i))}>Retirer</button>
+                <button className="text-xs text-white/55" onClick={() => set('exercises', sess.exercises.filter((_, j) => j !== i))}>Retirer</button>
               </div>
               <div className="space-y-1.5">
                 {ex.sets.map((st, k) => (
                   <div key={k} className="grid grid-cols-[24px_1fr_1fr_1fr_20px] items-center gap-1.5 text-sm">
-                    <span className="text-xs text-white/40">{k + 1}</span>
+                    <span className="text-xs text-white/55">{k + 1}</span>
                     <input className="input !py-1.5" type="number" inputMode="decimal" placeholder={isHold(ex) ? 'sec' : 'reps'} value={(isHold(ex) ? st.seconds : st.reps) ?? ''} onChange={(e) => setEx(i, { ...ex, sets: ex.sets.map((x, j) => (j === k ? { ...x, [isHold(ex) ? 'seconds' : 'reps']: Number(e.target.value) } : x)) })} />
                     <input className="input !py-1.5" type="number" inputMode="decimal" placeholder="kg ±" value={st.load ?? ''} onChange={(e) => setEx(i, { ...ex, sets: ex.sets.map((x, j) => (j === k ? { ...x, load: e.target.value === '' ? undefined : Number(e.target.value) } : x)) })} />
                     <input className="input !py-1.5" type="number" placeholder="RPE" value={st.rpe ?? ''} onChange={(e) => setEx(i, { ...ex, sets: ex.sets.map((x, j) => (j === k ? { ...x, rpe: Number(e.target.value) } : x)) })} />
-                    <button className="text-white/30" onClick={() => setEx(i, { ...ex, sets: ex.sets.filter((_, j) => j !== k) })}>✕</button>
+                    <button className="text-white/45" onClick={() => setEx(i, { ...ex, sets: ex.sets.filter((_, j) => j !== k) })}>✕</button>
                   </div>
                 ))}
               </div>

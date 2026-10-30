@@ -4,7 +4,7 @@ const config: CapacitorConfig = {
   appId: 'com.gravitas.calisthenics',
   appName: 'GRAVITAS',
   webDir: 'dist',
-  backgroundColor: '#05060a',
+  backgroundColor: '#100a07',
   android: {
     allowMixedContent: false,
   },

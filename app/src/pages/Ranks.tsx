@@ -18,10 +18,10 @@ export default function Ranks() {
         <RankBadge rank={r.rank} size={200} />
         <div className="h-display mt-3 text-5xl" style={{ color: r.rank.color, textShadow: `0 0 24px ${r.rank.glow}` }}>{r.rank.name}</div>
         <div className="text-sm text-white/60">{r.rank.title}</div>
-        <div className="mt-1 text-xs text-white/45">{r.rp.toLocaleString('fr-FR')} PR · {r.validatedCount} figures validées · {r.certifiedCount} certifiées</div>
+        <div className="mt-1 text-xs text-white/60">{r.rp.toLocaleString('fr-FR')} PR · {r.validatedCount} figures validées · {r.certifiedCount} certifiées</div>
         {r.next && (
           <div className="mt-4 w-full">
-            <div className="mb-1 flex justify-between text-xs"><span className="text-white/50">Vers {r.next.name}</span><span>{Math.round(r.progress * 100)} %</span></div>
+            <div className="mb-1 flex justify-between text-xs"><span className="text-white/65">Vers {r.next.name}</span><span>{Math.round(r.progress * 100)} %</span></div>
             <Bar value={r.progress} color={r.next.color} h={8} />
             <ul className="mt-2 space-y-1 text-xs text-white/60">{r.missing.map((m) => <li key={m}>• {m}</li>)}</ul>
           </div>
@@ -35,8 +35,8 @@ export default function Ranks() {
               <RankBadge rank={rk} size={64} still={!reached} />
               <div className="min-w-0 flex-1">
                 <div className="h-display text-2xl leading-none" style={{ color: reached ? rk.color : '#ffffff80' }}>{rk.name}</div>
-                <div className="text-[11px] text-white/50">{rk.title}</div>
-                <div className="mt-1 text-[11px] text-white/45">
+                <div className="text-[11px] text-white/65">{rk.title}</div>
+                <div className="mt-1 text-[11px] text-white/60">
                   {rk.rp.toLocaleString('fr-FR')} PR
                   {rk.requires?.map((q) => ` · ${q.count}× tier ${TIER_LABEL[q.tier]}+`).join('')}
                   {rk.certified ? ` · ${rk.certified} certifiée(s)` : ''}
@@ -47,7 +47,7 @@ export default function Ranks() {
           )
         })}
       </div>
-      <div className="card mt-4 text-xs leading-relaxed text-white/55">
+      <div className="card mt-4 text-xs leading-relaxed text-white/70">
         <b className="text-white">Comment ça marche :</b> chaque figure validée rapporte des Points de Rang (PR) qui croissent de façon exponentielle avec la difficulté (tier F → SSS). Maîtriser une figure (2× le standard) ×1.4, la certifier via l'analyseur (note ≥ 8 et durée au standard) ×1.25. L'assiduité (séances, défis) compte mais est plafonnée à 20 % des points figures. Chaque rang exige aussi des figures d'un certain niveau : impossible de monter sans vraies performances.
       </div>
     </Page>

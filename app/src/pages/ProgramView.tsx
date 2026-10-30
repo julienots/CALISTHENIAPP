@@ -6,16 +6,17 @@ import { skillStatuses } from '../lib/scoring'
 import { encodeShare, exportFile, shareText } from '../lib/share'
 import { useStore } from '../lib/store'
 import type { ProgramItem } from '../lib/types'
+import { Icon } from '../components/Icon'
 
 const BLOCK_COLOR: Record<ProgramItem['block'], string> = {
-  Échauffement: '#7c8299',
-  Skill: '#c6ff3d',
-  Force: '#7c5cff',
-  Assistance: '#3dd6ff',
+  Échauffement: '#9a8a80',
+  Skill: '#ff7a1a',
+  Force: '#ff3d6e',
+  Assistance: '#ffcf3f',
   Agilité: '#ff5ca8',
-  Conditionnement: '#ff5c39',
-  Mobilité: '#5ec2a6',
-  Compétition: '#ffc83d',
+  Conditionnement: '#ff3b30',
+  Mobilité: '#e08a3c',
+  Compétition: '#ffb000',
 }
 
 export default function ProgramView() {
@@ -50,7 +51,7 @@ export default function ProgramView() {
           <div className="btn border border-volt/40 text-volt">✓ Programme actif</div>
         )}
         <button className="btn-ghost" onClick={() => setSheet('all')}>
-          📊 Tableur complet
+          <Icon name="table" size={18} /> Tableur complet
         </button>
         <button className="btn-ghost" onClick={() => exportFile(`${prog.name.replace(/[^\w-]+/g, '_')}.csv`, programToCSV(prog), 'text/csv')}>
           Export CSV
@@ -66,7 +67,7 @@ export default function ProgramView() {
             nav(`/program/${np.id}`, { replace: true })
           }}
         >
-          🔄 Variante
+          <Icon name="refresh" size={18} /> Variante
         </button>
         <button className="btn-danger" onClick={() => confirm('Supprimer ce programme ?') && (s.deleteProgram(prog.id), nav('/programs'))}>
           Supprimer
@@ -80,10 +81,10 @@ export default function ProgramView() {
           </button>
         ))}
       </div>
-      {phase && <p className="mt-2 text-xs text-white/55">{phase.intent}</p>}
+      {phase && <p className="mt-2 text-xs text-white/70">{phase.intent}</p>}
 
       {days.map((d) => (
-        <Section key={d.key} className="mt-4" title={`J${d.day} · ${d.title}`} right={<span className="text-xs text-white/45">~{d.estMinutes} min {done.includes(d.key) && '· ✅'}</span>}>
+        <Section key={d.key} className="mt-4" title={`J${d.day} · ${d.title}`} right={<span className="text-xs text-white/60">~{d.estMinutes} min {done.includes(d.key) && '· ✅'}</span>}>
           <div className="card overflow-x-auto !p-0">
             <table className="table-x">
               <thead>
@@ -107,7 +108,7 @@ export default function ProgramView() {
                     </td>
                     <td className="max-w-[160px] !whitespace-normal font-semibold">
                       {it.skillId ? <Link to={`/skill/${it.skillId}`} onClick={(e) => e.stopPropagation()} className="text-volt">{it.name}</Link> : it.name}
-                      {it.note && <div className="mt-0.5 text-[10px] font-normal text-white/40">{it.note}</div>}
+                      {it.note && <div className="mt-0.5 text-[10px] font-normal text-white/55">{it.note}</div>}
                     </td>
                     <td className="font-bold">{it.sets}</td>
                     <td className="font-bold text-white">{it.target}</td>

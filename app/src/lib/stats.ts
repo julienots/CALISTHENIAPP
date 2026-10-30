@@ -1,7 +1,11 @@
 import type { SessionLog, SkillRecord } from './types'
 
 export const DAY = 86400000
-export const dayKey = (d: Date | string) => new Date(d).toISOString().slice(0, 10)
+/** Jour local AAAA-MM-JJ (pas UTC : une séance à 0 h 30 reste sur le bon jour). */
+export const dayKey = (d: Date | string) => {
+  const x = new Date(d)
+  return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`
+}
 export const fmtDate = (d: string, opts: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'short' }) =>
   new Date(d).toLocaleDateString('fr-FR', opts)
 

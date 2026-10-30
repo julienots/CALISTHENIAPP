@@ -6,6 +6,7 @@ import { cloudEnabled, loadCloudCoaches, publishCoach } from '../lib/cloud'
 import { decodeShare, encodeShare, shareText } from '../lib/share'
 import { uid, useStore } from '../lib/store'
 import type { CoachProfile, Program } from '../lib/types'
+import { Icon } from '../components/Icon'
 
 function CoachCard({ c, onRemove }: { c: CoachProfile; onRemove?: () => void }) {
   const s = useStore()
@@ -23,12 +24,12 @@ function CoachCard({ c, onRemove }: { c: CoachProfile; onRemove?: () => void }) 
           <div className="flex items-center gap-2 font-bold">
             {c.name} {c.remote && <span className="rounded bg-ice/15 px-1.5 text-[10px] text-ice">en ligne</span>}
           </div>
-          <div className="text-xs text-white/50">{[c.city, c.price, c.certifications].filter(Boolean).join(' · ')}</div>
+          <div className="text-xs text-white/65">{[c.city, c.price, c.certifications].filter(Boolean).join(' · ')}</div>
           <div className="mt-1 flex flex-wrap gap-1">
             {c.specialties.map((x) => <span key={x} className="rounded bg-white/5 px-1.5 py-0.5 text-[10px]">{x}</span>)}
           </div>
         </div>
-        {onRemove && <button className="text-white/30" onClick={onRemove}>✕</button>}
+        {onRemove && <button className="text-white/45" onClick={onRemove}>✕</button>}
       </div>
       {c.bio && <p className="mt-2 text-sm text-white/65">{c.bio}</p>}
       {c.contact && <a href={c.contact.startsWith('http') ? c.contact : c.contact.includes('@') ? `mailto:${c.contact}` : `tel:${c.contact}`} className="mt-2 inline-block text-xs font-bold text-volt">Contacter →</a>}
@@ -38,7 +39,7 @@ function CoachCard({ c, onRemove }: { c: CoachProfile; onRemove?: () => void }) 
             <div key={p.id} className="flex items-center justify-between rounded-xl bg-white/[0.04] px-3 py-2">
               <div className="min-w-0">
                 <div className="truncate text-sm font-semibold">{p.name}</div>
-                <div className="text-[11px] text-white/45">{p.params.weeks} sem. · {p.params.daysPerWeek}×/sem · {GOAL_LABEL[p.params.goal]}</div>
+                <div className="text-[11px] text-white/60">{p.params.weeks} sem. · {p.params.daysPerWeek}×/sem · {GOAL_LABEL[p.params.goal]}</div>
               </div>
               <button className="chip-on" onClick={() => take(p)}>Suivre</button>
             </div>
@@ -80,7 +81,7 @@ export default function Coaches() {
     if (publish) {
       try {
         await publishCoach(me)
-        alert('Profil publié en ligne ✅')
+        alert('Profil publié en ligne.')
       } catch (e) {
         alert((e as Error).message)
       }
@@ -96,9 +97,9 @@ export default function Coaches() {
 
       {tab === 'annuaire' ? (
         <div className="mt-4 space-y-2">
-          {!cloudEnabled() && <p className="text-[11px] text-white/45">Mode local : importe un coach via son code. Active le backend (Réglages) pour l'annuaire en ligne partagé.</p>}
+          {!cloudEnabled() && <p className="text-[11px] text-white/60">Mode local : importe un coach via son code. Active le backend (Réglages) pour l'annuaire en ligne partagé.</p>}
           {cloudErr && <p className="text-xs text-ember">{cloudErr}</p>}
-          {!directory.length && <Empty icon="🧑‍🏫" title="Aucun coach pour l'instant" text="Les coachs publient leur profil et leurs programmes depuis l'Espace coach. Reçois un code coach pour l'ajouter ici." action={<button className="btn-primary" onClick={() => setImportOpen(true)}>Importer un code coach</button>} />}
+          {!directory.length && <Empty icon="whistle" title="Aucun coach pour l'instant" text="Les coachs publient leur profil et leurs programmes depuis l'Espace coach. Reçois un code coach pour l'ajouter ici." action={<button className="btn-primary" onClick={() => setImportOpen(true)}>Importer un code coach</button>} />}
           {directory.map((c) => <CoachCard key={c.id} c={c} onRemove={c.remote ? undefined : () => s.removeCoach(c.id)} />)}
         </div>
       ) : (
@@ -127,13 +128,13 @@ export default function Coaches() {
                   </button>
                 )
               })}
-              {!s.programs.length && <p className="text-sm text-white/40">Crée d'abord des programmes (générateur + édition des lignes du tableur).</p>}
+              {!s.programs.length && <p className="text-sm text-white/55">Crée d'abord des programmes (générateur + édition des lignes du tableur).</p>}
             </div>
           </Section>
           <div className="grid grid-cols-2 gap-2">
             <button className="btn-primary" onClick={() => saveMe(false)}>Enregistrer</button>
             <button className="btn-ghost" onClick={() => (s.setMyCoach(me), shareText(`Coach ${me.name} sur GRAVITAS`, encodeShare(me)))}>Partager mon code</button>
-            {cloudEnabled() && <button className="btn-ghost col-span-2" onClick={() => saveMe(true)}>🌐 Publier dans l'annuaire en ligne</button>}
+            {cloudEnabled() && <button className="btn-ghost col-span-2" onClick={() => saveMe(true)}><Icon name="globe" size={18} /> Publier dans l'annuaire en ligne</button>}
           </div>
         </div>
       )}

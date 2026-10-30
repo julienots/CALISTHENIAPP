@@ -4,12 +4,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        ink: { 950: '#05060a', 900: '#0a0c14', 800: '#11141f', 700: '#1a1e2e', 600: '#262b40', 500: '#3a4060' },
-        volt: { DEFAULT: '#c6ff3d', dim: '#9ccc2a' },
-        plasma: '#7c5cff',
-        ember: '#ff5c39',
-        ice: '#3dd6ff',
-        gold: '#ffc83d',
+        ink: { 950: '#100a07', 900: '#180f0b', 800: '#21150f', 700: '#2e1d15', 600: '#40291d', 500: '#5c3e2c' },
+        volt: { DEFAULT: '#ff7a1a', dim: '#e85d04' },
+        plasma: '#ff3d6e',
+        ember: '#ff3b30',
+        ice: '#ffcf3f',
+        gold: '#ffb000',
       },
       fontFamily: {
         display: ['"Bebas Neue"', 'Impact', 'system-ui', 'sans-serif'],

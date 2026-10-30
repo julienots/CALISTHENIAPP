@@ -9,6 +9,7 @@ import { buzz, countdownBeep, endBeep, goBeep, keepAwake, say } from '../lib/fee
 import { fmtSec } from '../lib/stats'
 import { uid, useStore } from '../lib/store'
 import type { ExerciseLog, ProgramItem, SessionLog } from '../lib/types'
+import { IconTile } from '../components/Icon'
 
 type Phase = 'ready' | 'countdown' | 'work' | 'log' | 'rest' | 'finish'
 const PAINS = ['Poignets', 'Coudes', 'Épaules', 'Bas du dos', 'Genoux', 'Doigts']
@@ -212,12 +213,12 @@ export default function Workout() {
             <div className="h-full bg-volt transition-all" style={{ width: `${progress * 100}%` }} />
           </div>
         </div>
-        <div className="text-xs text-white/50">{Math.round((Date.now() - start.current) / 60000)} min</div>
+        <div className="text-xs text-white/65">{Math.round((Date.now() - start.current) / 60000)} min</div>
       </div>
 
       {!item && phase !== 'finish' ? (
         <div className="mt-10 text-center">
-          <div className="text-5xl">⚡</div>
+          <div className="flex justify-center"><IconTile name="bolt" color="#ff7a1a" size={64} /></div>
           <p className="mt-3 text-white/60">Ajoute des figures ou exercices : je te guide série par série.</p>
           <div className="mt-4 flex justify-center gap-2">
             <button className="btn-primary" onClick={() => setPicker(true)}>+ Figure</button>
@@ -257,7 +258,7 @@ export default function Workout() {
       ) : (
         <div className="flex flex-1 flex-col">
           <div className="mt-5">
-            <div className="text-[11px] font-bold uppercase tracking-[0.25em] text-white/40">
+            <div className="text-[11px] font-bold uppercase tracking-[0.25em] text-white/55">
               {item.block} · exercice {idx + 1}/{items.length}
             </div>
             <div className="h-display text-4xl leading-tight">{item.name}</div>
@@ -275,10 +276,10 @@ export default function Workout() {
               )}
               {phase === 'work' && isHold && (
                 <motion.div key="w" initial={{ scale: 0.8 }} animate={{ scale: 1 }}>
-                  <Ring value={clock / goal} size={240} stroke={14} color={clock >= goal ? '#ffc83d' : '#c6ff3d'}>
+                  <Ring value={clock / goal} size={240} stroke={14} color={clock >= goal ? '#ffb000' : '#ff7a1a'}>
                     <div className="text-center">
                       <div className="h-display text-7xl">{clock.toFixed(1)}</div>
-                      <div className="text-xs text-white/50">/ {goal} s</div>
+                      <div className="text-xs text-white/65">/ {goal} s</div>
                     </div>
                   </Ring>
                 </motion.div>
@@ -286,18 +287,18 @@ export default function Workout() {
               {phase === 'work' && !isHold && (
                 <motion.div key="wr" className="text-center">
                   <div className="h-display text-8xl text-volt">{target.n}</div>
-                  <div className="text-white/50">répétitions</div>
+                  <div className="text-white/65">répétitions</div>
                 </motion.div>
               )}
               {phase === 'rest' && (
                 <motion.div key="r" className="text-center">
-                  <Ring value={clock / (item.rest || 60)} size={220} stroke={12} color="#7c5cff">
+                  <Ring value={clock / (item.rest || 60)} size={220} stroke={12} color="#ff3d6e">
                     <div>
-                      <div className="text-xs uppercase tracking-widest text-white/50">Repos</div>
+                      <div className="text-xs uppercase tracking-widest text-white/65">Repos</div>
                       <div className="h-display text-7xl">{fmtSec(Math.max(0, clock))}</div>
                     </div>
                   </Ring>
-                  <div className="mt-3 text-sm text-white/55">Ensuite : {setNo >= item.sets ? items[idx + 1]?.name ?? 'fin' : `série ${setNo + 1}`}</div>
+                  <div className="mt-3 text-sm text-white/70">Ensuite : {setNo >= item.sets ? items[idx + 1]?.name ?? 'fin' : `série ${setNo + 1}`}</div>
                 </motion.div>
               )}
               {phase === 'ready' && (
@@ -305,7 +306,7 @@ export default function Workout() {
                   {(sk ? CUES[sk.profile] : item.note ? [item.note] : ['Exécution propre, gainage permanent']).slice(0, 4).map((c) => (
                     <div key={c} className="card flex gap-2 !p-3 text-sm"><span className="text-volt">▸</span>{c}</div>
                   ))}
-                  {item.note && sk && <div className="rounded-xl bg-plasma/10 p-3 text-xs text-white/70">💬 {item.note}</div>}
+                  {item.note && sk && <div className="rounded-xl bg-plasma/10 p-3 text-xs text-white/80">{item.note}</div>}
                 </motion.div>
               )}
               {phase === 'log' && (
@@ -343,7 +344,7 @@ export default function Workout() {
           <div className="mb-3 flex items-center justify-between"><span className="h-display text-2xl">Exercices</span><button onClick={() => setExPicker(false)}>✕</button></div>
           {EXERCISES.map((e) => (
             <button key={e.id} className="mb-1 block w-full rounded-xl bg-white/[0.04] p-3 text-left text-sm" onClick={() => (addItem({ name: e.name, exerciseId: e.id, block: 'Force', sets: 3, target: e.kind === 'hold' ? '30 s' : '10 reps', rest: 90 }), setExPicker(false))}>
-              {e.name} <span className="text-xs text-white/40">· {e.pattern}</span>
+              {e.name} <span className="text-xs text-white/55">· {e.pattern}</span>
             </button>
           ))}
         </div>

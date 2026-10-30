@@ -289,7 +289,7 @@ export const SKILL_BY_ID: Record<string, Skill> = Object.fromEntries(SKILLS.map(
 export const CATEGORIES = Object.keys(table) as Category[]
 
 export const TIER_LABEL = ['', 'F', 'E', 'D', 'C', 'B', 'A', 'S', 'S+', 'SS', 'SSS']
-export const TIER_COLOR = ['', '#7c8299', '#8fb3a8', '#5ec2a6', '#3dd6ff', '#5c8dff', '#7c5cff', '#c65cff', '#ff5ca8', '#ff5c39', '#ffc83d']
+export const TIER_COLOR = ['', '#9a8a80', '#c9a27e', '#e08a3c', '#ffcf3f', '#ff6b4a', '#ff3d6e', '#ff4fa0', '#ff5ca8', '#ff3b30', '#ffb000']
 
 /** Points de rang d'une figure validée. Croissance exponentielle : une SSS vaut ~40 figures F. */
 export const skillBasePoints = (tier: number) => Math.round(12 * Math.pow(1.82, tier))

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Header } from '../components/ui'
 import { askClaude, localAnswer } from '../lib/coach'
 import { useStore } from '../lib/store'
+import { Icon } from '../components/Icon'
 
 const SUGGESTIONS = ['Comment débloquer la full planche ?', 'Analyse ma dernière semaine', 'J\'ai mal aux poignets, que faire ?', 'Prépare-moi pour une compétition dans 6 semaines', 'Pourquoi je stagne sur le front lever ?']
 
@@ -34,7 +35,7 @@ export default function CoachChat() {
         setMsgs([...hist, { role: 'assistant', content: acc }])
       })
     } catch (e) {
-      setMsgs([...hist, { role: 'assistant', content: `⚠️ ${(e as Error).message}\n\n${localAnswer(text, useStore.getState())}` }])
+      setMsgs([...hist, { role: 'assistant', content: `Erreur : ${(e as Error).message}\n\n${localAnswer(text, useStore.getState())}` }])
     } finally {
       setBusy(false)
     }
@@ -42,11 +43,11 @@ export default function CoachChat() {
 
   return (
     <div className="mx-auto flex h-screen max-w-xl flex-col px-4">
-      <Header title="Coach" sub={online ? '🟢 Coach IA Claude — connaît toutes tes données' : '🟠 Mode hors ligne — moteur d\'analyse local'} back right={<button className="chip" onClick={() => setMsgs([])}>Effacer</button>} />
+      <Header title="Coach" sub={online ? '● En ligne · Coach IA Claude, connaît toutes tes données' : '● Hors ligne · moteur d\'analyse local'} back right={<button className="chip" onClick={() => setMsgs([])}>Effacer</button>} />
       <div className="flex-1 space-y-3 overflow-y-auto pb-4">
         {!msgs.length && (
           <div className="space-y-2">
-            <p className="text-sm text-white/55">Pose n'importe quelle question : technique, programmation, douleurs, nutrition, compétition. Je m'appuie sur tes séances, records et analyses.</p>
+            <p className="text-sm text-white/70">Pose n'importe quelle question : technique, programmation, douleurs, nutrition, compétition. Je m'appuie sur tes séances, records et analyses.</p>
             {!s.settings.anthropicKey && <Link to="/settings" className="block text-xs text-volt">Ajouter une clé API pour le coach IA complet →</Link>}
             {SUGGESTIONS.map((q) => (
               <button key={q} className="chip !block w-full !py-2.5 text-left" onClick={() => send(q)}>{q}</button>
@@ -55,14 +56,14 @@ export default function CoachChat() {
         )}
         {msgs.map((m, i) => (
           <div key={i} className={`max-w-[88%] whitespace-pre-wrap rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed ${m.role === 'user' ? 'ml-auto bg-volt text-ink-950' : 'border border-white/10 bg-ink-800'}`}>
-            {m.content || <span className="animate-pulse text-white/40">…</span>}
+            {m.content || <span className="animate-pulse text-white/55">…</span>}
           </div>
         ))}
         <div ref={end} />
       </div>
       <form className="flex gap-2 pt-2" style={{ paddingBottom: 'calc(var(--safe-bottom) + 90px)' }} onSubmit={(e) => (e.preventDefault(), send(input))}>
         <input className="input" placeholder="Ta question…" value={input} onChange={(e) => setInput(e.target.value)} />
-        <button className="btn-primary" disabled={busy}>➤</button>
+        <button className="btn-primary" disabled={busy} aria-label="Envoyer"><Icon name="send" size={20} /></button>
       </form>
     </div>
   )

@@ -79,7 +79,7 @@ export default function CompetitionPrep() {
         {days !== null && (
           <div className="mt-3 text-center">
             <div className="h-display text-7xl text-volt">{days > 0 ? `J-${days}` : days === 0 ? 'JOUR J' : 'Passée'}</div>
-            <div className="text-xs text-white/50">{days > 7 ? `${Math.floor(days / 7)} semaines de préparation` : days > 0 ? 'Phase d\'affûtage : volume −50 %' : ''}</div>
+            <div className="text-xs text-white/65">{days > 7 ? `${Math.floor(days / 7)} semaines de préparation` : days > 0 ? 'Phase d\'affûtage : volume −50 %' : ''}</div>
           </div>
         )}
         <button
@@ -107,7 +107,7 @@ export default function CompetitionPrep() {
           </div>
           {Array.from({ length: pr.n }).map((_, i) => (
             <div key={i} className="flex items-center gap-2">
-              <span className="w-8 text-xs font-bold text-white/50">R{i + 1}</span>
+              <span className="w-8 text-xs font-bold text-white/65">R{i + 1}</span>
               <select className="input !py-2" value={rounds[i] ?? ''} onChange={(e) => setRounds(Object.assign([...rounds], { [i]: e.target.value }))}>
                 <option value="">Freestyle libre</option>
                 {s.combos.map((c) => (
@@ -127,8 +127,8 @@ export default function CompetitionPrep() {
         <div className="card space-y-2">
           {CHECKLIST.map((c) => (
             <label key={c} className="flex items-start gap-3 text-sm">
-              <input type="checkbox" className="mt-0.5 h-4 w-4 accent-[#c6ff3d]" checked={checks.includes(c)} onChange={() => setChecks(checks.includes(c) ? checks.filter((x) => x !== c) : [...checks, c])} />
-              <span className={checks.includes(c) ? 'text-white/40 line-through' : 'text-white/80'}>{c}</span>
+              <input type="checkbox" className="mt-0.5 h-4 w-4 accent-[#ff7a1a]" checked={checks.includes(c)} onChange={() => setChecks(checks.includes(c) ? checks.filter((x) => x !== c) : [...checks, c])} />
+              <span className={checks.includes(c) ? 'text-white/55 line-through' : 'text-white/80'}>{c}</span>
             </label>
           ))}
         </div>
@@ -143,10 +143,10 @@ export default function CompetitionPrep() {
             .map((x) => (
               <div key={x.skill.id} className="flex justify-between rounded-xl bg-ink-800/70 px-3 py-2 text-sm">
                 <span>{x.skill.name}</span>
-                <span className="text-white/50">{x.best}{x.skill.kind === 'hold' ? ' s' : ''} {x.bestScore !== undefined && `· ${x.bestScore}/10`}</span>
+                <span className="text-white/65">{x.best}{x.skill.kind === 'hold' ? ' s' : ''} {x.bestScore !== undefined && `· ${x.bestScore}/10`}</span>
               </div>
             ))}
-          <p className="text-[11px] text-white/40">Construis tes rounds autour des figures validées avec une note d'exécution ≥ 8 : les juges sanctionnent plus une figure ratée qu'une figure absente.</p>
+          <p className="text-[11px] text-white/55">Construis tes rounds autour des figures validées avec une note d'exécution ≥ 8 : les juges sanctionnent plus une figure ratée qu'une figure absente.</p>
         </div>
       </Section>
 
@@ -163,7 +163,7 @@ export default function CompetitionPrep() {
                 <span className="font-semibold">{c}</span>
                 <b className="text-volt">{scores[i]}/10</b>
               </div>
-              <div className="text-[11px] text-white/45">{d}</div>
+              <div className="text-[11px] text-white/60">{d}</div>
               <input type="range" min={0} max={10} step={0.5} value={scores[i]} className="w-full" onChange={(e) => setScores(scores.map((v, j) => (j === i ? Number(e.target.value) : v)))} />
             </div>
           ))}
@@ -172,7 +172,7 @@ export default function CompetitionPrep() {
         </div>
       </Sheet>
       {rounds.length > 0 && rounds.some((r) => r) && (
-        <p className="text-[11px] text-white/40">Rounds : {rounds.map((r) => s.combos.find((c) => c.id === r)?.steps.map((st) => SKILL_BY_ID[st.skillId]?.name).join(' → ') ?? 'libre').join(' | ')}</p>
+        <p className="text-[11px] text-white/55">Rounds : {rounds.map((r) => s.combos.find((c) => c.id === r)?.steps.map((st) => SKILL_BY_ID[st.skillId]?.name).join(' → ') ?? 'libre').join(' | ')}</p>
       )}
     </Page>
   )

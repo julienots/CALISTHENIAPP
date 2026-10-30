@@ -8,7 +8,7 @@ const INK = { grid: '#ffffff12', axis: '#ffffff59', text: '#ffffffb3' }
 export function LineChart({
   data,
   height = 170,
-  color = '#c6ff3d',
+  color = '#ff7a1a',
   unit = '',
   target,
   trend,
@@ -25,7 +25,7 @@ export function LineChart({
   const [hover, setHover] = useState<number | null>(null)
   const W = 340
   const pad = { l: 30, r: 10, t: 12, b: 22 }
-  if (data.length === 0) return <div className="grid h-24 place-items-center text-sm text-white/40">Pas encore de données</div>
+  if (data.length === 0) return <div className="grid h-24 place-items-center text-sm text-white/55">Pas encore de données</div>
   const xs = data.map((d) => d.x)
   const xMax = Math.max(...xs, trend?.untilX ?? -Infinity)
   const xMin = Math.min(...xs)
@@ -55,8 +55,8 @@ export function LineChart({
         ))}
         {target !== undefined && (
           <g>
-            <line x1={pad.l} x2={W - pad.r} y1={sy(target)} y2={sy(target)} stroke="#ffc83d" strokeDasharray="4 4" strokeWidth={1.5} />
-            <text x={W - pad.r} y={sy(target) - 4} textAnchor="end" fontSize="9" fill="#ffc83d">objectif {target}{unit}</text>
+            <line x1={pad.l} x2={W - pad.r} y1={sy(target)} y2={sy(target)} stroke="#ffb000" strokeDasharray="4 4" strokeWidth={1.5} />
+            <text x={W - pad.r} y={sy(target) - 4} textAnchor="end" fontSize="9" fill="#ffb000">objectif {target}{unit}</text>
           </g>
         )}
         {trend && (
@@ -64,7 +64,7 @@ export function LineChart({
         )}
         <motion.path d={path} fill="none" stroke={color} strokeWidth={2} strokeLinejoin="round" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.9 }} />
         {data.map((d, i) => (
-          <circle key={i} cx={sx(d.x)} cy={sy(d.y)} r={hover === i ? 5 : 3.5} fill={color} stroke="#11141f" strokeWidth={2} />
+          <circle key={i} cx={sx(d.x)} cy={sy(d.y)} r={hover === i ? 5 : 3.5} fill={color} stroke="#21150f" strokeWidth={2} />
         ))}
         {h && <line x1={sx(h.x)} x2={sx(h.x)} y1={pad.t} y2={height - pad.b} stroke="#ffffff40" />}
         <text x={pad.l} y={height - 6} fontSize="9" fill={INK.axis}>{data[0].label}</text>
@@ -72,7 +72,7 @@ export function LineChart({
       </svg>
       {h && (
         <div className="pointer-events-none absolute top-0 rounded-lg border border-white/10 bg-ink-950/95 px-2 py-1 text-xs" style={{ left: `${Math.min(70, (sx(h.x) / W) * 100)}%` }}>
-          <div className="text-white/50">{h.label}</div>
+          <div className="text-white/65">{h.label}</div>
           <div className="font-bold text-white">{format(h.y)}{unit}</div>
         </div>
       )}
@@ -80,7 +80,7 @@ export function LineChart({
   )
 }
 
-export function BarChart({ data, height = 140, color = '#7c5cff', unit = '' }: { data: { label: string; value: number }[]; height?: number; color?: string; unit?: string }) {
+export function BarChart({ data, height = 140, color = '#ff3d6e', unit = '' }: { data: { label: string; value: number }[]; height?: number; color?: string; unit?: string }) {
   const [hover, setHover] = useState<number | null>(null)
   const W = 340
   const pad = { l: 6, r: 6, t: 18, b: 20 }
@@ -118,7 +118,7 @@ export function BarChart({ data, height = 140, color = '#7c5cff', unit = '' }: {
   )
 }
 
-export function Radar({ axes, size = 260, color = '#c6ff3d' }: { axes: { label: string; value: number }[]; size?: number; color?: string }) {
+export function Radar({ axes, size = 260, color = '#ff7a1a' }: { axes: { label: string; value: number }[]; size?: number; color?: string }) {
   const c = size / 2
   const R = size / 2 - 42
   const n = axes.length
@@ -148,7 +148,7 @@ export function Radar({ axes, size = 260, color = '#c6ff3d' }: { axes: { label: 
   )
 }
 
-export function Ring({ value, size = 64, stroke = 7, color = '#c6ff3d', children }: { value: number; size?: number; stroke?: number; color?: string; children?: React.ReactNode }) {
+export function Ring({ value, size = 64, stroke = 7, color = '#ff7a1a', children }: { value: number; size?: number; stroke?: number; color?: string; children?: React.ReactNode }) {
   const r = (size - stroke) / 2
   const C = 2 * Math.PI * r
   return (

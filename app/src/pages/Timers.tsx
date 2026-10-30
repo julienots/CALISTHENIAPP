@@ -7,6 +7,7 @@ import { SKILL_BY_ID } from '../data/skills'
 import { buzz, countdownBeep, endBeep, goBeep, keepAwake, say } from '../lib/feedback'
 import { fmtSec } from '../lib/stats'
 import { useStore } from '../lib/store'
+import { Icon } from '../components/Icon'
 
 type Mode = 'hold' | 'interval' | 'emom' | 'tabata'
 
@@ -95,7 +96,7 @@ export function IntervalRunner({ segs, onDone }: { segs: Seg[]; onDone?: () => v
   }, [running])
 
   const seg = segs[i]
-  const color = seg?.kind === 'work' ? '#c6ff3d' : seg?.kind === 'rest' ? '#7c5cff' : '#ffc83d'
+  const color = seg?.kind === 'work' ? '#ff7a1a' : seg?.kind === 'rest' ? '#ff3d6e' : '#ffb000'
   const total = segs.reduce((n, x) => n + x.sec, 0)
   const elapsed = segs.slice(0, i).reduce((n, x) => n + x.sec, 0) + (seg ? seg.sec - left : 0)
   return (
@@ -105,7 +106,7 @@ export function IntervalRunner({ segs, onDone }: { segs: Seg[]; onDone?: () => v
           <div className="text-center">
             <div className="text-xs font-bold uppercase tracking-[0.3em]" style={{ color }}>{seg?.label}</div>
             <div className="h-display text-8xl leading-none">{fmtSec(left)}</div>
-            <div className="text-xs text-white/40">{i + 1}/{segs.length}</div>
+            <div className="text-xs text-white/55">{i + 1}/{segs.length}</div>
           </div>
         </Ring>
       </motion.div>
@@ -113,7 +114,7 @@ export function IntervalRunner({ segs, onDone }: { segs: Seg[]; onDone?: () => v
         <div className="h-full bg-white/50 transition-all" style={{ width: `${(elapsed / total) * 100}%` }} />
       </div>
       <div className="mt-4 grid w-full grid-cols-2 gap-2">
-        <button className="btn-primary !py-4" onClick={() => setRunning(!running)}>{running ? '❚❚ Pause' : '▶ Démarrer'}</button>
+        <button className="btn-primary !py-4" onClick={() => setRunning(!running)}>{running ? <><Icon name="pause" size={18} /> Pause</> : <><Icon name="play" size={18} /> Démarrer</>}</button>
         <button className="btn-ghost" onClick={() => {
           setRunning(false)
           state.current = { i: 0, left: segs[0].sec }
@@ -179,17 +180,17 @@ function HoldTimer({ skillId, setSkillId }: { skillId?: string; setSkillId: (id:
 
   return (
     <div className="flex flex-col items-center">
-      <button className="chip mb-3" onClick={() => setPicker(true)}>{sk ? `🎯 ${sk.name}` : 'Choisir une figure'}</button>
-      {sk && <div className="mb-2 text-xs text-white/50">Record : {best || '—'} s · standard {sk.standard} s</div>}
+      <button className="chip mb-3" onClick={() => setPicker(true)}>{sk ? <><Icon name="target" size={15} /> {sk.name}</> : 'Choisir une figure'}</button>
+      {sk && <div className="mb-2 text-xs text-white/65">Record : {best || '—'} s · standard {sk.standard} s</div>}
       <div className="relative">
-        <Ring value={phase === 'run' || phase === 'done' ? t / target : 0} size={270} stroke={16} color={t >= target ? '#ffc83d' : '#c6ff3d'}>
+        <Ring value={phase === 'run' || phase === 'done' ? t / target : 0} size={270} stroke={16} color={t >= target ? '#ffb000' : '#ff7a1a'}>
           <div className="text-center">
             {phase === 'count' ? (
               <motion.div key={cd} initial={{ scale: 1.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="h-display text-9xl text-volt">{cd}</motion.div>
             ) : (
               <>
                 <div className="h-display text-8xl leading-none">{t.toFixed(1)}</div>
-                <div className="text-xs text-white/45">objectif {target} s</div>
+                <div className="text-xs text-white/60">objectif {target} s</div>
               </>
             )}
           </div>
@@ -204,7 +205,7 @@ function HoldTimer({ skillId, setSkillId }: { skillId?: string; setSkillId: (id:
             s.addRecord({ skillId: sk.id, value: Math.round(t * 10) / 10, date: new Date().toISOString(), source: 'test' })
             setPhase('idle')
             setT(0)
-          }}>💾 Enregistrer {t.toFixed(1)} s sur {sk.name}</button>
+          }}><Icon name="save" size={18} /> Enregistrer {t.toFixed(1)} s sur {sk.name}</button>
         )}
       </div>
       <SkillPicker open={picker} onClose={() => setPicker(false)} filter={(x) => x.kind === 'hold'} onPick={(x) => setSkillId(x.id)} />

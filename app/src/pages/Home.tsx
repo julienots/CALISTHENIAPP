@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Ring } from '../components/charts'
+import { Icon, IconTile, type IconName } from '../components/Icon'
 import { RankBadge } from '../components/RankBadge'
 import { Bar, Page, Section, TierBadge, toneColor } from '../components/ui'
 import { SKILL_BY_ID } from '../data/skills'
@@ -36,7 +37,7 @@ export default function Home() {
     <Page>
       <div className="flex items-center justify-between pb-2" style={{ paddingTop: 'calc(var(--safe-top) + 16px)' }}>
         <div>
-          <div className="text-xs font-semibold uppercase tracking-[0.25em] text-white/40">{hello}</div>
+          <div className="text-xs font-semibold uppercase tracking-[0.25em] text-white/55">{hello}</div>
           <div className="h-display text-4xl leading-none">{s.profile?.name}</div>
         </div>
         <Link to="/profile" className="grid h-11 w-11 place-items-center rounded-2xl text-lg font-black text-ink-950" style={{ background: `hsl(${s.profile?.avatarHue ?? 90} 90% 65%)` }}>
@@ -48,11 +49,11 @@ export default function Home() {
         <motion.div className="card-hi relative mt-3 flex items-center gap-4 overflow-hidden" whileTap={{ scale: 0.98 }} style={{ borderColor: rank.rank.color + '55' }}>
           <RankBadge rank={rank.rank} size={96} />
           <div className="min-w-0 flex-1">
-            <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/45">Rang</div>
+            <div className="text-[10px] font-bold uppercase tracking-[0.3em] text-white/60">Rang</div>
             <div className="h-display truncate text-4xl leading-none" style={{ color: rank.rank.color, textShadow: `0 0 18px ${rank.rank.glow}` }}>
               {rank.rank.name}
             </div>
-            <div className="mt-1 text-xs text-white/55">{rank.rp.toLocaleString('fr-FR')} PR {rank.next && `· prochain : ${rank.next.name}`}</div>
+            <div className="mt-1 text-xs text-white/70">{rank.rp.toLocaleString('fr-FR')} PR {rank.next && `· prochain : ${rank.next.name}`}</div>
             <div className="mt-2">
               <Bar value={rank.progress} color={rank.next?.color ?? rank.rank.color} />
             </div>
@@ -62,18 +63,18 @@ export default function Home() {
 
       <div className="mt-3 grid grid-cols-3 gap-2">
         <div className="card flex flex-col items-center !p-3">
-          <Ring value={ready / 100} size={58} color={ready > 70 ? '#c6ff3d' : ready > 45 ? '#ffc83d' : '#ff5c39'}>
+          <Ring value={ready / 100} size={58} color={ready > 70 ? '#ff7a1a' : ready > 45 ? '#ffb000' : '#ff3b30'}>
             <span className="h-display text-xl">{ready}</span>
           </Ring>
-          <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-white/45">Forme</div>
+          <div className="mt-1 text-[10px] font-bold uppercase tracking-wider text-white/60">Forme</div>
         </div>
         <div className="card flex flex-col items-center justify-center !p-3">
-          <div className="h-display text-4xl text-ember">{streak(s.sessions)}🔥</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-white/45">Série (j)</div>
+          <div className="h-display flex items-center gap-1 text-4xl text-ember">{streak(s.sessions)}<Icon name="flame" size={26} /></div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-white/60">Série (j)</div>
         </div>
         <div className="card flex flex-col items-center justify-center !p-3">
           <div className="h-display text-4xl text-ice">{week}</div>
-          <div className="text-[10px] font-bold uppercase tracking-wider text-white/45">Séances / 7 j</div>
+          <div className="text-[10px] font-bold uppercase tracking-wider text-white/60">Séances / 7 j</div>
         </div>
       </div>
 
@@ -95,17 +96,19 @@ export default function Home() {
       </Section>
 
       <div className="grid grid-cols-3 gap-2">
-        {[
-          ['/analyzer', '🎥', 'Analyser'],
-          ['/timers', '⏱️', 'Timers'],
-          ['/map', '🗺️', 'Compétitions'],
-          ['/challenges', '🏆', 'Défis'],
-          ['/competition', '⚔️', 'Prépa compét'],
-          ['/coaches', '🧑‍🏫', 'Coachs'],
-        ].map(([to, i, l]) => (
-          <Link key={to} to={to} className="card flex flex-col items-center gap-1 !py-4 active:scale-95">
-            <span className="text-2xl">{i}</span>
-            <span className="text-xs font-bold">{l}</span>
+        {(
+          [
+            ['/analyzer', 'camera', 'Analyser', '#ff7a1a'],
+            ['/timers', 'timer', 'Timers', '#ffcf3f'],
+            ['/map', 'map', 'Compétitions', '#ff3d6e'],
+            ['/challenges', 'trophy', 'Défis', '#ffb000'],
+            ['/competition', 'swords', 'Prépa compét', '#ff6b4a'],
+            ['/coaches', 'whistle', 'Coachs', '#ff4fa0'],
+          ] as [string, IconName, string, string][]
+        ).map(([to, i, l, c]) => (
+          <Link key={to} to={to} className="card flex flex-col items-center gap-2 !py-4" style={{ background: `linear-gradient(160deg, ${c}22, #21150f 65%)`, borderColor: c + '40' }}>
+            <IconTile name={i} color={c} size={48} />
+            <span className="text-[13px] font-extrabold">{l}</span>
           </Link>
         ))}
       </div>
@@ -123,13 +126,13 @@ export default function Home() {
                   <div className="min-w-0 flex-1">
                     <div className="flex justify-between text-sm font-semibold">
                       <span className="truncate">{sk.name}</span>
-                      <span className="text-white/50">
+                      <span className="text-white/65">
                         {st.best}/{sk.standard}
                         {sk.kind === 'hold' ? ' s' : ''}
                       </span>
                     </div>
                     <div className="mt-1.5">
-                      <Bar value={st.best / sk.standard} color={st.mastery >= 2 ? '#c6ff3d' : '#7c5cff'} />
+                      <Bar value={st.best / sk.standard} color={st.mastery >= 2 ? '#ff7a1a' : '#ff3d6e'} />
                     </div>
                   </div>
                 </Link>
@@ -143,10 +146,10 @@ export default function Home() {
         <div className="space-y-2">
           {todays.slice(0, 3).map((c) => (
             <div key={c.id} className={`card flex items-center gap-3 !p-3 ${doneIds.has(c.id) ? 'opacity-50' : ''}`}>
-              <span className="text-xl">{doneIds.has(c.id) ? '✅' : '🎯'}</span>
+              <IconTile name={doneIds.has(c.id) ? 'check' : 'target'} color={doneIds.has(c.id) ? '#ffcf3f' : '#ff7a1a'} size={36} />
               <div className="min-w-0 flex-1">
                 <div className="text-sm font-bold">{c.title}</div>
-                <div className="truncate text-xs text-white/50">{c.text}</div>
+                <div className="truncate text-xs text-white/65">{c.text}</div>
               </div>
               <span className="text-xs font-black text-gold">+{c.xp}</span>
             </div>
@@ -157,11 +160,11 @@ export default function Home() {
       {nextComp && (
         <Link to="/map" className="card-hi mt-2 block">
           <div className="flex items-center justify-between">
-            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/45">Prochaine compétition</span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-white/60">Prochaine compétition</span>
             {compStatus(nextComp) === 'live' && <span className="rounded-full bg-ember px-2 py-0.5 text-[10px] font-black">EN DIRECT</span>}
           </div>
           <div className="h-display mt-1 text-2xl">{nextComp.name}</div>
-          <div className="text-xs text-white/55">
+          <div className="text-xs text-white/70">
             {nextComp.city}, {nextComp.country} · {new Date(nextComp.start).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
           </div>
         </Link>

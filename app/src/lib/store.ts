@@ -39,6 +39,7 @@ interface State {
   importedCoaches: CoachProfile[]
   challenges: ChallengeState[]
   bonusXp: number
+  restDays: string[]
   lastRankSeen: number
   settings: Settings
   chat: { role: 'user' | 'assistant'; content: string }[]
@@ -65,6 +66,7 @@ interface State {
   removeCoach: (id: string) => void
   completeChallenge: (c: ChallengeState) => void
   setLastRankSeen: (n: number) => void
+  toggleRest: (day: string) => void
   setSettings: (s: Partial<Settings>) => void
   setChat: (c: State['chat']) => void
   importAll: (data: Partial<State>) => void
@@ -87,6 +89,7 @@ const initial = {
   challenges: [],
   bonusXp: 0,
   lastRankSeen: 0,
+  restDays: [] as string[],
   chat: [],
   settings: {
     voice: true,
@@ -151,6 +154,7 @@ export const useStore = create<State>()(
       removeCoach: (id) => set((s) => ({ importedCoaches: s.importedCoaches.filter((c) => c.id !== id) })),
       completeChallenge: (c) => set((s) => ({ challenges: [...s.challenges, c], bonusXp: s.bonusXp + c.xp })),
       setLastRankSeen: (lastRankSeen) => set({ lastRankSeen }),
+      toggleRest: (day) => set((s) => ({ restDays: s.restDays.includes(day) ? s.restDays.filter((d) => d !== day) : [...s.restDays, day] })),
       setSettings: (p) => set((s) => ({ settings: { ...s.settings, ...p } })),
       setChat: (chat) => set({ chat }),
       importAll: (data) => set((s) => ({ ...s, ...data })),

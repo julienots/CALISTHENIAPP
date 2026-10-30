@@ -7,6 +7,7 @@ import { LEVEL_NAMES, skillStatuses } from '../lib/scoring'
 import { decodeShare } from '../lib/share'
 import { uid, useStore } from '../lib/store'
 import type { GeneratorParams, Program } from '../lib/types'
+import { Icon } from '../components/Icon'
 
 const EQUIP = ['barre', 'parallèles', 'parallettes', 'anneaux', 'élastique', 'lest', 'espalier', 'banc', 'box']
 
@@ -107,7 +108,7 @@ export default function Programs() {
             <div>
               <div className="label">Niveau</div>
               <Stepper value={params.level} onChange={(v) => set('level', v)} min={1} max={5} />
-              <div className="text-[11px] text-white/45">{LEVEL_NAMES[params.level]}</div>
+              <div className="text-[11px] text-white/60">{LEVEL_NAMES[params.level]}</div>
             </div>
             <div>
               <div className="label">Semaines</div>
@@ -133,9 +134,9 @@ export default function Programs() {
             </div>
           </div>
           <button className="btn-primary w-full !py-4 text-base" disabled={busy} onClick={generate}>
-            {busy ? 'Calcul de la périodisation…' : '⚡ Générer un programme'}
+            {busy ? 'Calcul de la périodisation…' : <><Icon name="sparkle" size={20} /> Générer un programme</>}
           </button>
-          <p className="text-[11px] text-white/40">Chaque génération est unique : périodisation par blocs, charges calculées sur tes records réels, progressions adaptées à ta ligne actuelle. Fonctionne hors ligne.</p>
+          <p className="text-[11px] text-white/55">Chaque génération est unique : périodisation par blocs, charges calculées sur tes records réels, progressions adaptées à ta ligne actuelle. Fonctionne hors ligne.</p>
         </div>
       </Section>
 
@@ -148,7 +149,7 @@ export default function Programs() {
                 <div className="flex items-start justify-between gap-2">
                   <div className="min-w-0">
                     <div className="truncate font-bold">{prog.name}</div>
-                    <div className="text-xs text-white/50">
+                    <div className="text-xs text-white/65">
                       {prog.params.weeks} sem. · {prog.params.daysPerWeek}×/sem · {GOAL_LABEL[prog.params.goal]} {prog.fromCoach && `· coach ${prog.fromCoach}`}
                     </div>
                   </div>
@@ -156,7 +157,7 @@ export default function Programs() {
                 </div>
                 <div className="mt-2 flex items-center gap-2">
                   <Bar value={done / prog.days.length} />
-                  <span className="text-[11px] text-white/50">
+                  <span className="text-[11px] text-white/65">
                     {done}/{prog.days.length}
                   </span>
                 </div>
@@ -166,13 +167,13 @@ export default function Programs() {
               </Link>
             )
           })}
-          {!s.programs.length && <p className="text-sm text-white/40">Aucun programme. Génère ton premier ci-dessus.</p>}
+          {!s.programs.length && <p className="text-sm text-white/55">Aucun programme. Génère ton premier ci-dessus.</p>}
         </div>
       </Section>
 
       <SkillPicker open={picker} onClose={() => setPicker(false)} onPick={(sk) => set('goalSkills', [...new Set([...params.goalSkills, sk.id])].slice(0, 4))} />
       <Sheet open={importOpen} onClose={() => setImportOpen(false)} title="Importer un programme">
-        <p className="mb-2 text-sm text-white/55">Colle le code de partage (GRV1.…) reçu d'un coach ou d'un ami.</p>
+        <p className="mb-2 text-sm text-white/70">Colle le code de partage (GRV1.…) reçu d'un coach ou d'un ami.</p>
         <textarea className="input h-32 font-mono text-xs" value={code} onChange={(e) => setCode(e.target.value)} />
         <button className="btn-primary mt-3 w-full" onClick={doImport}>
           Importer
