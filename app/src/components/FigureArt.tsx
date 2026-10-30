@@ -211,18 +211,17 @@ export interface SkinDef {
   name: string
   stops: [string, string, string]
   far: [string, string]
-  shorts: [string, string]
   hair: string
   unlockRank: number
 }
 
 export const SKINS: SkinDef[] = [
-  { id: 'braise', name: 'Braise', stops: ['#ffc08a', '#ff7a1a', '#c23a1a'], far: ['#b2502a', '#7a2f17'], shorts: ['#5a2016', '#2a0e09'], hair: '#2a130a', unlockRank: 0 },
-  { id: 'rubis', name: 'Rubis', stops: ['#ff9aa8', '#ff3d4e', '#8f0f22'], far: ['#a52032', '#5c0a16'], shorts: ['#1c0a0c', '#0c0405'], hair: '#1a0507', unlockRank: 2 },
-  { id: 'or', name: 'Or massif', stops: ['#fff1c1', '#ffb000', '#a8580a'], far: ['#b8770d', '#6b3d06'], shorts: ['#2b1a05', '#150c02'], hair: '#3b2306', unlockRank: 4 },
-  { id: 'obsidienne', name: 'Obsidienne', stops: ['#8a7a72', '#3a2c26', '#140c09'], far: ['#2a1f1a', '#0d0806'], shorts: ['#ff5a1a', '#a8300a'], hair: '#000000', unlockRank: 6 },
-  { id: 'magma', name: 'Magma', stops: ['#fff3a0', '#ff6a00', '#5a0d00'], far: ['#c0400a', '#4a0a00'], shorts: ['#120302', '#000000'], hair: '#ffcf3f', unlockRank: 8 },
-  { id: 'spectre', name: 'Spectre', stops: ['#ffd6f0', '#ff4fa0', '#5a0a3a'], far: ['#a02a6a', '#3a0626'], shorts: ['#14040e', '#060105'], hair: '#ffe7a3', unlockRank: 10 },
+  { id: 'braise', name: 'Braise', stops: ['#ffc08a', '#ff7a1a', '#c23a1a'], far: ['#b2502a', '#7a2f17'], hair: '#2a130a', unlockRank: 0 },
+  { id: 'rubis', name: 'Rubis', stops: ['#ff9aa8', '#ff3d4e', '#8f0f22'], far: ['#a52032', '#5c0a16'], hair: '#1a0507', unlockRank: 2 },
+  { id: 'or', name: 'Or massif', stops: ['#fff1c1', '#ffb000', '#a8580a'], far: ['#b8770d', '#6b3d06'], hair: '#3b2306', unlockRank: 4 },
+  { id: 'obsidienne', name: 'Obsidienne', stops: ['#8a7a72', '#3a2c26', '#140c09'], far: ['#2a1f1a', '#0d0806'], hair: '#000000', unlockRank: 6 },
+  { id: 'magma', name: 'Magma', stops: ['#fff3a0', '#ff6a00', '#5a0d00'], far: ['#c0400a', '#4a0a00'], hair: '#ffcf3f', unlockRank: 8 },
+  { id: 'spectre', name: 'Spectre', stops: ['#ffd6f0', '#ff4fa0', '#5a0a3a'], far: ['#a02a6a', '#3a0626'], hair: '#ffe7a3', unlockRank: 10 },
 ]
 const SKIN_BY_ID = Object.fromEntries(SKINS.map((k) => [k.id, k]))
 
@@ -551,10 +550,6 @@ export function FigureArt({
           <stop offset="0" stopColor="#d9a066" />
           <stop offset="1" stopColor="#7a4a22" />
         </linearGradient>
-        <linearGradient id={g('shorts')} x1="0" y1={f(minY)} x2="0" y2={f(maxY)} gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor={sk.shorts[0]} />
-          <stop offset="1" stopColor={sk.shorts[1]} />
-        </linearGradient>
         <radialGradient id={g('glow')} cx="0.5" cy="0.55" r="0.6">
           <stop offset="0" stopColor="#ff7a1a" stopOpacity="0.28" />
           <stop offset="1" stopColor="#ff7a1a" stopOpacity="0" />
@@ -659,16 +654,6 @@ export function FigureArt({
         <path d={upperArm(r.shN, r.el, 1)} />
         <path d={foreArm(r.el, r.wr)} />
         <path d={hand(r.wr, armDeg)} />
-        {/* short */}
-        {front ? (
-          <>
-            <path d={limb(add(r.hipN, r.u, 2.5), add(r.hipN, dir(r.thigh), 7), 5.6, 5, 0.4, 0.4)} fill={`url(#${g('shorts')})`} />
-            <path d={limb(add(r.hipF, r.u, 2.5), add(r.hipF, dir(r.thigh2), 7), 5.6, 5, 0.4, 0.4)} fill={`url(#${g('shorts')})`} />
-            <path d={limb(add(r.hipF, r.u, 3), add(r.hipN, r.u, 3), 2.2, 2.2, 0, 0)} fill={`url(#${g('shorts')})`} />
-          </>
-        ) : (
-          <path d={limb(add({ x: 0, y: 0 }, r.u, 2.2), add({ x: 0, y: 0 }, dir(r.thigh), 6.5), 5.4, 4.8, 0.3, 0.3)} fill={`url(#${g('shorts')})`} />
-        )}
       </g>
 
       {/* définition musculaire + reflets */}
