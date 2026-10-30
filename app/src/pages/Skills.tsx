@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { FigureArt } from '../components/FigureArt'
 import { Header, Page, Segmented, TierBadge } from '../components/ui'
 import { CATEGORIES, SKILLS } from '../data/skills'
 import { MASTERY, skillStatuses } from '../lib/scoring'
@@ -52,6 +53,9 @@ export default function Skills() {
                 return (
                   <Link key={s.id} to={`/skill/${s.id}`} className="flex items-center gap-3 rounded-xl border border-white/[0.05] bg-ink-800/70 p-2.5 active:bg-ink-700">
                     <TierBadge tier={s.tier} />
+                    <div className="grid h-12 w-16 shrink-0 place-items-center overflow-hidden rounded-lg bg-[#170f0b]">
+                      <FigureArt skill={s} detailed={false} fit mastered={st.mastery >= 2} />
+                    </div>
                     <div className="min-w-0 flex-1">
                       <div className="truncate text-sm font-semibold">
                         {s.name} {s.danger && <span title="Risque élevé" className="text-ember"><Icon name="warning" size={14} /></span>}

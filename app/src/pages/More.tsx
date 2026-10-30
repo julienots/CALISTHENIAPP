@@ -14,6 +14,7 @@ const ITEMS: [string, IconName, string, string, string][] = [
   ['/map', 'map', 'Carte compét', 'France & monde en direct', '#ff3d6e'],
   ['/challenges', 'trophy', 'Défis', 'Quotidiens, hebdo, épreuves', '#ffb000'],
   ['/ranks', 'gem', 'Rangs', 'Jusqu\'à GRAVITAS ZÉRO', '#ff7a1a'],
+  ['/gallery', 'sparkle', 'Galerie des figures', 'Toutes les figures illustrées', '#ff3d6e'],
   ['/records', 'crown', 'Records du monde', 'Les sommets, sourcés', '#ffcf3f'],
   ['/history', 'book', 'Journal', 'Toutes tes séances', '#ff6b4a'],
   ['/coaches', 'whistle', 'Coachs', 'Annuaire & espace coach', '#ff4fa0'],

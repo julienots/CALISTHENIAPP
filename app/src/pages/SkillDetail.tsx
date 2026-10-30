@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { LineChart, Ring } from '../components/charts'
+import { FigureArt } from '../components/FigureArt'
 import { Bar, Header, Page, Section, Stat, Stepper, TierBadge } from '../components/ui'
 import { knowledgeFor } from '../data/knowledge'
 import { EX_BY_ID, LINE_DRILLS } from '../data/exercises'
@@ -47,6 +48,10 @@ export default function SkillDetail() {
   return (
     <Page>
       <Header title={skill.name} sub={`${skill.category} · ${skill.discipline}`} back right={<TierBadge tier={skill.tier} size="lg" />} />
+
+      <div className="card mb-3 flex justify-center overflow-hidden !px-2 !py-4" style={{ background: 'radial-gradient(ellipse at 50% 70%, #ff7a1a26, transparent 70%), linear-gradient(180deg, #2a1a12, #170f0b)' }}>
+        <FigureArt skill={skill} size={330} mastered={st.mastery >= 2} />
+      </div>
 
       <div className="card-hi flex items-center gap-4">
         <Ring value={Math.min(1, st.best / target)} size={86} color={st.mastery >= 2 ? '#ff7a1a' : '#ff3d6e'}>

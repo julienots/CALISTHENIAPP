@@ -32,6 +32,7 @@ const CoachChat = lazy(() => import('./pages/CoachChat'))
 const More = lazy(() => import('./pages/More'))
 const Calendar = lazy(() => import('./pages/Calendar'))
 const Records = lazy(() => import('./pages/Records'))
+const Gallery = lazy(() => import('./pages/Gallery'))
 
 const NAV: { to: string; label: string; icon: IconName }[] = [
   { to: '/', label: 'Accueil', icon: 'home' },
@@ -133,6 +134,7 @@ function Shell() {
           <Route path="/more" element={<More />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/records" element={<Records />} />
+          <Route path="/gallery" element={<Gallery />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Suspense>
