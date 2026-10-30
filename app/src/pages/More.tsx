@@ -9,6 +9,7 @@ const GROUPS: { title: string; items: Item[] }[] = [
   {
     title: "S'entraîner",
     items: [
+      ['/timers', 'timer', 'Timers', 'Chrono, minuteur, holds', '#ffcf3f'],
       ['/programs', 'clipboard', 'Programmes', 'Générer et suivre', '#ff7a1a'],
       ['/combos', 'link', 'Combos', 'Tes enchaînements', '#ff4fa0'],
       ['/competition', 'swords', 'Prépa compét', 'Simulation & jury', '#ff3b30'],

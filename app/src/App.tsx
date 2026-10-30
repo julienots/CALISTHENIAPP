@@ -51,7 +51,7 @@ function TrainSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
     { t: 'Séance du programme', d: 'Guidée pas à pas avec voix et timers', p: '/programs', i: 'target' as IconName, c: '#ff7a1a' },
     { t: 'Séance libre guidée', d: 'Choisis tes figures, le coach te suit', p: '/workout/free/free', i: 'bolt' as IconName, c: '#ffb000' },
     { t: 'Noter une séance', d: 'Tout enregistrer : séries, RPE, sommeil…', p: '/log', i: 'pencil' as IconName, c: '#ff3d6e' },
-    { t: 'Timers', d: 'Hold, intervalles, compétition 45/45, EMOM', p: '/timers', i: 'timer' as IconName, c: '#ffcf3f' },
+    { t: 'Chrono & minuteur', d: 'Chrono, minuteur, holds, 45/45, EMOM', p: '/timers', i: 'timer' as IconName, c: '#ffcf3f' },
     { t: 'Analyser une figure', d: 'Vidéo, photo ou caméra en direct', p: '/analyzer', i: 'camera' as IconName, c: '#ff6b4a' },
     { t: 'Combos', d: 'Concevoir et répéter tes enchaînements', p: '/combos', i: 'link' as IconName, c: '#ff4fa0' },
   ]

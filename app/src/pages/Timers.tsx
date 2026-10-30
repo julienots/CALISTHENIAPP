@@ -9,7 +9,7 @@ import { fmtSec } from '../lib/stats'
 import { useStore } from '../lib/store'
 import { Icon } from '../components/Icon'
 
-type Mode = 'hold' | 'interval' | 'emom' | 'tabata'
+type Mode = 'chrono' | 'minuteur' | 'hold' | 'interval' | 'emom' | 'tabata'
 
 interface Seg { label: string; sec: number; kind: 'work' | 'rest' | 'prep' }
 
@@ -213,9 +213,180 @@ function HoldTimer({ skillId, setSkillId }: { skillId?: string; setSkillId: (id:
   )
 }
 
+const fmtMs = (ms: number) => {
+  const m = Math.floor(ms / 60000)
+  const sec = Math.floor((ms % 60000) / 1000)
+  const cs = Math.floor((ms % 1000) / 10)
+  return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}.${String(cs).padStart(2, '0')}`
+}
+
+/** Chronomètre simple avec tours. */
+function Stopwatch() {
+  const [elapsed, setElapsed] = useState(0)
+  const [running, setRunning] = useState(false)
+  const [laps, setLaps] = useState<number[]>([])
+  const base = useRef(0)
+  const startAt = useRef(0)
+  useEffect(() => {
+    if (!running) return
+    keepAwake(true)
+    let raf = 0
+    const loop = () => {
+      setElapsed(base.current + performance.now() - startAt.current)
+      raf = requestAnimationFrame(loop)
+    }
+    loop()
+    return () => {
+      cancelAnimationFrame(raf)
+      keepAwake(false)
+    }
+  }, [running])
+  const toggle = () => {
+    buzz()
+    if (running) {
+      base.current += performance.now() - startAt.current
+      setRunning(false)
+    } else {
+      startAt.current = performance.now()
+      setRunning(true)
+    }
+  }
+  const reset = () => {
+    base.current = 0
+    setElapsed(0)
+    setLaps([])
+    setRunning(false)
+  }
+  const lastLap = laps.length ? laps[laps.length - 1] : 0
+  return (
+    <div className="flex flex-col items-center">
+      <Ring value={(elapsed % 60000) / 60000} size={270} stroke={12} color="#ff7a1a">
+        <div className="text-center">
+          <div className="h-display text-[64px] leading-none tabular-nums">{fmtMs(elapsed).slice(0, 5)}</div>
+          <div className="h-display text-2xl text-white/60 tabular-nums">.{fmtMs(elapsed).slice(6)}</div>
+        </div>
+      </Ring>
+      <div className="mt-5 grid w-full grid-cols-2 gap-2">
+        <button className="btn-primary !py-5 text-lg" onClick={toggle}>
+          {running ? <><Icon name="pause" size={20} /> Pause</> : <><Icon name="play" size={20} /> {elapsed ? 'Reprendre' : 'Démarrer'}</>}
+        </button>
+        <button className="btn-ghost !py-5 text-lg" onClick={() => (running ? setLaps([...laps, elapsed]) : reset())}>
+          {running ? 'Tour' : 'Remise à zéro'}
+        </button>
+      </div>
+      {laps.length > 0 && (
+        <div className="card mt-4 w-full !p-2">
+          {[...laps].reverse().map((t, i) => {
+            const n = laps.length - i
+            const prev = n > 1 ? laps[n - 2] : 0
+            return (
+              <div key={n} className="flex justify-between border-b border-white/5 px-2 py-2 text-sm last:border-0">
+                <span className="text-white/60">Tour {n}</span>
+                <span className="font-bold tabular-nums">{fmtMs(t - prev)}</span>
+                <span className="tabular-nums text-white/55">{fmtMs(t)}</span>
+              </div>
+            )
+          })}
+          <div className="px-2 pt-1 text-right text-[11px] text-white/45">tour en cours : {fmtMs(elapsed - lastLap)}</div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+/** Minuteur simple : compte à rebours avec bips sur les 3 dernières secondes. */
+function Countdown() {
+  const [total, setTotal] = useState(60)
+  const [left, setLeft] = useState(60)
+  const [running, setRunning] = useState(false)
+  const endAt = useRef(0)
+  const lastSec = useRef(-1)
+  useEffect(() => {
+    if (!running) return
+    keepAwake(true)
+    const iv = window.setInterval(() => {
+      const ms = Math.max(0, endAt.current - Date.now())
+      const sec = Math.ceil(ms / 1000)
+      setLeft(ms / 1000)
+      if (sec !== lastSec.current) {
+        lastSec.current = sec
+        if (sec <= 3 && sec > 0) countdownBeep()
+      }
+      if (ms <= 0) {
+        setRunning(false)
+        endBeep()
+        buzz(true)
+        say('Terminé')
+      }
+    }, 100)
+    return () => {
+      clearInterval(iv)
+      keepAwake(false)
+    }
+  }, [running])
+  const pick = (sec: number) => {
+    setRunning(false)
+    setTotal(sec)
+    setLeft(sec)
+  }
+  const toggle = () => {
+    buzz()
+    if (running) setRunning(false)
+    else {
+      const from = left <= 0 ? total : left
+      setLeft(from)
+      endAt.current = Date.now() + from * 1000
+      lastSec.current = -1
+      setRunning(true)
+    }
+  }
+  const shown = Math.ceil(left)
+  return (
+    <div className="flex flex-col items-center">
+      <Ring value={left / total} size={270} stroke={14} color={left <= 3 && running ? '#ff3b30' : '#ffb000'}>
+        <div className="text-center">
+          <div className="h-display text-[72px] leading-none tabular-nums">{fmtSec(shown).includes(':') ? fmtSec(shown) : `0:${String(shown).padStart(2, '0')}`}</div>
+          <div className="text-xs text-white/55">sur {fmtSec(total).includes(':') ? fmtSec(total) : `${total} s`}</div>
+        </div>
+      </Ring>
+      {!running && (
+        <div className="mt-4 flex flex-wrap justify-center gap-1.5">
+          {(
+            [
+              [30, '30 s'],
+              [45, '45 s'],
+              [60, '1 min'],
+              [90, '1 min 30'],
+              [120, '2 min'],
+              [180, '3 min'],
+              [300, '5 min'],
+            ] as const
+          ).map(([v, l]) => (
+            <button key={v} className={total === v ? 'chip-on' : 'chip'} onClick={() => pick(v)}>
+              {l}
+            </button>
+          ))}
+        </div>
+      )}
+      {!running && (
+        <div className="mt-3 flex items-center gap-3">
+          <button className="btn-ghost !px-4" onClick={() => pick(Math.max(5, total - 15))}>− 15 s</button>
+          <button className="btn-ghost !px-4" onClick={() => pick(total + 15)}>+ 15 s</button>
+        </div>
+      )}
+      <div className="mt-4 grid w-full grid-cols-2 gap-2">
+        <button className="btn-primary !py-5 text-lg" onClick={toggle}>
+          {running ? <><Icon name="pause" size={20} /> Pause</> : <><Icon name="play" size={20} /> {left > 0 && left < total ? 'Reprendre' : 'Démarrer'}</>}
+        </button>
+        <button className="btn-ghost !py-5 text-lg" onClick={() => pick(total)}>Remise à zéro</button>
+      </div>
+    </div>
+  )
+}
+
 export default function Timers() {
   const [params] = useSearchParams()
-  const [mode, setMode] = useState<Mode>((params.get('mode') as Mode) || 'interval')
+  const [mode, setMode] = useState<Mode>((params.get('mode') as Mode) || 'chrono')
   const [skillId, setSkillId] = useState<string | undefined>(params.get('skill') ?? undefined)
   const [work, setWork] = useState(45)
   const [rest, setRest] = useState(45)
@@ -225,10 +396,28 @@ export default function Timers() {
 
   return (
     <Page>
-      <Header title="Timers" sub="Holds, compétition, EMOM, Tabata" back />
-      <Segmented value={mode} onChange={setMode} options={[{ v: 'hold', l: 'Hold' }, { v: 'interval', l: 'Compét' }, { v: 'emom', l: 'EMOM' }, { v: 'tabata', l: 'Tabata' }]} />
+      <Header title="Timers" sub="Chrono, minuteur, holds, compétition" back />
+      <Segmented value={mode} onChange={setMode} options={[{ v: 'chrono', l: 'Chrono' }, { v: 'minuteur', l: 'Minuteur' }, { v: 'hold', l: 'Hold' }]} />
+      <div className="mt-2 flex items-center gap-1.5">
+        <span className="text-[11px] font-bold uppercase tracking-wider text-white/45">Intervalles :</span>
+        {(
+          [
+            ['interval', 'Compét 45/45'],
+            ['emom', 'EMOM'],
+            ['tabata', 'Tabata'],
+          ] as const
+        ).map(([v, l]) => (
+          <button key={v} className={mode === v ? 'chip-on' : 'chip'} onClick={() => setMode(v)}>
+            {l}
+          </button>
+        ))}
+      </div>
       <div className="mt-5">
-        {mode === 'hold' ? (
+        {mode === 'chrono' ? (
+          <Stopwatch />
+        ) : mode === 'minuteur' ? (
+          <Countdown />
+        ) : mode === 'hold' ? (
           <HoldTimer key={skillId} skillId={skillId} setSkillId={setSkillId} />
         ) : (
           <>
