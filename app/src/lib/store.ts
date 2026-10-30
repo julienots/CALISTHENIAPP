@@ -20,8 +20,6 @@ export interface Settings {
   haptics: boolean
   anthropicKey: string
   feedUrl: string
-  supabaseUrl: string
-  supabaseKey: string
 }
 
 interface State {
@@ -106,8 +104,6 @@ const initial = {
     haptics: true,
     anthropicKey: '',
     feedUrl: 'https://raw.githubusercontent.com/julienots/calistheniapp/main/app/public/competitions.json',
-    supabaseUrl: '',
-    supabaseKey: '',
   },
 }
 

@@ -30,11 +30,15 @@ Application mobile Android de calisthenics : coach, programmes générés à l'i
 | **Coachs** | Annuaire de coachs et espace coach (profil, publication de programmes, code de partage) |
 | **Défis** | Défis quotidiens, hebdomadaires (vérifiés automatiquement) et épreuves de figures |
 
-## Données en ligne
+## Zéro serveur
+
+L'appli ne dépend d'aucun serveur et ne coûte rien à faire tourner, même avec beaucoup d'utilisateurs : profil, séances, programmes, analyses vidéo, rangs et calendrier restent stockés sur le téléphone. Les programmes et les coachs se partagent par code (WhatsApp, Instagram, mail). La sauvegarde est un fichier que l'utilisateur garde où il veut.
+
+## Ce qui utilise internet (gratuit, sans compte)
 
 - **Compétitions** : l'appli lit `app/public/competitions.json` sur la branche `main` de ce dépôt. Pour ajouter une compétition pour tout le monde, il suffit de modifier ce fichier : les applis installées le récupèrent à la prochaine actualisation. Les événements fournis viennent de sources vérifiées (FNSL, Calisthenics Cup, WSWCF, Saint-Priest, Kallos-Sthenos). Il n'existe pas d'API publique mondiale des compétitions de calisthenics, d'où ce flux.
-- **Communauté en temps réel (optionnel)** : crée un projet Supabase, exécute `supabase/schema.sql`, puis colle l'URL et la clé publique dans *Réglages → Données en ligne*. Les compétitions et l'annuaire des coachs deviennent alors partagés entre tous les utilisateurs. Les règles d'accès sont ouvertes (sans compte) : il faudra ajouter une authentification avant une diffusion publique.
-- **Coach IA** : colle une clé API Anthropic dans *Réglages*. Elle reste stockée sur le téléphone.
+- **Fond de carte** : tuiles publiques Esri, chargées directement par le téléphone de chaque utilisateur.
+- **Coach IA (optionnel)** : chaque utilisateur peut coller sa propre clé API Anthropic dans *Réglages* ; c'est lui qui paie son usage. Sans clé, le coach hors ligne fonctionne normalement.
 
 ## Développement
 

@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Empty, Header, Page, Section, Segmented, Sheet } from '../components/ui'
 import { GOAL_LABEL } from '../lib/generator'
-import { cloudEnabled, loadCloudCoaches, publishCoach } from '../lib/cloud'
 import { decodeShare, encodeShare, shareText } from '../lib/share'
 import { uid, useStore } from '../lib/store'
 import type { CoachProfile, Program } from '../lib/types'
-import { Icon } from '../components/Icon'
 
 function CoachCard({ c, onRemove }: { c: CoachProfile; onRemove?: () => void }) {
   const s = useStore()
@@ -53,15 +51,9 @@ function CoachCard({ c, onRemove }: { c: CoachProfile; onRemove?: () => void }) 
 export default function Coaches() {
   const s = useStore()
   const [tab, setTab] = useState<'annuaire' | 'espace'>('annuaire')
-  const [cloud, setCloud] = useState<CoachProfile[]>([])
-  const [cloudErr, setCloudErr] = useState('')
   const [importOpen, setImportOpen] = useState(false)
   const [code, setCode] = useState('')
   const [me, setMe] = useState<CoachProfile>(s.myCoach ?? { id: uid(), name: s.profile?.name ?? '', bio: '', specialties: [], programs: [] })
-
-  useEffect(() => {
-    if (cloudEnabled()) loadCloudCoaches().then(setCloud).catch((e) => setCloudErr(e.message))
-  }, [])
 
   const doImport = () => {
     try {
@@ -75,20 +67,13 @@ export default function Coaches() {
     }
   }
 
-  const saveMe = async (publish: boolean) => {
+  const saveMe = () => {
     s.setMyCoach(me)
     s.patchProfile({ isCoach: true })
-    if (publish) {
-      try {
-        await publishCoach(me)
-        alert('Profil publié en ligne.')
-      } catch (e) {
-        alert((e as Error).message)
-      }
-    } else alert('Profil coach enregistré.')
+    alert('Profil coach enregistré.')
   }
 
-  const directory = [...cloud, ...s.importedCoaches.filter((c) => !cloud.some((x) => x.id === c.id))]
+  const directory = s.importedCoaches
 
   return (
     <Page>
@@ -97,8 +82,7 @@ export default function Coaches() {
 
       {tab === 'annuaire' ? (
         <div className="mt-4 space-y-2">
-          {!cloudEnabled() && <p className="text-[11px] text-white/60">Mode local : importe un coach via son code. Active le backend (Réglages) pour l'annuaire en ligne partagé.</p>}
-          {cloudErr && <p className="text-xs text-ember">{cloudErr}</p>}
+          <p className="text-[11px] text-white/60">Sans serveur : un coach partage son code (WhatsApp, Instagram, mail…), tu le colles dans « Importer » et ses programmes apparaissent ici.</p>
           {!directory.length && <Empty icon="whistle" title="Aucun coach pour l'instant" text="Les coachs publient leur profil et leurs programmes depuis l'Espace coach. Reçois un code coach pour l'ajouter ici." action={<button className="btn-primary" onClick={() => setImportOpen(true)}>Importer un code coach</button>} />}
           {directory.map((c) => <CoachCard key={c.id} c={c} onRemove={c.remote ? undefined : () => s.removeCoach(c.id)} />)}
         </div>
@@ -132,9 +116,8 @@ export default function Coaches() {
             </div>
           </Section>
           <div className="grid grid-cols-2 gap-2">
-            <button className="btn-primary" onClick={() => saveMe(false)}>Enregistrer</button>
+            <button className="btn-primary" onClick={saveMe}>Enregistrer</button>
             <button className="btn-ghost" onClick={() => (s.setMyCoach(me), shareText(`Coach ${me.name} sur GRAVITAS`, encodeShare(me)))}>Partager mon code</button>
-            {cloudEnabled() && <button className="btn-ghost col-span-2" onClick={() => saveMe(true)}><Icon name="globe" size={18} /> Publier dans l'annuaire en ligne</button>}
           </div>
         </div>
       )}

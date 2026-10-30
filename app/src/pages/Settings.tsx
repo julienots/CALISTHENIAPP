@@ -75,10 +75,7 @@ export default function Settings() {
         <div className="card space-y-2">
           <div className="label">Flux des compétitions (JSON)</div>
           <input className="input text-xs" value={s.settings.feedUrl} onChange={(e) => s.setSettings({ feedUrl: e.target.value })} />
-          <div className="label pt-2">Backend communautaire Supabase (optionnel)</div>
-          <input className="input text-xs" placeholder="https://xxxx.supabase.co" value={s.settings.supabaseUrl} onChange={(e) => s.setSettings({ supabaseUrl: e.target.value })} />
-          <input className="input text-xs" placeholder="Clé publique (anon / publishable)" value={s.settings.supabaseKey} onChange={(e) => s.setSettings({ supabaseKey: e.target.value })} />
-          <p className="text-[11px] text-white/55">Avec Supabase : compétitions ajoutées par la communauté et annuaire de coachs partagé, en temps réel. Schéma SQL fourni dans le dépôt (supabase/schema.sql).</p>
+          <p className="text-[11px] text-white/55">Simple lecture d'un fichier public hébergé gratuitement sur GitHub. L'appli n'utilise aucun serveur : toutes tes données restent sur ton téléphone.</p>
         </div>
       </Section>
 

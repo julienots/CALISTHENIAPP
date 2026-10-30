@@ -2,7 +2,7 @@ import L from 'leaflet'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet'
 import { Header, Page, Section, Segmented } from '../components/ui'
-import { cloudEnabled, compStatus, loadCompetitions, publishCompetition } from '../lib/cloud'
+import { compStatus, loadCompetitions } from '../lib/cloud'
 import { uid, useStore } from '../lib/store'
 import type { Competition } from '../lib/types'
 import { Icon } from '../components/Icon'
@@ -75,18 +75,10 @@ export default function MapPage() {
       return order[compStatus(a)] - order[compStatus(b)] || (compStatus(a) === 'past' ? b.start.localeCompare(a.start) : a.start.localeCompare(b.start))
     })
 
-  const saveNew = async () => {
+  const saveNew = () => {
     if (!adding?.name || !adding.start || adding.lat === undefined) return alert('Nom, date et position (touche la carte) requis.')
     const c: Competition = { id: uid(), name: adding.name, city: adding.city ?? '', country: adding.country ?? 'France', lat: adding.lat, lng: adding.lng!, start: adding.start, end: adding.end, disciplines: (adding.disciplines as string[]) ?? [], url: adding.url, userAdded: true }
     s.addCompetition(c)
-    if (cloudEnabled() && confirm('Publier pour toute la communauté ?')) {
-      try {
-        await publishCompetition(c)
-        alert('Compétition publiée.')
-      } catch (e) {
-        alert((e as Error).message)
-      }
-    }
     setAdding(null)
   }
 
