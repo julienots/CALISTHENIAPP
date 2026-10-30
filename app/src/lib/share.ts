@@ -53,3 +53,16 @@ export function pickFile(accept: string): Promise<File | null> {
     input.click()
   })
 }
+
+/** Exporte une image (data URL PNG) : partage natif sur Android, téléchargement sur le web. */
+export async function exportPng(name: string, dataUrl: string) {
+  if (Capacitor.isNativePlatform()) {
+    const res = await Filesystem.writeFile({ path: name, data: dataUrl.split(',')[1], directory: Directory.Cache })
+    await Share.share({ title: name, url: res.uri, dialogTitle: 'Partager ma carte' })
+    return
+  }
+  const a = document.createElement('a')
+  a.href = dataUrl
+  a.download = name
+  a.click()
+}

@@ -40,6 +40,9 @@ interface State {
   challenges: ChallengeState[]
   bonusXp: number
   restDays: string[]
+  skin: string
+  toursSeen: string[]
+  dailyClaims: string[]
   lastRankSeen: number
   settings: Settings
   chat: { role: 'user' | 'assistant'; content: string }[]
@@ -67,6 +70,9 @@ interface State {
   completeChallenge: (c: ChallengeState) => void
   setLastRankSeen: (n: number) => void
   toggleRest: (day: string) => void
+  setSkin: (id: string) => void
+  markTour: (id: string) => void
+  claimDaily: (day: string, xp: number) => void
   setSettings: (s: Partial<Settings>) => void
   setChat: (c: State['chat']) => void
   importAll: (data: Partial<State>) => void
@@ -90,6 +96,9 @@ const initial = {
   bonusXp: 0,
   lastRankSeen: 0,
   restDays: [] as string[],
+  skin: 'braise',
+  toursSeen: [] as string[],
+  dailyClaims: [] as string[],
   chat: [],
   settings: {
     voice: true,
@@ -154,6 +163,9 @@ export const useStore = create<State>()(
       removeCoach: (id) => set((s) => ({ importedCoaches: s.importedCoaches.filter((c) => c.id !== id) })),
       completeChallenge: (c) => set((s) => ({ challenges: [...s.challenges, c], bonusXp: s.bonusXp + c.xp })),
       setLastRankSeen: (lastRankSeen) => set({ lastRankSeen }),
+      setSkin: (skin) => set({ skin }),
+      markTour: (id) => set((s) => ({ toursSeen: s.toursSeen.includes(id) ? s.toursSeen : [...s.toursSeen, id] })),
+      claimDaily: (day, xp) => set((s) => (s.dailyClaims.includes(day) ? {} : { dailyClaims: [...s.dailyClaims, day], bonusXp: s.bonusXp + xp })),
       toggleRest: (day) => set((s) => ({ restDays: s.restDays.includes(day) ? s.restDays.filter((d) => d !== day) : [...s.restDays, day] })),
       setSettings: (p) => set((s) => ({ settings: { ...s.settings, ...p } })),
       setChat: (chat) => set({ chat }),

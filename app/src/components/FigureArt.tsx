@@ -38,24 +38,30 @@ interface Pose {
   support: Support[]
   motion?: Motion
   annotate?: ('line' | 'elbow' | 'hip' | 'lean' | 'vertical')[]
+  /** Posture fine : protraction scapulaire (dos rond) et rétroversion du bassin. */
+  posture?: { prot?: number; ppt?: number }
+  /** Repères techniques légendés sur la fiche. */
+  cues?: Cue[]
 }
 
+type Cue = 'protraction' | 'depression' | 'ppt' | 'hollow' | 'locked' | 'lean' | 'toes' | 'open' | 'push' | 'compression' | 'pullTop' | 'pushBottom' | 'glutes'
+
 const BASE: Record<string, Pose> = {
-  planche: { T: 180, c: -1, arm: [72, 72], arm2: [70, 70], hip: 0, knee: 0, equip: 'floor', support: ['hands'], annotate: ['line', 'elbow', 'lean'] },
-  bentPlanche: { T: 180, c: -1, arm: [8, 92], arm2: [12, 92], hip: 0, knee: 0, equip: 'floor', support: ['hands'], annotate: ['line', 'elbow'] },
-  elbowLever: { T: 178, c: -1, arm: [40, 96], arm2: [44, 96], hip: 0, knee: 0, equip: 'floor', support: ['hands'], annotate: ['line', 'elbow'] },
+  planche: { T: 180, c: -1, arm: [50, 50], arm2: [48, 48], hip: 0, knee: 0, equip: 'floor', support: ['hands'], annotate: ['line', 'lean'], posture: { prot: 1, ppt: 1 }, cues: ['protraction', 'depression', 'ppt', 'hollow', 'locked', 'lean', 'toes'] },
+  bentPlanche: { T: 180, c: -1, arm: [8, 92], arm2: [12, 92], hip: 0, knee: 0, equip: 'floor', support: ['hands'], annotate: ['line', 'elbow'], posture: { prot: 0.6, ppt: 1 }, cues: ['ppt', 'hollow', 'toes'] },
+  elbowLever: { T: 178, c: -1, arm: [40, 96], arm2: [44, 96], hip: 0, knee: 0, equip: 'floor', support: ['hands'], annotate: ['line', 'elbow'], posture: { ppt: 1 }, cues: ['hollow', 'toes'] },
   frog: { T: 165, c: -1, arm: [70, 105], arm2: [74, 105], hip: 140, knee: 150, equip: 'floor', support: ['hands'] },
-  frontLever: { T: 180, c: 1, arm: [-78, -78], arm2: [-80, -80], hip: 0, knee: 0, equip: 'bar', support: ['hands'], annotate: ['line', 'elbow', 'hip'] },
-  backLever: { T: 180, c: -1, arm: [-64, -64], arm2: [-66, -66], hip: 0, knee: 0, equip: 'bar', support: ['hands'], annotate: ['line', 'elbow', 'hip'] },
-  handstand: { T: 90, c: -1, arm: [90, 90], arm2: [92, 92], hip: 0, knee: 0, equip: 'floor', support: ['hands'], annotate: ['vertical', 'elbow'] },
-  lsit: { T: -90, c: 1, arm: [96, 92], arm2: [98, 92], hip: 90, knee: 0, equip: 'parallettes', support: ['hands'], annotate: ['hip', 'elbow'] },
-  support: { T: -90, c: 1, arm: [94, 90], arm2: [92, 90], hip: 0, knee: 0, equip: 'pbars', support: ['hands'], annotate: ['vertical', 'elbow'] },
-  flag: { T: 180, c: -1, arm: [-122, -122], arm2: [128, 128], hip: 0, knee: 0, equip: 'pole', support: ['hands'], annotate: ['line'] },
+  frontLever: { T: 180, c: 1, arm: [-78, -78], arm2: [-80, -80], hip: 0, knee: 0, equip: 'bar', support: ['hands'], annotate: ['line', 'hip'], posture: { prot: 0.3, ppt: 1 }, cues: ['depression', 'locked', 'ppt', 'hollow', 'toes'] },
+  backLever: { T: 180, c: -1, arm: [-64, -64], arm2: [-66, -66], hip: 0, knee: 0, equip: 'bar', support: ['hands'], annotate: ['line', 'hip'], posture: { ppt: 1 }, cues: ['locked', 'glutes', 'ppt', 'toes'] },
+  handstand: { T: 90, c: -1, arm: [90, 90], arm2: [92, 92], hip: 0, knee: 0, equip: 'floor', support: ['hands'], annotate: ['vertical'], posture: { ppt: 1 }, cues: ['open', 'ppt', 'hollow', 'push', 'toes'] },
+  lsit: { T: -90, c: 1, arm: [96, 92], arm2: [98, 92], hip: 90, knee: 0, equip: 'parallettes', support: ['hands'], annotate: ['hip'], posture: { prot: 0.4, ppt: 0.6 }, cues: ['depression', 'locked', 'compression', 'toes'] },
+  support: { T: -90, c: 1, arm: [94, 90], arm2: [92, 90], hip: 0, knee: 0, equip: 'pbars', support: ['hands'], annotate: ['vertical'], posture: { ppt: 0.6 }, cues: ['depression', 'locked', 'hollow'] },
+  flag: { T: 180, c: -1, arm: [-122, -122], arm2: [128, 128], hip: 0, knee: 0, equip: 'pole', support: ['hands'], annotate: ['line'], posture: { ppt: 0.8 }, cues: ['pullTop', 'pushBottom', 'hollow', 'toes'] },
   dragon: { T: 152, c: 1, arm: [200, 150], arm2: [196, 150], hip: 0, knee: 0, equip: 'bench', support: ['shoulders'], annotate: ['line'] },
-  cross: { T: -90, c: 1, arm: [0, 0], arm2: [180, 180], hip: 0, knee: 0, hip2: 0, view: 'front', equip: 'rings', support: ['hands'], annotate: ['elbow'] },
+  cross: { T: -90, c: 1, arm: [0, 0], arm2: [180, 180], hip: 0, knee: 0, hip2: 0, view: 'front', equip: 'rings', support: ['hands'], cues: ['locked', 'depression'] },
   pull: { T: -90, c: 1, arm: [60, -95], arm2: [64, -95], hip: 8, knee: 10, equip: 'bar', support: ['hands'], motion: 'updown' },
   muscleUp: { T: -88, c: 1, arm: [96, 90], arm2: [94, 90], hip: 6, knee: 0, equip: 'barHips', support: ['hands'], motion: 'updown' },
-  push: { T: 204, c: -1, arm: [90, 90], arm2: [88, 88], hip: 0, knee: 0, equip: 'floor', support: ['hands', 'feet'], motion: 'updown', annotate: ['line'] },
+  push: { T: 204, c: -1, arm: [90, 90], arm2: [88, 88], hip: 0, knee: 0, equip: 'floor', support: ['hands', 'feet'], motion: 'updown', annotate: ['line'], posture: { ppt: 0.7 }, cues: ['hollow', 'ppt'] },
   dips: { T: -80, c: 1, arm: [55, 96], arm2: [58, 96], hip: 10, knee: 60, equip: 'pbars', support: ['hands'], motion: 'updown' },
   squat: { T: -68, c: 1, arm: [-5, -5], arm2: [0, 0], hip: 105, knee: 140, hip2: 95, knee2: 0, equip: 'floor', support: ['feet'], motion: 'updown' },
   hspu: { T: 90, c: -1, arm: [60, 122], arm2: [62, 122], hip: 0, knee: 0, equip: 'floor', support: ['hands'], motion: 'updown' },
@@ -67,6 +73,8 @@ const BASE: Record<string, Pose> = {
   cartwheel: { T: 110, c: -1, arm: [100, 100], arm2: [60, 60], hip: 0, knee: 0, spread: 70, equip: 'floor', support: ['hands'], motion: 'flip' },
   hang: { T: -78, c: -1, arm: [-118, -118], arm2: [-114, -114], hip: 0, knee: 0, equip: 'bar', support: ['hands'] },
   stand: { T: -90, c: 1, arm: [-95, -95], arm2: [-92, -92], hip: 0, knee: 0, equip: 'floor', support: ['feet'] },
+  hero: { T: -90, c: 1, arm: [76, 92], arm2: [104, 88], hip: 0, knee: 0, spread: -16, view: 'front', equip: 'floor', support: ['feet'] },
+  coach: { T: -90, c: 1, arm: [60, -60], arm2: [104, 88], hip: 0, knee: 0, spread: -14, view: 'front', equip: 'air', support: [] },
 }
 
 const P = (base: string, o: Partial<Pose> = {}): Pose => ({ ...BASE[base], ...o })
@@ -94,17 +102,20 @@ export function poseFor(skill: Skill): Pose {
   const rings = /rings|anneaux/.test(id) || skill.equipment.includes('anneaux')
   switch (true) {
     case id === 'planche-lean':
-      return P('planche', { T: 203, arm: [100, 100], arm2: [98, 98], support: ['hands', 'feet'] })
+      return P('planche', { T: 201, arm: [62, 62], arm2: [60, 60], support: ['hands', 'feet'], cues: ['protraction', 'locked', 'lean', 'hollow'] })
     case /maltese/.test(id):
       return P('planche', { arm: [44, 44], arm2: [42, 42], equip: rings ? 'rings' : 'floor', ...v })
     case /wide-planche/.test(id):
-      return P('planche', { arm: [58, 58], arm2: [56, 56] })
+      return P('planche', { arm: [40, 40], arm2: [38, 38] })
     case /forearm-planche/.test(id):
       return P('bentPlanche', { arm: [90, 180], arm2: [92, 180], ...oneArm })
     case /bent-arm|prayer|ninety|90/.test(id):
       return P('bentPlanche', { ...v, motion: skill.kind === 'reps' ? 'updown' : null })
-    case skill.line === 'planche' || skill.line === 'planche-elite':
-      return P('planche', { ...v, ...oneArm, equip: rings ? 'rings' : /lean/.test(id) ? 'floor' : 'parallettes' })
+    case skill.line === 'planche' || skill.line === 'planche-elite': {
+      // Plus la figure est groupée, moins il faut de lean : bras moins inclinés.
+      const a = /adv-tuck/.test(id) ? 58 : /tuck/.test(id) ? 64 : /one-leg/.test(id) ? 56 : /straddle|half-lay/.test(id) ? 53 : 50
+      return P('planche', { ...v, ...oneArm, arm: [a, a], arm2: [a - 2, a - 2], equip: rings ? 'rings' : /lean/.test(id) ? 'floor' : 'parallettes' })
+    }
     case skill.line === 'ppu':
       return P('planche', { ...v, motion: 'updown' })
     case skill.line === 'elbow':
@@ -193,6 +204,30 @@ export function poseFor(skill: Skill): Pose {
       return P('stand')
   }
 }
+
+// ---------------------------------------------------------------- Skins
+export interface SkinDef {
+  id: string
+  name: string
+  stops: [string, string, string]
+  far: [string, string]
+  shorts: [string, string]
+  hair: string
+  unlockRank: number
+}
+
+export const SKINS: SkinDef[] = [
+  { id: 'braise', name: 'Braise', stops: ['#ffc08a', '#ff7a1a', '#c23a1a'], far: ['#b2502a', '#7a2f17'], shorts: ['#5a2016', '#2a0e09'], hair: '#2a130a', unlockRank: 0 },
+  { id: 'rubis', name: 'Rubis', stops: ['#ff9aa8', '#ff3d4e', '#8f0f22'], far: ['#a52032', '#5c0a16'], shorts: ['#1c0a0c', '#0c0405'], hair: '#1a0507', unlockRank: 2 },
+  { id: 'or', name: 'Or massif', stops: ['#fff1c1', '#ffb000', '#a8580a'], far: ['#b8770d', '#6b3d06'], shorts: ['#2b1a05', '#150c02'], hair: '#3b2306', unlockRank: 4 },
+  { id: 'obsidienne', name: 'Obsidienne', stops: ['#8a7a72', '#3a2c26', '#140c09'], far: ['#2a1f1a', '#0d0806'], shorts: ['#ff5a1a', '#a8300a'], hair: '#000000', unlockRank: 6 },
+  { id: 'magma', name: 'Magma', stops: ['#fff3a0', '#ff6a00', '#5a0d00'], far: ['#c0400a', '#4a0a00'], shorts: ['#120302', '#000000'], hair: '#ffcf3f', unlockRank: 8 },
+  { id: 'spectre', name: 'Spectre', stops: ['#ffd6f0', '#ff4fa0', '#5a0a3a'], far: ['#a02a6a', '#3a0626'], shorts: ['#14040e', '#060105'], hair: '#ffe7a3', unlockRank: 10 },
+]
+const SKIN_BY_ID = Object.fromEntries(SKINS.map((k) => [k.id, k]))
+
+export const HERO_POSE = BASE.hero
+export const COACH_POSE = BASE.coach
 
 // ---------------------------------------------------------------- Squelette
 interface Rig {
@@ -297,10 +332,12 @@ function torsoPath(r: Rig, p: Pose) {
   const chestWaist = add(add(hip, u, 13), n, 5.4)
   const chestPec = add(add(hip, u, 24), n, 7.6)
   const chestSh = add(r.sh, n, 4.2)
-  const backSh = add(add(r.sh, u, -1), n, -5.4)
-  const backLat = add(add(hip, u, 20), n, -6.6)
-  const backWaist = add(add(hip, u, 9), n, -5.2)
-  const glute = add(add(hip, u, -1.5), n, -7)
+  const prot = p.posture?.prot ?? 0
+  const ppt = p.posture?.ppt ?? 0
+  const backSh = add(add(r.sh, u, -1), n, -(5.4 + prot * 0.6))
+  const backLat = add(add(hip, u, 21 - prot * 2), n, -(6.6 + prot * 2.4))
+  const backWaist = add(add(hip, u, 9), n, -(5.2 + ppt * 0.9))
+  const glute = add(add(hip, u, -1.5 + ppt * 1.2), n, -(7 - ppt * 2.2))
   const capTop = add(r.sh, u, 4)
   return [
     `M${f(chestHip.x)},${f(chestHip.y)}`,
@@ -313,10 +350,117 @@ function torsoPath(r: Rig, p: Pose) {
   ].join(' ')
 }
 
+// ---------------------------------------------------------------- Repères
+const CUE_TEXT: Record<Cue, [string, string]> = {
+  protraction: ['Protraction : dos rond', '#ffcf3f'],
+  depression: ['Épaules basses', '#ffcf3f'],
+  ppt: ['Rétroversion du bassin', '#ffcf3f'],
+  hollow: ['Abdos gainés (hollow)', '#ff9a5a'],
+  locked: ['Coudes verrouillés', '#ffffff'],
+  lean: ['Épaules devant les mains', '#ff6b8e'],
+  toes: ['Pointes tendues', '#ff9a5a'],
+  open: ['Épaules ouvertes', '#ffcf3f'],
+  push: ['Pousse le sol', '#ffffff'],
+  compression: ['Compression active', '#ff9a5a'],
+  pullTop: ['Bras haut : tire', '#ffffff'],
+  pushBottom: ['Bras bas : pousse', '#ffffff'],
+  glutes: ['Fessiers serrés', '#ff9a5a'],
+}
+
+function cueGeometry(p: Pose, r: Rig) {
+  const hip = { x: 0, y: 0 }
+  const { u, n } = r
+  const center = add(hip, u, 15)
+  const back = { x: -n.x, y: -n.y }
+  const mix = (a: V, ka: number, b: V, kb: number) => norm({ x: a.x * ka + b.x * kb, y: a.y * ka + b.y * kb })
+  const out: { key: Cue; label: string; color: string; a: V; end: V; box: { x0: number; x1: number; y0: number; y1: number } }[] = []
+  const place = (key: Cue, a: V, d: V, dist = 15) => {
+    const [label, color] = CUE_TEXT[key]
+    const wdt = label.length * 1.86 + 3.4
+    const hgt = 5.6
+    // le cartouche se place du côté où pointe la flèche ; on l'éloigne tant qu'il chevauche un autre
+    const overlaps = (b: { x0: number; x1: number; y0: number; y1: number }) => out.some((o) => b.x0 < o.box.x1 + 1 && b.x1 > o.box.x0 - 1 && b.y0 < o.box.y1 + 1 && b.y1 > o.box.y0 - 1)
+    let c = add(a, d, dist)
+    let box = { x0: 0, x1: 0, y0: 0, y1: 0 }
+    for (let k = 0; k < 8; k++) {
+      c = add(a, d, dist + k * 5)
+      const cx = c.x + (d.x > 0.35 ? wdt / 2 : d.x < -0.35 ? -wdt / 2 : 0)
+      const cy = c.y + (d.y > 0.35 ? hgt / 2 : d.y < -0.35 ? -hgt / 2 : 0)
+      box = { x0: cx - wdt / 2, x1: cx + wdt / 2, y0: cy - hgt / 2, y1: cy + hgt / 2 }
+      if (!overlaps(box)) break
+    }
+    out.push({ key, label, color, a, end: c, box })
+  }
+  for (const k of p.cues ?? []) {
+    switch (k) {
+      case 'protraction':
+        place(k, add(add(r.sh, u, -7), n, -7.2), mix(back, 1, u, 0.15), 16)
+        break
+      case 'depression':
+        place(k, add(add(r.sh, u, 2.5), n, p.view === 'front' ? 0 : -3), mix(u, 1, back, 0.5), 12)
+        break
+      case 'ppt':
+        place(k, add(add(hip, u, -1.5), n, -6), mix(back, 1, u, -0.55), 15)
+        break
+      case 'glutes':
+        place(k, add(add(hip, u, 3), n, -6), mix(back, 1, u, 0.4), 22)
+        break
+      case 'hollow':
+        place(k, add(add(hip, u, 12), n, 5.3), mix(n, 1, u, -0.15), 13)
+        break
+      case 'locked':
+        place(k, r.el, norm(sub(r.el, center)), 13)
+        break
+      case 'lean':
+        place(k, { x: (r.wr.x + r.sh.x) / 2, y: (r.wr.y + r.sh.y) / 2 }, mix(u, 1, n, 0.25), 14)
+        break
+      case 'toes':
+        place(k, add(r.anN, dir(r.shin), 5), mix(dir(r.shin), 1, back, 0.8), 10)
+        break
+      case 'open':
+        place(k, r.sh, back, 14)
+        break
+      case 'push':
+        place(k, r.wr, n, 12)
+        break
+      case 'compression':
+        place(k, add(add(hip, n, 5), dir(r.thigh), 3), mix(n, 1, u, 1.2), 14)
+        break
+      case 'pullTop':
+        place(k, r.el, norm(sub(r.el, r.sh)), 10)
+        break
+      case 'pushBottom':
+        if (r.el2) place(k, r.el2, norm(sub(r.el2, r.sh)), 10)
+        break
+    }
+  }
+  return out
+}
+
 // ---------------------------------------------------------------- Rendu
-export function FigureArt({ skill, size = 280, detailed = true, mastered = false, fit = false }: { skill: Skill; size?: number; detailed?: boolean; mastered?: boolean; fit?: boolean }) {
+export function FigureArt({
+  skill,
+  pose,
+  size = 280,
+  detailed = true,
+  mastered = false,
+  fit = false,
+  skin = 'braise',
+  cues = true,
+  backdrop = true,
+}: {
+  skill?: Skill
+  pose?: Pose
+  size?: number
+  detailed?: boolean
+  mastered?: boolean
+  fit?: boolean
+  skin?: string
+  cues?: boolean
+  backdrop?: boolean
+}) {
   const uid = useId().replace(/:/g, '')
-  const p = poseFor(skill)
+  const p = pose ?? poseFor(skill!)
   const r = rig(p)
   const front = p.view === 'front'
 
@@ -327,6 +471,7 @@ export function FigureArt({ skill, size = 280, detailed = true, mastered = false
   if (p.support.includes('shoulders')) sup.push(r.sh)
   if (p.support.includes('hips')) sup.push({ x: 0, y: 0 })
   const joints = [r.sh, r.shN, r.shF, r.head, r.el, r.wr, r.knN, r.anN, r.knF, r.anF, { x: 0, y: 0 }, ...(r.el2 && r.wr2 ? [r.el2, r.wr2] : [])]
+  const callouts = detailed && cues ? cueGeometry(p, r) : []
   let minX = Math.min(...joints.map((j) => j.x)) - 9
   let maxX = Math.max(...joints.map((j) => j.x)) + 9
   let minY = Math.min(...joints.map((j) => j.y)) - 9
@@ -346,14 +491,20 @@ export function FigureArt({ skill, size = 280, detailed = true, mastered = false
     maxX += 6
     minY -= 6
   }
+  for (const c of callouts) {
+    minX = Math.min(minX, c.box.x0)
+    maxX = Math.max(maxX, c.box.x1)
+    minY = Math.min(minY, c.box.y0)
+    maxY = Math.max(maxY, c.box.y1)
+  }
   const pad = 6
   const w = maxX - minX + pad * 2
   const h = maxY - minY + pad * 2
   const vb = `${f(minX - pad)} ${f(minY - pad)} ${f(w)} ${f(h)}`
   const cx = (minX + maxX) / 2
 
-  const skin = mastered ? ['#ffd29a', '#ff8a2a', '#e2461b'] : ['#ffc08a', '#ff7a1a', '#c23a1a']
-  const far = '#7a2f17'
+  const sk = SKIN_BY_ID[skin] ?? SKINS[0]
+  const tone = mastered && skin === 'braise' ? (['#ffd29a', '#ff8a2a', '#e2461b'] as const) : sk.stops
   const g = (k: string) => `${k}-${uid}`
 
   // Bras/jambes : rayons + galbes (deltoïde, biceps/triceps, quadriceps, mollet)
@@ -374,16 +525,16 @@ export function FigureArt({ skill, size = 280, detailed = true, mastered = false
   const hipAngle = Math.round(180 - Math.abs(p.hip))
 
   return (
-    <svg viewBox={vb} width={fit ? '100%' : size} height={fit ? '100%' : (size * h) / w} preserveAspectRatio="xMidYMid meet" style={{ maxWidth: '100%', overflow: fit ? 'hidden' : 'visible' }} role="img" aria-label={skill.name}>
+    <svg viewBox={vb} width={fit ? '100%' : size} height={fit ? '100%' : (size * h) / w} preserveAspectRatio="xMidYMid meet" style={{ maxWidth: '100%', overflow: fit ? 'hidden' : 'visible' }} role="img" aria-label={skill?.name ?? 'Athlète'}>
       <defs>
         <linearGradient id={g('skin')} x1="0" y1={f(minY)} x2="0" y2={f(maxY)} gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor={skin[0]} />
-          <stop offset="0.45" stopColor={skin[1]} />
-          <stop offset="1" stopColor={skin[2]} />
+          <stop offset="0" stopColor={tone[0]} />
+          <stop offset="0.45" stopColor={tone[1]} />
+          <stop offset="1" stopColor={tone[2]} />
         </linearGradient>
         <linearGradient id={g('far')} x1="0" y1={f(minY)} x2="0" y2={f(maxY)} gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#b2502a" />
-          <stop offset="1" stopColor={far} />
+          <stop offset="0" stopColor={sk.far[0]} />
+          <stop offset="1" stopColor={sk.far[1]} />
         </linearGradient>
         <linearGradient id={g('metal')} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="#fff3e6" />
@@ -401,8 +552,8 @@ export function FigureArt({ skill, size = 280, detailed = true, mastered = false
           <stop offset="1" stopColor="#7a4a22" />
         </linearGradient>
         <linearGradient id={g('shorts')} x1="0" y1={f(minY)} x2="0" y2={f(maxY)} gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="#5a2016" />
-          <stop offset="1" stopColor="#2a0e09" />
+          <stop offset="0" stopColor={sk.shorts[0]} />
+          <stop offset="1" stopColor={sk.shorts[1]} />
         </linearGradient>
         <radialGradient id={g('glow')} cx="0.5" cy="0.55" r="0.6">
           <stop offset="0" stopColor="#ff7a1a" stopOpacity="0.28" />
@@ -422,7 +573,7 @@ export function FigureArt({ skill, size = 280, detailed = true, mastered = false
       </defs>
 
       {/* halo */}
-      <ellipse cx={f(cx)} cy={f((minY + maxY) / 2)} rx={f(w * 0.55)} ry={f(h * 0.55)} fill={`url(#${g('glow')})`} />
+      {backdrop && <ellipse cx={f(cx)} cy={f((minY + maxY) / 2)} rx={f(w * 0.55)} ry={f(h * 0.55)} fill={`url(#${g('glow')})`} />}
 
       {/* sol + ombre portée */}
       {floorY !== null && (
@@ -490,7 +641,7 @@ export function FigureArt({ skill, size = 280, detailed = true, mastered = false
         <path d={limb(r.sh, r.head, 2.9, 2.6, 0.4, 0.4)} />
         <path d={torsoPath(r, p)} />
         {/* tête : chevelure (côté dos) puis visage décalé vers l'avant */}
-        <ellipse cx={f(r.head.x)} cy={f(r.head.y)} rx="5.4" ry="6" fill="#2a130a" transform={`rotate(${f(angDeg(r.u) + 90)} ${f(r.head.x)} ${f(r.head.y)})`} />
+        <ellipse cx={f(r.head.x)} cy={f(r.head.y)}  rx="5.4" ry="6" fill={sk.hair} transform={`rotate(${f(angDeg(r.u) + 90)} ${f(r.head.x)} ${f(r.head.y)})`} />
         <ellipse
           cx={f(add(add(r.head, front ? { x: 0, y: 0 } : r.n, 1.1), r.u, -0.9).x)}
           cy={f(add(add(r.head, front ? { x: 0, y: 0 } : r.n, 1.1), r.u, -0.9).y)}
@@ -509,7 +660,15 @@ export function FigureArt({ skill, size = 280, detailed = true, mastered = false
         <path d={foreArm(r.el, r.wr)} />
         <path d={hand(r.wr, armDeg)} />
         {/* short */}
-        <path d={limb(add({ x: 0, y: 0 }, r.u, 2.2), add({ x: 0, y: 0 }, dir(r.thigh), 6.5), 5.4, 4.8, 0.3, 0.3)} fill={`url(#${g('shorts')})`} />
+        {front ? (
+          <>
+            <path d={limb(add(r.hipN, r.u, 2.5), add(r.hipN, dir(r.thigh), 7), 5.6, 5, 0.4, 0.4)} fill={`url(#${g('shorts')})`} />
+            <path d={limb(add(r.hipF, r.u, 2.5), add(r.hipF, dir(r.thigh2), 7), 5.6, 5, 0.4, 0.4)} fill={`url(#${g('shorts')})`} />
+            <path d={limb(add(r.hipF, r.u, 3), add(r.hipN, r.u, 3), 2.2, 2.2, 0, 0)} fill={`url(#${g('shorts')})`} />
+          </>
+        ) : (
+          <path d={limb(add({ x: 0, y: 0 }, r.u, 2.2), add({ x: 0, y: 0 }, dir(r.thigh), 6.5), 5.4, 4.8, 0.3, 0.3)} fill={`url(#${g('shorts')})`} />
+        )}
       </g>
 
       {/* définition musculaire + reflets */}
@@ -530,7 +689,24 @@ export function FigureArt({ skill, size = 280, detailed = true, mastered = false
                 const b = add(a, r.n, 1.8)
                 return <path key={t} d={`M${f(a.x)},${f(a.y)} L${f(b.x)},${f(b.y)}`} />
               })}
-            {front && <path d={`M${f(r.sh.x)},${f(r.sh.y - r.u.y * 0)} L${f(add(r.sh, r.u, -20).x)},${f(add(r.sh, r.u, -20).y)}`} />}
+            {front &&
+              (() => {
+                const x = perp(r.u)
+                const at = (t: number, k: number) => add(add({ x: 0, y: 0 }, r.u, L.torso * t), x, k)
+                const pecL = [at(0.82, -7.5), at(0.68, -3.5), at(0.7, 0)]
+                const pecR = [at(0.82, 7.5), at(0.68, 3.5), at(0.7, 0)]
+                const q = (pts: V[]) => `M${f(pts[0].x)},${f(pts[0].y)} Q${f(pts[1].x)},${f(pts[1].y)} ${f(pts[2].x)},${f(pts[2].y)}`
+                return (
+                  <>
+                    <path d={q(pecL)} />
+                    <path d={q(pecR)} />
+                    <path d={`M${f(at(0.66, 0).x)},${f(at(0.66, 0).y)} L${f(at(0.18, 0).x)},${f(at(0.18, 0).y)}`} />
+                    {[0.55, 0.43, 0.31].map((t) => (
+                      <path key={t} d={`M${f(at(t, -3.2).x)},${f(at(t, -3.2).y)} L${f(at(t, 3.2).x)},${f(at(t, 3.2).y)}`} />
+                    ))}
+                  </>
+                )
+              })()}
             <path d={muscleLine(r.shN, r.el, -2.2, 0.3, 0.85, -0.8)} />
           </g>
           {/* liseré de lumière */}
@@ -561,7 +737,7 @@ export function FigureArt({ skill, size = 280, detailed = true, mastered = false
           <text x={f(r.wr.x + 3)} y={f(minY + 2)} fontSize="4" fill="#ffcf3f" fontWeight="700">90°</text>
         </g>
       )}
-      {annot.includes('elbow') && (
+      {annot.includes('elbow') && !(p.cues ?? []).includes('locked') && (
         <g>
           <circle cx={f(r.el.x)} cy={f(r.el.y)} r="3.4" fill="none" stroke="#fff" strokeOpacity="0.85" strokeWidth="0.5" />
           <text x={f(r.el.x + 4.5)} y={f(r.el.y + 1.5)} fontSize="4" fill="#fff" fontWeight="800">{elbowAngle}°</text>
@@ -577,6 +753,33 @@ export function FigureArt({ skill, size = 280, detailed = true, mastered = false
           <text x={f((r.wr.x + r.sh.x) / 2)} y={f(r.wr.y - 3)} fontSize="3.6" textAnchor="middle" stroke="none" fontWeight="700">lean</text>
         </g>
       )}
+      {detailed && (p.cues ?? []).includes('ppt') && !front && (() => {
+        // flèche courbe : le bassin bascule (rétroversion)
+        const a = add(add({ x: 0, y: 0 }, r.u, 5), r.n, -8.2)
+        const b = add(add({ x: 0, y: 0 }, r.u, -5.5), r.n, -6.4)
+        const sweep = p.c > 0 ? 1 : 0
+        return (
+          <g stroke="#ffcf3f" strokeWidth="0.75" fill="none" strokeLinecap="round">
+            <path d={`M${f(a.x)},${f(a.y)} A9,9 0 0 ${sweep} ${f(b.x)},${f(b.y)}`} />
+            <path d={`M${f(b.x)},${f(b.y)} l${f(-r.u.x * 0.4 + r.n.x * 1.8)},${f(-r.u.y * 0.4 + r.n.y * 1.8)} M${f(b.x)},${f(b.y)} l${f(r.u.x * 1.9 - r.n.x * 0.2)},${f(r.u.y * 1.9 - r.n.y * 0.2)}`} />
+          </g>
+        )
+      })()}
+      {detailed && (p.cues ?? []).includes('protraction') && !front && (() => {
+        const a = add(add(r.sh, r.u, -12), r.n, -8.6)
+        const b = add(add(r.sh, r.u, -2), r.n, -7.6)
+        return <path d={`M${f(a.x)},${f(a.y)} Q${f(add(add(r.sh, r.u, -7), r.n, -11).x)},${f(add(add(r.sh, r.u, -7), r.n, -11).y)} ${f(b.x)},${f(b.y)}`} stroke="#ffcf3f" strokeWidth="0.75" fill="none" strokeDasharray="1.4 1" />
+      })()}
+      {callouts.map((c) => (
+        <g key={c.key}>
+          <line x1={f(c.a.x)} y1={f(c.a.y)} x2={f(c.end.x)} y2={f(c.end.y)} stroke="#fff" strokeOpacity="0.7" strokeWidth="0.35" />
+          <circle cx={f(c.a.x)} cy={f(c.a.y)} r="0.95" fill="#fff" />
+          <rect x={f(c.box.x0)} y={f(c.box.y0)} width={f(c.box.x1 - c.box.x0)} height={f(c.box.y1 - c.box.y0)} rx="1.6" fill="#100a07" fillOpacity="0.82" stroke={c.color} strokeOpacity="0.7" strokeWidth="0.3" />
+          <text x={f((c.box.x0 + c.box.x1) / 2)} y={f(c.box.y1 - 1.75)} fontSize="3.5" fill={c.color} textAnchor="middle" fontWeight="700">
+            {c.label}
+          </text>
+        </g>
+      ))}
       {p.motion === 'updown' && detailed && (
         <g stroke="#ffcf3f" strokeWidth="0.9" fill="#ffcf3f" strokeLinecap="round">
           <line x1={f(maxX + 1)} y1={f(minY + 6)} x2={f(maxX + 1)} y2={f(minY + 20)} />

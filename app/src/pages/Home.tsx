@@ -3,7 +3,12 @@ import { useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { Ring } from '../components/charts'
 import { Icon, IconTile, type IconName } from '../components/Icon'
+import { CoachTour } from '../components/CoachTour'
+import { DailyReward } from '../components/DailyReward'
+import { FigureArt, HERO_POSE } from '../components/FigureArt'
 import { RankBadge } from '../components/RankBadge'
+import { SKILLS as ALL_SKILLS } from '../data/skills'
+import { VOIES } from '../lib/voies'
 import { Bar, Page, Section, TierBadge, toneColor } from '../components/ui'
 import { SKILL_BY_ID } from '../data/skills'
 import { challengesFor } from '../lib/challenges'
@@ -43,6 +48,35 @@ export default function Home() {
         <Link to="/profile" className="grid h-11 w-11 place-items-center rounded-2xl text-lg font-black text-ink-950" style={{ background: `hsl(${s.profile?.avatarHue ?? 90} 90% 65%)` }}>
           {s.profile?.name?.[0]?.toUpperCase()}
         </Link>
+      </div>
+
+      {/* Bannière héros */}
+      <div className="relative mt-2 overflow-hidden rounded-3xl border border-volt/30" style={{ background: 'radial-gradient(ellipse at 75% 35%, #6a2a0c, #24130c 55%, #140c09)' }}>
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 360 240" preserveAspectRatio="none" aria-hidden>
+          <defs>
+            <linearGradient id="homeSpot" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#ffcf3f" stopOpacity="0.28" />
+              <stop offset="1" stopColor="#ffcf3f" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <path d="M215 0 L300 0 L345 240 L170 240 Z" fill="url(#homeSpot)" />
+        </svg>
+        <div className="relative flex">
+          <div className="z-10 flex-1 p-4 pr-0">
+            <div className="font-mono text-[10px] font-bold uppercase tracking-[0.25em] text-volt">Ton arène</div>
+            <h2 className="mt-1 text-[34px] font-black leading-[0.95] tracking-tight">Défie la<br />gravité.</h2>
+            <p className="mt-2 text-[12px] leading-snug text-white/75">Valide tes paliers, fais certifier tes figures et grimpe jusqu'au rang ultime.</p>
+            <div className="mt-2 flex flex-wrap gap-1">
+              {[`${VOIES.length} voies`, '12 rangs', `${ALL_SKILLS.length} figures`].map((t) => (
+                <span key={t} className="rounded-md border border-white/15 bg-black/25 px-1.5 py-0.5 font-mono text-[9px] font-bold uppercase tracking-wider text-white/80">{t}</span>
+              ))}
+            </div>
+            <Link to="/voies" className="btn-primary mt-3 !rounded-xl !px-4 !py-2.5 text-[13px]">Voir mes paliers</Link>
+          </div>
+          <motion.div className="h-[230px] w-[42%] shrink-0 self-end py-2" animate={{ y: [0, -4, 0] }} transition={{ repeat: Infinity, duration: 3.2, ease: 'easeInOut' }}>
+            <FigureArt pose={HERO_POSE} fit skin={s.skin} cues={false} backdrop={false} />
+          </motion.div>
+        </div>
       </div>
 
       <Link to="/ranks">
@@ -169,6 +203,16 @@ export default function Home() {
           </div>
         </Link>
       )}
+      <DailyReward />
+      <CoachTour
+        id="home"
+        steps={[
+          `Salut ${s.profile?.name ?? 'champion'} ! Je suis ton coach GRAVITAS. Je te suis à chaque séance.`,
+          'Ici : ton rang, ta forme du jour, tes objectifs et mes conseils calculés sur tes vraies données.',
+          'Le gros bouton + en bas lance tout : séance guidée, chrono de hold, analyse vidéo, combos.',
+          'Reviens chaque jour : ta série fait grimper ta récompense quotidienne. À toi de jouer !',
+        ]}
+      />
     </Page>
   )
 }

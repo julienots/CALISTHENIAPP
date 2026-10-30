@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import { RankBadge } from '../components/RankBadge'
 import { Bar, Header, Page } from '../components/ui'
 import { RANKS } from '../data/ranks'
@@ -27,6 +28,7 @@ export default function Ranks() {
           </div>
         )}
       </div>
+      <Link to="/voies" className="btn-primary mt-2 w-full">Voir mes paliers par voie</Link>
       <div className="mt-4 space-y-2">
         {RANKS.map((rk, i) => {
           const reached = rk.id <= r.rank.id

@@ -13,6 +13,7 @@ const ITEMS: [string, IconName, string, string, string][] = [
   ['/competition', 'swords', 'Prépa compét', 'Simulation & jury', '#ff3b30'],
   ['/map', 'map', 'Carte compét', 'France & monde en direct', '#ff3d6e'],
   ['/challenges', 'trophy', 'Défis', 'Quotidiens, hebdo, épreuves', '#ffb000'],
+  ['/voies', 'chart', 'Mes paliers', 'Push, Pull, Équilibre, Agilité', '#ff3b30'],
   ['/ranks', 'gem', 'Rangs', 'Jusqu\'à GRAVITAS ZÉRO', '#ff7a1a'],
   ['/gallery', 'sparkle', 'Galerie des figures', 'Toutes les figures illustrées', '#ff3d6e'],
   ['/records', 'crown', 'Records du monde', 'Les sommets, sourcés', '#ffcf3f'],

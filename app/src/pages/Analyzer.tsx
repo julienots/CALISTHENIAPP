@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
+import { CoachTour } from '../components/CoachTour'
 import { Ring } from '../components/charts'
 import { Bar, Header, Page, Section, Segmented, SkillPicker, TierBadge } from '../components/ui'
 import { SKILL_BY_ID, unitOf } from '../data/skills'
@@ -303,6 +304,7 @@ export default function Analyzer() {
           </div>
         </Section>
       )}
+      <CoachTour id="analyzer" steps={[`L'analyseur mesure tes angles en direct grâce à l'IA, sans internet.`, `Filme-toi de profil, corps entier. Je note chaque critère sur 10 et je chronomètre ton hold valide.`, `Une note de 8 ou plus au standard = figure certifiée. Ça booste tes points de rang !`]} />
       <SkillPicker open={picker} onClose={() => setPicker(false)} onPick={(x) => (setSkillId(x.id), setResult(null))} />
     </Page>
   )

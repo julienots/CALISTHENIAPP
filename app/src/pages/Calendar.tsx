@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { CoachTour } from '../components/CoachTour'
 import { Header, Page } from '../components/ui'
 import { sessionXp } from '../lib/scoring'
 import { DAY, dayKey, streak } from '../lib/stats'
@@ -216,6 +217,7 @@ export default function Calendar() {
             </div>
           )
         })}
+      <CoachTour id="calendar" steps={[`Ton calendrier : chaque jour défile, à l'infini vers le passé.`, `Une séance = une carte. Rien = croix rouge barrée. Le bouton lune marque un jour de repos.`, `En haut : ta grille des 18 dernières semaines et tes stats du mois.`]} />
         <div ref={sentinel} className="py-6 text-center text-xs text-white/45">Chargement des jours précédents…</div>
       </div>
     </Page>

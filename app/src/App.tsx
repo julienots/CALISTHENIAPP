@@ -33,6 +33,7 @@ const More = lazy(() => import('./pages/More'))
 const Calendar = lazy(() => import('./pages/Calendar'))
 const Records = lazy(() => import('./pages/Records'))
 const Gallery = lazy(() => import('./pages/Gallery'))
+const Voies = lazy(() => import('./pages/Voies'))
 
 const NAV: { to: string; label: string; icon: IconName }[] = [
   { to: '/', label: 'Accueil', icon: 'home' },
@@ -135,6 +136,7 @@ function Shell() {
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/records" element={<Records />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/voies" element={<Voies />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Suspense>
@@ -145,8 +147,10 @@ function Shell() {
             {NAV.map((n) =>
               n.to === '#train' ? (
                 <button key={n.to} onClick={() => setTrain((v) => !v)} className="-mt-7 flex flex-col items-center" aria-label="Entraîner">
-                  <motion.div whileTap={{ scale: 0.9 }} animate={{ rotate: train ? 45 : 0 }} className="grid h-[60px] w-[60px] place-items-center rounded-[20px] bg-gradient-to-br from-[#ffa13d] via-volt to-[#ff3d6e] text-[#1a0b04] shadow-[0_8px_30px_-4px_#ff7a1acc,inset_0_1px_0_#ffffff77]">
-                    <Icon name="plus" size={30} strokeWidth={3} />
+                  <motion.div whileTap={{ scale: 0.9 }} className="relative grid h-[66px] w-[66px] place-items-center rounded-full bg-[#100a07] p-[3px] shadow-[0_8px_30px_-4px_#ff7a1acc]" style={{ background: 'conic-gradient(from 200deg, #ffcf3f, #ff7a1a, #ff3d6e, #ffcf3f)' }}>
+                    <motion.div animate={{ rotate: train ? 45 : 0 }} className="grid h-full w-full place-items-center rounded-full bg-gradient-to-br from-[#2e1d15] to-[#100a07] text-volt">
+                      <Icon name="plus" size={30} strokeWidth={3} />
+                    </motion.div>
                   </motion.div>
                   <span className="mt-1 text-[10px] font-bold text-volt">{n.label}</span>
                 </button>
