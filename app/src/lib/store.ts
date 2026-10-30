@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { del, get, set as idbSet } from 'idb-keyval'
+import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware'
 import type {
   Analysis,
   ChallengeState,
@@ -11,6 +12,50 @@ import type {
   SessionLog,
   SkillRecord,
 } from './types'
+
+/**
+ * Stockage IndexedDB (bien plus de place que localStorage, plus robuste dans la WebView Android).
+ * Migration transparente : si une ancienne sauvegarde localStorage existe, elle est reprise une fois.
+ */
+const idbStorage: StateStorage = {
+  getItem: async (name) => {
+    try {
+      const v = await get<string>(name)
+      if (v != null) return v
+    } catch {
+      /* IndexedDB indisponible : repli sur localStorage */
+    }
+    try {
+      return localStorage.getItem(name)
+    } catch {
+      return null
+    }
+  },
+  setItem: async (name, value) => {
+    try {
+      await idbSet(name, value)
+      try {
+        localStorage.removeItem(name) // migration terminée
+      } catch {
+        /* rien */
+      }
+    } catch {
+      localStorage.setItem(name, value)
+    }
+  },
+  removeItem: async (name) => {
+    try {
+      await del(name)
+    } catch {
+      /* rien */
+    }
+    try {
+      localStorage.removeItem(name)
+    } catch {
+      /* rien */
+    }
+  },
+}
 
 export const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36).slice(-4)
 
@@ -168,6 +213,11 @@ export const useStore = create<State>()(
       importAll: (data) => set((s) => ({ ...s, ...data })),
       resetAll: () => set({ ...initial }),
     }),
-    { name: 'gravitas-v1', version: 1 },
+    {
+      name: 'gravitas-v1',
+      version: 1,
+      storage: createJSONStorage(() => idbStorage),
+      // on ne sauvegarde pas l'historique du chat ni le cache des compétitions s'ils sont vides
+    },
   ),
 )

@@ -34,9 +34,17 @@ Application mobile Android de calisthenics : coach, programmes générés à l'i
 
 L'appli ne dépend d'aucun serveur et ne coûte rien à faire tourner, même avec beaucoup d'utilisateurs : profil, séances, programmes, analyses vidéo, rangs et calendrier restent stockés sur le téléphone. Les programmes et les coachs se partagent par code (WhatsApp, Instagram, mail). La sauvegarde est un fichier que l'utilisateur garde où il veut.
 
+## Fiabilité
+
+- **Stockage** : IndexedDB (plus de place et plus robuste que localStorage), avec migration automatique des anciennes données.
+- **Sauvegarde automatique** dans le stockage privé de l'appli à chaque changement. Si les données de l'appli disparaissent (cache vidé), elle propose de les restaurer au démarrage.
+- **Écran de secours** en cas de plantage : recharger ou exporter ses données, sans rien perdre.
+- **Timers calés sur l'horloge réelle** : aucune dérive même quand Android ralentit l'appli.
+- **Tests automatiques** (`npm test`) sur le générateur, les rangs, les statistiques, l'analyseur de pose, les paliers et les données (figures, compétitions). La compilation GitHub de l'APK ne passe que si tout est vert.
+
 ## Ce qui utilise internet (gratuit, sans compte)
 
-- **Compétitions** : l'appli lit `app/public/competitions.json` sur la branche `main` de ce dépôt. Pour ajouter une compétition pour tout le monde, il suffit de modifier ce fichier : les applis installées le récupèrent à la prochaine actualisation. Les événements fournis viennent de sources vérifiées (FNSL, Calisthenics Cup, WSWCF, Saint-Priest, Kallos-Sthenos). Il n'existe pas d'API publique mondiale des compétitions de calisthenics, d'où ce flux.
+- **Compétitions** : l'appli lit `app/public/competitions.json` (dates confirmées) et `app/public/competition-series.json` (séries récurrentes dont la prochaine date n'est pas encore publiée) sur ce dépôt, branche `main` puis branche de travail en secours. Pour ajouter une compétition pour tout le monde, il suffit de modifier ce fichier : les applis installées le récupèrent à la prochaine actualisation. Les événements fournis viennent de sources vérifiées (FNSL, Calisthenics Cup, WSWCF, Saint-Priest, Kallos-Sthenos). Il n'existe pas d'API publique mondiale des compétitions de calisthenics, d'où ce flux.
 - **Fond de carte** : tuiles publiques Esri, chargées directement par le téléphone de chaque utilisateur.
 - **Coach IA (optionnel)** : chaque utilisateur peut coller sa propre clé API Anthropic dans *Réglages* ; c'est lui qui paie son usage. Sans clé, le coach hors ligne fonctionne normalement.
 

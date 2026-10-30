@@ -1,7 +1,7 @@
 // Illustrations vectorielles détaillées des figures.
 // Squelette cinématique (angles) → muscles galbés, lumière, ombre portée,
 // matériel réaliste, et annotations techniques optionnelles (ligne, angles).
-import { useId } from 'react'
+import { memo, useId } from 'react'
 import type { Skill } from '../data/skills'
 
 type V = { x: number; y: number }
@@ -437,7 +437,7 @@ function cueGeometry(p: Pose, r: Rig) {
 }
 
 // ---------------------------------------------------------------- Rendu
-export function FigureArt({
+function FigureArtImpl({
   skill,
   pose,
   size = 280,
@@ -774,3 +774,6 @@ export function FigureArt({
     </svg>
   )
 }
+
+/** Mémorisé : les listes de figures ne redessinent pas 168 illustrations à chaque rendu. */
+export const FigureArt = memo(FigureArtImpl)

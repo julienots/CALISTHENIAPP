@@ -1,0 +1,118 @@
+[
+ {
+  "id": "wswcf-cwc-2027",
+  "name": "Calisthenics World Championship 2027 (WSWCF)",
+  "where": "Lieu à annoncer",
+  "period": "Annoncé « save the date », date à venir",
+  "disciplines": [
+   "Freestyle",
+   "Endurance",
+   "Power"
+  ],
+  "url": "https://wswcf.org/"
+ },
+ {
+  "id": "finalrep-worlds-27",
+  "name": "FinalRep WORLDS 27 (mondial street lifting)",
+  "where": "Lieu à annoncer",
+  "period": "Habituellement fin septembre / octobre",
+  "disciplines": [
+   "Street lifting"
+  ],
+  "url": "https://final-rep.com/"
+ },
+ {
+  "id": "cf-street-workout-2027",
+  "name": "Championnat de France de Street Workout 2027",
+  "where": "France",
+  "period": "Habituellement septembre, après les qualifs régionales du printemps",
+  "disciplines": [
+   "Freestyle",
+   "Statique"
+  ],
+  "url": "https://ville-saint-priest.fr/agenda/championnat-de-france-de-street-workout/"
+ },
+ {
+  "id": "fnsl-2027",
+  "name": "Circuit FNSL 2027 (Premier Pas, inter-régionales, Élite)",
+  "where": "France",
+  "period": "Mars à juin, finale Élite en mai",
+  "disciplines": [
+   "Street lifting"
+  ],
+  "url": "https://www.fnsl.fr/documents/roadmap.pdf"
+ },
+ {
+  "id": "gabt-8",
+  "name": "Gravity Armoric Battle Tour 8",
+  "where": "Plourin-lès-Morlaix, France",
+  "period": "Habituellement fin août",
+  "disciplines": [
+   "Freestyle"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/gabt/7-2026"
+ },
+ {
+  "id": "isn-4",
+  "name": "International Strength Nights IV",
+  "where": "Toulouse, France",
+  "period": "Habituellement début août",
+  "disciplines": [
+   "Street lifting",
+   "Statique"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/isn/2026"
+ },
+ {
+  "id": "ibc-2027",
+  "name": "International Burningate Cup 2027",
+  "where": "Italie",
+  "period": "Habituellement début septembre",
+  "disciplines": [
+   "Statique",
+   "Freestyle"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/ibc/2026"
+ },
+ {
+  "id": "swub-9",
+  "name": "Street Workout Ultimate Battles IX",
+  "where": "Région de Madrid, Espagne",
+  "period": "Habituellement juin",
+  "disciplines": [
+   "Statique",
+   "Dynamique"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/swub/viii-2026"
+ },
+ {
+  "id": "sthenos-xbition-5",
+  "name": "Sthenos Xbition V",
+  "where": "Lausanne, Suisse",
+  "period": "Habituellement fin mai / juin",
+  "disciplines": [
+   "Statique"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/sthenos-xbition/iv-2026"
+ },
+ {
+  "id": "queen-of-statics-2027",
+  "name": "Queen of Statics 2027",
+  "where": "Région de Madrid, Espagne",
+  "period": "Habituellement septembre",
+  "disciplines": [
+   "Statique femmes"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/queen-of-statics/2026"
+ },
+ {
+  "id": "free-power-2027",
+  "name": "Free Power World Championship 2027",
+  "where": "São Paulo, Brésil",
+  "period": "Habituellement fin février",
+  "disciplines": [
+   "Power freestyle"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/freepower/2026"
+ }
+]

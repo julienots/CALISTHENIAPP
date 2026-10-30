@@ -62,10 +62,14 @@ export function IntervalRunner({ segs, onDone }: { segs: Seg[]; onDone?: () => v
   useEffect(() => {
     if (!running) return
     keepAwake(true)
+    // fin du segment en temps réel : aucune dérive, même écran éteint ou appli ralentie
+    let segEnd = Date.now() + state.current.left * 1000
     iv.current = window.setInterval(() => {
       const segs = segsRef.current
       const st = state.current
-      st.left -= 1
+      const left = Math.max(0, Math.ceil((segEnd - Date.now()) / 1000))
+      if (left === st.left) return
+      st.left = left
       if (st.left === 10 && segs[st.i].sec > 20) say('Dix secondes')
       if (st.left <= 3 && st.left > 0) countdownBeep()
       if (st.left <= 0) {
@@ -80,6 +84,7 @@ export function IntervalRunner({ segs, onDone }: { segs: Seg[]; onDone?: () => v
           st.left = 0
         } else {
           st.left = segs[st.i].sec
+          segEnd = Date.now() + st.left * 1000
           const seg = segs[st.i]
           goBeep()
           buzz(true)
@@ -88,7 +93,7 @@ export function IntervalRunner({ segs, onDone }: { segs: Seg[]; onDone?: () => v
       }
       setI(st.i)
       setLeft(st.left)
-    }, 1000)
+    }, 200)
     return () => {
       if (iv.current) clearInterval(iv.current)
       keepAwake(false)

@@ -80,6 +80,7 @@ export default function Settings() {
       </Section>
 
       <Section title="Sauvegarde & export">
+        <p className="mb-2 text-[12px] text-white/65">Sauvegarde automatique active : tes données sont aussi copiées dans le stockage privé de l'appli à chaque changement. Pour changer de téléphone, utilise « Sauvegarder » et garde le fichier.</p>
         <div className="grid grid-cols-2 gap-2">
           <button className="btn-ghost" onClick={backup}><Icon name="save" size={18} /> Sauvegarder</button>
           <button className="btn-ghost" onClick={restore}><Icon name="folder" size={18} /> Restaurer</button>
@@ -90,7 +91,7 @@ export default function Settings() {
       <Section title="Zone sensible">
         <button className="btn-danger w-full" onClick={() => confirm('Effacer TOUTES les données ? Action irréversible.') && (s.resetAll(), nav('/onboarding', { replace: true }))}>Réinitialiser l'application</button>
       </Section>
-      <p className="text-center text-[11px] text-white/45">GRAVITAS v1.0 · Défie la gravité</p>
+      <p className="text-center text-[11px] text-white/45">GRAVITAS v1.1 · 100 % hors ligne · Défie la gravité</p>
     </Page>
   )
 }

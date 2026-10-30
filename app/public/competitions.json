@@ -1,90 +1,440 @@
 [
-  {
-    "id": "fnsl-nouvelle-generation-2026",
-    "name": "FNSL France Nouvelle Génération",
-    "city": "Sevran",
-    "country": "France",
-    "lat": 48.9386,
-    "lng": 2.5275,
-    "start": "2026-10-31",
-    "end": "2026-11-01",
-    "disciplines": ["Street lifting"],
-    "organizer": "FNSL — Fédération Nouvelle de Street Lifting",
-    "url": "https://fnsl.fr/",
-    "source": "fnsl.fr",
-    "verified": true
-  },
-  {
-    "id": "fnsl-mu-dips-only-2026",
-    "name": "FNSL MU / DIPS ONLY",
-    "city": "Tremblay-en-France",
-    "country": "France",
-    "lat": 48.9497,
-    "lng": 2.5687,
-    "start": "2026-12-05",
-    "disciplines": ["Street lifting", "Muscle-up", "Dips"],
-    "organizer": "FNSL — Fédération Nouvelle de Street Lifting",
-    "url": "https://fnsl.fr/",
-    "source": "fnsl.fr",
-    "verified": true
-  },
-  {
-    "id": "calisthenics-cup-fibo-2027",
-    "name": "Calisthenics Cup @ FIBO",
-    "city": "Cologne",
-    "country": "Allemagne",
-    "lat": 50.9466,
-    "lng": 6.9826,
-    "start": "2027-04-08",
-    "end": "2027-04-11",
-    "disciplines": ["Freestyle", "Statique"],
-    "organizer": "Calisthenics Cup",
-    "url": "https://calisthenics-cup.com/",
-    "source": "calisthenics-cup.com",
-    "verified": true
-  },
-  {
-    "id": "cf-street-workout-saint-priest-2026",
-    "name": "Championnat de France de Street Workout",
-    "city": "Saint-Priest",
-    "country": "France",
-    "lat": 45.6966,
-    "lng": 4.9443,
-    "start": "2026-09-13",
-    "end": "2026-09-14",
-    "disciplines": ["Freestyle", "Statique", "Endurance"],
-    "organizer": "Ville de Saint-Priest",
-    "url": "https://ville-saint-priest.fr/agenda/championnat-de-france-de-street-workout/",
-    "source": "ville-saint-priest.fr",
-    "verified": true
-  },
-  {
-    "id": "strength-nights-toulouse-2026",
-    "name": "International Strength Nights III",
-    "city": "Toulouse",
-    "country": "France",
-    "lat": 43.6047,
-    "lng": 1.4442,
-    "start": "2026-08-01",
-    "end": "2026-08-02",
-    "disciplines": ["Street lifting", "Statique"],
-    "url": "https://www.kallos-sthenos.com/en/competitions/calendar",
-    "source": "kallos-sthenos.com",
-    "verified": true
-  },
-  {
-    "id": "wswcf-worlds-riga-2026",
-    "name": "Calisthenics World Championship 2026 (WSWCF)",
-    "city": "Riga",
-    "country": "Lettonie",
-    "lat": 56.9496,
-    "lng": 24.1052,
-    "start": "2026-08-13",
-    "end": "2026-08-15",
-    "disciplines": ["Freestyle", "Endurance", "Power"],
-    "organizer": "WSWCF",
-    "url": "https://wswcf.org/",
-    "source": "wswcf.org",
-    "verified": true
-  }
+ {
+  "id": "fnsl-nouvelle-generation-2026",
+  "name": "FNSL France Nouvelle Génération",
+  "city": "Sevran",
+  "country": "France",
+  "lat": 48.9386,
+  "lng": 2.5275,
+  "start": "2026-10-31",
+  "disciplines": [
+   "Street lifting"
+  ],
+  "url": "https://fnsl.fr/",
+  "source": "fnsl.fr",
+  "verified": true,
+  "end": "2026-11-01",
+  "organizer": "FNSL"
+ },
+ {
+  "id": "finalrep-asias-2026",
+  "name": "FinalRep ASIAS 2026",
+  "city": "Singapour",
+  "country": "Singapour",
+  "lat": 1.3521,
+  "lng": 103.8198,
+  "start": "2026-11-06",
+  "disciplines": [
+   "Street lifting"
+  ],
+  "url": "https://www.streetliftings.fr/calendrier-competions-street-lifting/",
+  "source": "streetliftings.fr",
+  "verified": true,
+  "end": "2026-11-08",
+  "organizer": "FinalRep"
+ },
+ {
+  "id": "belgian-streetlifting-2026",
+  "name": "Belgian StreetLifting Championships 2026",
+  "city": "Auderghem",
+  "country": "Belgique",
+  "lat": 50.8156,
+  "lng": 4.431,
+  "start": "2026-11-14",
+  "disciplines": [
+   "Street lifting"
+  ],
+  "url": "https://www.streetliftings.fr/calendrier-competions-street-lifting/",
+  "source": "streetliftings.fr",
+  "verified": true,
+  "end": "2026-11-15"
+ },
+ {
+  "id": "bos-cup-1-2026",
+  "name": "BOS Cup (Beast of Static) Vol. 1",
+  "city": "Budapest",
+  "country": "Hongrie",
+  "lat": 47.578,
+  "lng": 19.107,
+  "start": "2026-11-21",
+  "disciplines": [
+   "Statique",
+   "Battles 1v1"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/bos-cup/1-2026",
+  "source": "kallos-sthenos.com",
+  "verified": true,
+  "organizer": "Beast of Static & BOS Gym"
+ },
+ {
+  "id": "czech-nationals-eec-2026",
+  "name": "Czech Nationals & Eastern European Championships 2026",
+  "city": "Brno",
+  "country": "Tchéquie",
+  "lat": 49.1951,
+  "lng": 16.6068,
+  "start": "2026-11-21",
+  "disciplines": [
+   "Street lifting"
+  ],
+  "url": "https://www.streetliftings.fr/calendrier-competions-street-lifting/",
+  "source": "streetliftings.fr",
+  "verified": true,
+  "end": "2026-11-22"
+ },
+ {
+  "id": "finalrep-americas-2026",
+  "name": "FinalRep AMERICAS 2026",
+  "city": "Divinópolis",
+  "country": "Brésil",
+  "lat": -20.1446,
+  "lng": -44.8912,
+  "start": "2026-11-21",
+  "disciplines": [
+   "Street lifting"
+  ],
+  "url": "https://www.streetliftings.fr/calendrier-competions-street-lifting/",
+  "source": "streetliftings.fr",
+  "verified": true,
+  "end": "2026-11-22",
+  "organizer": "FinalRep"
+ },
+ {
+  "id": "fnsl-mu-dips-only-2026",
+  "name": "FNSL MU / DIPS ONLY",
+  "city": "Tremblay-en-France",
+  "country": "France",
+  "lat": 48.9497,
+  "lng": 2.5687,
+  "start": "2026-12-05",
+  "disciplines": [
+   "Street lifting",
+   "Muscle-up",
+   "Dips"
+  ],
+  "url": "https://fnsl.fr/",
+  "source": "fnsl.fr",
+  "verified": true,
+  "organizer": "FNSL"
+ },
+ {
+  "id": "gravity-urban-cup-4-2027",
+  "name": "Gravity Urban Cup 4",
+  "city": "Brest",
+  "country": "France",
+  "lat": 48.3866,
+  "lng": -4.4999,
+  "start": "2027-02-27",
+  "disciplines": [
+   "Statique",
+   "Agilité",
+   "Freestyle femmes"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/gravity-urban-cup/4-2027",
+  "source": "kallos-sthenos.com",
+  "verified": true
+ },
+ {
+  "id": "calisthenics-cup-fibo-2027",
+  "name": "Calisthenics Cup @ FIBO 2027",
+  "city": "Cologne",
+  "country": "Allemagne",
+  "lat": 50.9466,
+  "lng": 6.9826,
+  "start": "2027-04-08",
+  "disciplines": [
+   "Freestyle",
+   "Endurance"
+  ],
+  "url": "https://calisthenics-cup.com/",
+  "source": "calisthenics-cup.com",
+  "verified": true,
+  "end": "2027-04-11",
+  "organizer": "GORNATION"
+ },
+ {
+  "id": "free-power-world-2026",
+  "name": "Free Power World Championship 2026",
+  "city": "São Paulo",
+  "country": "Brésil",
+  "lat": -23.5505,
+  "lng": -46.6333,
+  "start": "2026-02-28",
+  "disciplines": [
+   "Power freestyle"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/freepower/2026",
+  "source": "kallos-sthenos.com",
+  "verified": true
+ },
+ {
+  "id": "gravity-urban-cup-3-2026",
+  "name": "Gravity Urban Cup 3",
+  "city": "Brest",
+  "country": "France",
+  "lat": 48.3866,
+  "lng": -4.4999,
+  "start": "2026-02-21",
+  "disciplines": [
+   "Statique",
+   "Agilité",
+   "Freestyle femmes"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/gravity-urban-cup/3-2026",
+  "source": "kallos-sthenos.com",
+  "verified": true
+ },
+ {
+  "id": "fnsl-premier-pas-2026",
+  "name": "FNSL Premier Pas",
+  "city": "Tremblay-en-France",
+  "country": "France",
+  "lat": 48.9497,
+  "lng": 2.5687,
+  "start": "2026-03-14",
+  "disciplines": [
+   "Street lifting"
+  ],
+  "url": "https://www.streetliftings.fr/competions-street-lifting/fnsl-premier-pas/",
+  "source": "streetliftings.fr",
+  "verified": true,
+  "end": "2026-03-15",
+  "organizer": "FNSL"
+ },
+ {
+  "id": "fnsl-interregionale-se-2026",
+  "name": "FNSL Inter-régionales Sud-Est",
+  "city": "Lyon",
+  "country": "France",
+  "lat": 45.764,
+  "lng": 4.8357,
+  "start": "2026-03-28",
+  "disciplines": [
+   "Street lifting"
+  ],
+  "url": "https://www.streetliftings.fr/competions-street-lifting/fnsl-inter-regionales-sud-est/",
+  "source": "streetliftings.fr",
+  "verified": true,
+  "end": "2026-03-29",
+  "organizer": "FNSL"
+ },
+ {
+  "id": "calisthenics-cup-2026",
+  "name": "Calisthenics Cup 2026",
+  "city": "Cologne",
+  "country": "Allemagne",
+  "lat": 50.9466,
+  "lng": 6.9826,
+  "start": "2026-04-16",
+  "disciplines": [
+   "Freestyle",
+   "Endurance"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/calisthenics-cup/2026",
+  "source": "kallos-sthenos.com",
+  "verified": true,
+  "end": "2026-04-19",
+  "organizer": "GORNATION"
+ },
+ {
+  "id": "regional-centre-val-de-loire-2026",
+  "name": "Championnat régional de Street Workout (qualif. France)",
+  "city": "Fleury-les-Aubrais",
+  "country": "France",
+  "lat": 47.9333,
+  "lng": 1.9167,
+  "start": "2026-05-23",
+  "disciplines": [
+   "Freestyle"
+  ],
+  "url": "https://www.fleurylesaubrais.fr/open-agenda/championnat-regional-de-street-workout-qualifications-france-2026/",
+  "source": "fleurylesaubrais.fr",
+  "verified": true
+ },
+ {
+  "id": "sthenos-xbition-4-2026",
+  "name": "Sthenos Xbition IV",
+  "city": "Lausanne",
+  "country": "Suisse",
+  "lat": 46.5197,
+  "lng": 6.6323,
+  "start": "2026-05-29",
+  "disciplines": [
+   "Statique",
+   "Battles"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/sthenos-xbition/iv-2026",
+  "source": "kallos-sthenos.com",
+  "verified": true,
+  "end": "2026-05-31"
+ },
+ {
+  "id": "austria-championships-2026",
+  "name": "The Calisthenics Championships 2026 (Autriche)",
+  "city": "Klopeiner See",
+  "country": "Autriche",
+  "lat": 46.605,
+  "lng": 14.58,
+  "start": "2026-06-26",
+  "disciplines": [
+   "Freestyle",
+   "Endurance"
+  ],
+  "url": "https://streetworkoutaustria.at/en/program",
+  "source": "streetworkoutaustria.at",
+  "verified": true,
+  "end": "2026-06-28",
+  "organizer": "Street Workout Austria"
+ },
+ {
+  "id": "swub-8-2026",
+  "name": "Street Workout Ultimate Battles VIII",
+  "city": "Alcorcón",
+  "country": "Espagne",
+  "lat": 40.3458,
+  "lng": -3.8249,
+  "start": "2026-06-27",
+  "disciplines": [
+   "Dynamique",
+   "Statique",
+   "Power moves"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/swub/viii-2026",
+  "source": "kallos-sthenos.com",
+  "verified": true
+ },
+ {
+  "id": "strength-nights-toulouse-2026",
+  "name": "International Strength Nights III",
+  "city": "Toulouse",
+  "country": "France",
+  "lat": 43.6047,
+  "lng": 1.4442,
+  "start": "2026-08-01",
+  "disciplines": [
+   "Street lifting",
+   "Statique"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/isn/2026",
+  "source": "kallos-sthenos.com",
+  "verified": true,
+  "end": "2026-08-02"
+ },
+ {
+  "id": "wswcf-worlds-riga-2026",
+  "name": "Calisthenics World Championship 2026 (WSWCF)",
+  "city": "Riga",
+  "country": "Lettonie",
+  "lat": 56.9496,
+  "lng": 24.1052,
+  "start": "2026-08-13",
+  "disciplines": [
+   "Freestyle",
+   "Endurance",
+   "Power"
+  ],
+  "url": "https://wswcf.org/",
+  "source": "wswcf.org",
+  "verified": true,
+  "end": "2026-08-15",
+  "organizer": "WSWCF"
+ },
+ {
+  "id": "gabt-7-2026",
+  "name": "Gravity Armoric Battle Tour 7",
+  "city": "Plourin-lès-Morlaix",
+  "country": "France",
+  "lat": 48.5356,
+  "lng": -3.7889,
+  "start": "2026-08-27",
+  "disciplines": [
+   "Freestyle",
+   "Battles"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/gabt/7-2026",
+  "source": "kallos-sthenos.com",
+  "verified": true,
+  "end": "2026-08-30"
+ },
+ {
+  "id": "johor-bar-battles-2026",
+  "name": "Johor Bar Battles (Asia Calisthenics Championship)",
+  "city": "Johor Bahru",
+  "country": "Malaisie",
+  "lat": 1.4927,
+  "lng": 103.7414,
+  "start": "2026-09-05",
+  "disciplines": [
+   "Freestyle"
+  ],
+  "url": "https://www.johorcalisthenicscommunity.com/events/johor-bar-battles/",
+  "source": "johorcalisthenicscommunity.com",
+  "verified": true
+ },
+ {
+  "id": "ibc-2026",
+  "name": "International Burningate Cup 2026",
+  "city": "Monfalcone",
+  "country": "Italie",
+  "lat": 45.776,
+  "lng": 13.58,
+  "start": "2026-09-05",
+  "disciplines": [
+   "Statique",
+   "Freestyle combo"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/ibc/2026",
+  "source": "kallos-sthenos.com",
+  "verified": true,
+  "end": "2026-09-06"
+ },
+ {
+  "id": "queen-of-statics-2026",
+  "name": "Queen of Statics 2026",
+  "city": "Galapagar",
+  "country": "Espagne",
+  "lat": 40.5786,
+  "lng": -4.0026,
+  "start": "2026-09-12",
+  "disciplines": [
+   "Statique femmes"
+  ],
+  "url": "https://www.kallos-sthenos.com/en/competitions/queen-of-statics/2026",
+  "source": "kallos-sthenos.com",
+  "verified": true
+ },
+ {
+  "id": "cf-street-workout-saint-priest-2026",
+  "name": "Championnat de France de Street Workout",
+  "city": "Saint-Priest",
+  "country": "France",
+  "lat": 45.6966,
+  "lng": 4.9443,
+  "start": "2026-09-13",
+  "disciplines": [
+   "Freestyle",
+   "Statique"
+  ],
+  "url": "https://ville-saint-priest.fr/agenda/championnat-de-france-de-street-workout/",
+  "source": "ville-saint-priest.fr",
+  "verified": true,
+  "end": "2026-09-14"
+ },
+ {
+  "id": "finalrep-euros-2026",
+  "name": "FinalRep EUROS 26 (championnat d'Europe)",
+  "city": "Tremblay-en-France",
+  "country": "France",
+  "lat": 48.9497,
+  "lng": 2.5687,
+  "start": "2026-10-02",
+  "disciplines": [
+   "Street lifting"
+  ],
+  "url": "https://final-rep.com/euros26/",
+  "source": "final-rep.com",
+  "verified": true,
+  "end": "2026-10-04",
+  "organizer": "FinalRep & FNSL"
+ }
 ]

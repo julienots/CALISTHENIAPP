@@ -34,6 +34,9 @@ jobs:
       - name: Dépendances
         run: npm ci
 
+      - name: Tests (générateur, rangs, analyseur, données)
+        run: npm test
+
       - name: Build web + synchro Android
         run: npm run android:sync
 

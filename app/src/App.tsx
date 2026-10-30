@@ -2,10 +2,12 @@ import { App as CapApp } from '@capacitor/app'
 import { AnimatePresence, motion } from 'framer-motion'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { HashRouter, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { ErrorBoundary } from './components/ErrorBoundary'
 import { Icon, IconTile, type IconName } from './components/Icon'
 import { RankUpOverlay } from './components/RankBadge'
 import { RANKS } from './data/ranks'
 import { computeRank, skillStatuses } from './lib/scoring'
+import { readAutoBackup, restore, scheduleAutoBackup } from './lib/backup'
 import { sectionOf } from './lib/sections'
 import { useStore } from './lib/store'
 import Home from './pages/Home'
@@ -77,6 +79,28 @@ function TrainSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   )
 }
 
+/** Vrai quand les données du téléphone sont chargées (IndexedDB est asynchrone). */
+function useHydrated() {
+  const [ok, setOk] = useState(useStore.persist.hasHydrated())
+  useEffect(() => {
+    const unsub = useStore.persist.onFinishHydration(() => setOk(true))
+    setOk(useStore.persist.hasHydrated())
+    return unsub
+  }, [])
+  return ok
+}
+
+function Splash() {
+  return (
+    <div className="grid h-screen place-items-center">
+      <svg viewBox="0 0 64 64" width="72" height="72" className="animate-pulse">
+        <path d="M32 6 58 54H6Z" fill="none" stroke="#ff7a1a" strokeWidth="4.5" strokeLinejoin="round" />
+        <path d="M19 40h26" stroke="#ff3d6e" strokeWidth="4.5" strokeLinecap="round" />
+      </svg>
+    </div>
+  )
+}
+
 function Shell() {
   const loc = useLocation()
   const nav = useNavigate()
@@ -90,6 +114,15 @@ function Shell() {
   const setLastRankSeen = useStore((s) => s.setLastRankSeen)
   const rank = useMemo(() => computeRank(skillStatuses(records, analyses), sessions, bonusXp).rank, [records, analyses, sessions, bonusXp])
   const [celebrate, setCelebrate] = useState<number | null>(null)
+  const hydrated = useHydrated()
+  const [backup, setBackup] = useState<Record<string, unknown> | null>(null)
+  const [backupDismissed, setBackupDismissed] = useState(false)
+
+  // Sauvegarde automatique à chaque changement ; proposition de restauration si les données ont disparu.
+  useEffect(() => useStore.subscribe(() => scheduleAutoBackup()), [])
+  useEffect(() => {
+    if (hydrated && !profile) readAutoBackup().then(setBackup)
+  }, [hydrated, profile])
 
   useEffect(() => {
     if (rank.id > lastRankSeen) setCelebrate(rank.id)
@@ -104,6 +137,18 @@ function Shell() {
     return () => void h.then((x) => x.remove())
   }, [loc.pathname, nav])
 
+  if (!hydrated) return <Splash />
+  if (!profile && backup && !backupDismissed)
+    return (
+      <div className="mx-auto flex min-h-screen max-w-xl flex-col justify-center gap-4 px-6 text-center">
+        <div className="h-display text-4xl">Sauvegarde trouvée</div>
+        <p className="text-sm text-white/70">
+          Une sauvegarde automatique de {String((backup.profile as { name?: string })?.name ?? 'ton profil')} du {new Date(String(backup.exportedAt)).toLocaleString('fr-FR')} existe sur ce téléphone.
+        </p>
+        <button className="btn-primary !py-4" onClick={() => restore(backup)}>Restaurer mes données</button>
+        <button className="btn-ghost" onClick={() => setBackupDismissed(true)}>Repartir de zéro</button>
+      </div>
+    )
   if (!profile && loc.pathname !== '/onboarding') return <Navigate to="/onboarding" replace />
   if (profile && loc.pathname === '/onboarding') return <Navigate to="/" replace />
   const hideNav = loc.pathname === '/onboarding' || loc.pathname.startsWith('/workout')
@@ -191,8 +236,10 @@ function Shell() {
 
 export default function App() {
   return (
-    <HashRouter>
-      <Shell />
-    </HashRouter>
+    <ErrorBoundary>
+      <HashRouter>
+        <Shell />
+      </HashRouter>
+    </ErrorBoundary>
   )
 }

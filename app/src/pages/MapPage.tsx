@@ -2,7 +2,7 @@ import L from 'leaflet'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet'
 import { Header, Page, Section, Segmented } from '../components/ui'
-import { compStatus, loadCompetitions } from '../lib/cloud'
+import { compStatus, loadCompetitions, loadSeries, type CompetitionSeries } from '../lib/cloud'
 import { uid, useStore } from '../lib/store'
 import type { Competition } from '../lib/types'
 import { Icon } from '../components/Icon'
@@ -38,6 +38,7 @@ const ago = (iso?: string) => {
 export default function MapPage() {
   const s = useStore()
   const [items, setItems] = useState<Competition[]>(s.feedCache?.items ?? [])
+  const [series, setSeries] = useState<CompetitionSeries[]>([])
   const [status, setStatus] = useState<{ online: boolean; errors: string[]; loading: boolean }>({ online: false, errors: [], loading: true })
   const [zone, setZone] = useState<'france' | 'monde'>('france')
   const [when, setWhen] = useState<'avenir' | 'tout'>('avenir')
@@ -49,6 +50,7 @@ export default function MapPage() {
     setStatus((x) => ({ ...x, loading: true }))
     const r = await loadCompetitions()
     setItems(r.items)
+    loadSeries().then(setSeries).catch(() => {})
     setStatus({ online: r.online, errors: r.errors, loading: false })
   }, [])
 
@@ -172,6 +174,28 @@ export default function MapPage() {
           {!list.length && <p className="text-sm text-white/55">Aucune compétition pour ce filtre.</p>}
         </div>
       </Section>
+
+      {series.length > 0 && (
+        <Section title="Séries récurrentes · dates 2027 à venir">
+          <div className="space-y-1.5">
+            {series.map((x) => (
+              <a key={x.id} href={x.url} target="_blank" rel="noreferrer" className="card block !p-3">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <div className="text-sm font-bold">{x.name}</div>
+                    <div className="text-[11px] text-white/60">{x.where} · {x.period}</div>
+                  </div>
+                  <span className="shrink-0 rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-black text-white/70">À CONFIRMER</span>
+                </div>
+                <div className="mt-1 flex flex-wrap gap-1">
+                  {x.disciplines.map((d) => <span key={d} className="rounded bg-white/5 px-1.5 py-0.5 text-[10px] text-white/60">{d}</span>)}
+                </div>
+              </a>
+            ))}
+          </div>
+          <p className="mt-2 text-[11px] text-white/50">Ces dates ne sont pas encore publiées par les organisateurs. Dès qu'elles le sont, elles passent dans la liste ci-dessus.</p>
+        </Section>
+      )}
 
       <Section title="Calendriers officiels">
         <div className="card space-y-1.5 text-sm">

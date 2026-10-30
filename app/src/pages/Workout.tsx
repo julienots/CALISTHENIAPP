@@ -135,9 +135,13 @@ export default function Workout() {
     const rest = item.rest || 60
     setPhase('rest')
     setClock(rest)
-    let r = rest
+    // calé sur l'horloge réelle : pas de dérive même si Android ralentit l'appli
+    const endAt = Date.now() + rest * 1000
+    let lastSec = rest
     tick.current = window.setInterval(() => {
-      r -= 1
+      const r = Math.max(0, Math.ceil((endAt - Date.now()) / 1000))
+      if (r === lastSec) return
+      lastSec = r
       setClock(r)
       if (r === 10) say('Dix secondes')
       if (r <= 3 && r > 0) countdownBeep()
@@ -150,7 +154,7 @@ export default function Workout() {
         } else setSetNo((n) => n + 1)
         setPhase('ready')
       }
-    }, 1000)
+    }, 200)
   }
 
   const skipRest = () => {

@@ -14,29 +14,63 @@ export async function fetchJSON<T>(url: string, timeout = 8000): Promise<T> {
   }
 }
 
-/** Récupère toutes les compétitions : flux embarqué + fichier public du dépôt GitHub (gratuit, aucun serveur). */
+const REPO_RAW = 'https://raw.githubusercontent.com/julienots/calistheniapp'
+/** Fichiers publics essayés dans l'ordre : réglage perso, branche principale, branche de travail. */
+function feedCandidates(file: string) {
+  const { feedUrl } = useStore.getState().settings
+  const custom = feedUrl && file === 'competitions.json' ? [feedUrl] : []
+  return [...new Set([...custom, `${REPO_RAW}/main/app/public/${file}`, `${REPO_RAW}/ccr-ae020bf4-yiqyy8/app/public/${file}`])]
+}
+
+async function fetchFirst<T>(file: string, errors: string[]): Promise<T | null> {
+  if (!navigator.onLine) return null
+  for (const url of feedCandidates(file)) {
+    try {
+      return await fetchJSON<T>(url + (url.includes('?') ? '&' : '?') + 't=' + Date.now())
+    } catch (e) {
+      errors.push(`${url.split('/').slice(-4, -3)[0] ?? 'flux'} : ${(e as Error).message}`)
+    }
+  }
+  return null
+}
+
+/** Récupère toutes les compétitions : liste embarquée dans l'APK + fichier public du dépôt GitHub (gratuit, aucun serveur). */
 export async function loadCompetitions(): Promise<{ items: Competition[]; online: boolean; errors: string[] }> {
   const errors: string[] = []
   const all = new Map<string, Competition>()
-  const add = (list: Competition[]) => list.forEach((c) => all.set(c.id, c))
+  const add = (list: Competition[]) => list.forEach((c) => c?.id && c.start && Number.isFinite(c.lat) && Number.isFinite(c.lng) && all.set(c.id, c))
   try {
     add(await fetchJSON<Competition[]>('./competitions.json'))
   } catch {
-    errors.push('Flux embarqué illisible')
+    errors.push('Liste embarquée illisible')
   }
-  let online = false
-  const { feedUrl } = useStore.getState().settings
-  if (feedUrl && navigator.onLine) {
-    try {
-      add(await fetchJSON<Competition[]>(feedUrl + (feedUrl.includes('?') ? '&' : '?') + 't=' + Date.now()))
-      online = true
-    } catch (e) {
-      errors.push(`Flux en ligne indisponible (${(e as Error).message})`)
-    }
-  }
+  const remote = await fetchFirst<Competition[]>('competitions.json', errors)
+  if (Array.isArray(remote)) add(remote)
   const items = [...all.values()]
   if (items.length) useStore.getState().setFeedCache(items)
-  return { items, online, errors }
+  return { items, online: !!remote, errors: remote ? [] : errors }
+}
+
+export interface CompetitionSeries {
+  id: string
+  name: string
+  where: string
+  period: string
+  disciplines: string[]
+  url: string
+}
+
+/** Séries récurrentes dont la prochaine date n'est pas encore publiée. */
+export async function loadSeries(): Promise<CompetitionSeries[]> {
+  const m = new Map<string, CompetitionSeries>()
+  try {
+    for (const x of await fetchJSON<CompetitionSeries[]>('./competition-series.json')) m.set(x.id, x)
+  } catch {
+    /* fichier absent */
+  }
+  const remote = await fetchFirst<CompetitionSeries[]>('competition-series.json', [])
+  if (Array.isArray(remote)) for (const x of remote) if (x?.id) m.set(x.id, x)
+  return [...m.values()]
 }
 
 export function compStatus(c: Competition, now = new Date()) {

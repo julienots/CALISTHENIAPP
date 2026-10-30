@@ -53,7 +53,7 @@ export default function Skills() {
               {items.map((s) => {
                 const st = statuses[s.id]
                 return (
-                  <Link key={s.id} to={`/skill/${s.id}`} className="flex items-center gap-3 rounded-xl border border-white/[0.05] bg-ink-800/70 p-2.5 active:bg-ink-700">
+                  <Link key={s.id} to={`/skill/${s.id}`} className="flex items-center gap-3 rounded-xl border border-white/[0.05] bg-ink-800/70 p-2.5 active:bg-ink-700" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 68px' }}>
                     <TierBadge tier={s.tier} />
                     <div className="grid h-12 w-16 shrink-0 place-items-center overflow-hidden rounded-lg bg-[#170f0b]">
                       <FigureArt skill={s} detailed={false} fit mastered={st.mastery >= 2} />
