@@ -11,7 +11,9 @@ import { Bar, Page, toneColor } from '../components/ui'
 import { coachInsights, nextProgramDay } from '../lib/coach'
 import { computeRank, skillStatuses } from '../lib/scoring'
 import { dayKey } from '../lib/stats'
+import { quickRest, quickValidate } from '../lib/quick'
 import { useStore } from '../lib/store'
+import { toast } from '../lib/toast'
 
 export default function Home() {
   const s = useStore()
@@ -57,9 +59,23 @@ export default function Home() {
               <Icon name="moon" size={18} /> Jour de repos
             </div>
           ) : (
-            <Link to={`/log?date=${today}`} className="btn-primary w-full !py-3.5">
-              <Icon name="plus" size={18} strokeWidth={3} /> Noter la séance d'aujourd'hui
-            </Link>
+            <div className="grid grid-cols-[1fr_1fr_auto] gap-2">
+              <button
+                className="btn-primary !px-2 !py-3.5"
+                onClick={() => {
+                  const r = quickValidate()
+                  toast('Séance du jour validée', { label: 'Détailler', to: `/log/${r.id}` })
+                }}
+              >
+                <Icon name="check" size={18} strokeWidth={3} /> Séance faite
+              </button>
+              <Link to={`/log?date=${today}`} className="btn-ghost !px-2 !py-3.5">
+                <Icon name="pencil" size={16} /> En détail
+              </Link>
+              <button className="btn-ghost !px-3 !py-3.5" aria-label="Jour de repos" onClick={() => (quickRest(), toast('Jour de repos noté'))}>
+                <Icon name="moon" size={18} />
+              </button>
+            </div>
           )}
         </div>
       </div>

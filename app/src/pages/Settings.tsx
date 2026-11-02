@@ -79,6 +79,13 @@ export default function Settings() {
         </div>
       </Section>
 
+      <Section title="Widget écran d'accueil">
+        <div className="card space-y-1.5 text-[13px] text-white/75">
+          <p>Ta semaine, ta série et la séance du jour à valider en un geste, sans ouvrir l'appli.</p>
+          <p className="text-[12px] text-white/60">Appui long sur l'écran d'accueil → Widgets → GRAVITAS. Appui long sur l'icône de l'appli : Valider, Noter, Chrono.</p>
+        </div>
+      </Section>
+
       <Section title="Sauvegarde & export">
         <p className="mb-2 text-[12px] text-white/65">Sauvegarde automatique active : tes données sont aussi copiées dans le stockage privé de l'appli à chaque changement. Pour changer de téléphone, utilise « Sauvegarder » et garde le fichier.</p>
         <div className="grid grid-cols-2 gap-2">
@@ -91,7 +98,7 @@ export default function Settings() {
       <Section title="Zone sensible">
         <button className="btn-danger w-full" onClick={() => confirm('Effacer TOUTES les données ? Action irréversible.') && (s.resetAll(), nav('/onboarding', { replace: true }))}>Réinitialiser l'application</button>
       </Section>
-      <p className="text-center text-[11px] text-white/45">GRAVITAS v1.2 · 100 % hors ligne · Défie la gravité</p>
+      <p className="text-center text-[11px] text-white/45">GRAVITAS v1.3 · 100 % hors ligne · Défie la gravité</p>
     </Page>
   )
 }

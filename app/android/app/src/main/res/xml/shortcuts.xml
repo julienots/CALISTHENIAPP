@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut android:shortcutId="done" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_done" android:shortcutLongLabel="@string/sc_done">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="com.gravitas.calisthenics" android:targetClass="com.gravitas.calisthenics.MainActivity" android:data="gravitas://done" />
+    </shortcut>
+    <shortcut android:shortcutId="log" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_log" android:shortcutLongLabel="@string/sc_log">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="com.gravitas.calisthenics" android:targetClass="com.gravitas.calisthenics.MainActivity" android:data="gravitas://log" />
+    </shortcut>
+    <shortcut android:shortcutId="timer" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/sc_timer" android:shortcutLongLabel="@string/sc_timer">
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="com.gravitas.calisthenics" android:targetClass="com.gravitas.calisthenics.MainActivity" android:data="gravitas://timer" />
+    </shortcut>
+</shortcuts>

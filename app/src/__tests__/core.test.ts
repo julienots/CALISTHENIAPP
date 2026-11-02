@@ -186,3 +186,26 @@ describe('paliers', () => {
     expect(pr.ladder).toBe(1)
   })
 })
+
+describe('validation rapide (widget)', () => {
+  it('valide un jour une seule fois, sans record, et le repos ne remplace pas une séance', async () => {
+    const { useStore } = await import('../lib/store')
+    const { quickRest, quickValidate } = await import('../lib/quick')
+    const { widgetPayload } = await import('../lib/widget')
+    const k = dayKey(new Date(Date.now() - 3 * 864e5))
+    const before = useStore.getState().records.length
+    useStore.getState().toggleRest(k)
+    const a = quickValidate(k)
+    expect(a.created).toBe(true)
+    expect(quickValidate(k)).toEqual({ id: a.id, created: false })
+    const st = useStore.getState()
+    expect(st.sessions.filter((x) => dayKey(x.date) === k)).toHaveLength(1)
+    expect(st.restDays).not.toContain(k)
+    expect(st.records.length).toBe(before)
+    quickRest(k)
+    expect(useStore.getState().restDays).not.toContain(k)
+    const p = widgetPayload()
+    expect(p.done).toContain(k)
+    expect(p.rest).not.toContain(k)
+  })
+})

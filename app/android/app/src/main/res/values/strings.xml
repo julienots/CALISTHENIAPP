@@ -4,4 +4,8 @@
     <string name="title_activity_main">GRAVITAS</string>
     <string name="package_name">com.gravitas.calisthenics</string>
     <string name="custom_url_scheme">com.gravitas.calisthenics</string>
+    <string name="widget_description">Ta semaine d\'entraînement et la séance du jour à valider</string>
+    <string name="sc_done">Valider la séance</string>
+    <string name="sc_log">Noter une séance</string>
+    <string name="sc_timer">Chrono</string>
 </resources>

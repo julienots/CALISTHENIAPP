@@ -5,10 +5,14 @@ import { HashRouter, NavLink, Navigate, Route, Routes, useLocation, useNavigate 
 import { ErrorBoundary } from './components/ErrorBoundary'
 import { Icon, IconTile, type IconName } from './components/Icon'
 import { RankUpOverlay } from './components/RankBadge'
+import { Toaster } from './components/Toaster'
 import { RANKS } from './data/ranks'
 import { computeRank, skillStatuses } from './lib/scoring'
 import { readAutoBackup, restore, scheduleAutoBackup } from './lib/backup'
+import { quickRest, quickValidate, todayKey } from './lib/quick'
 import { sectionOf } from './lib/sections'
+import { toast } from './lib/toast'
+import { listenWidget, syncWidget } from './lib/widget'
 import { useStore } from './lib/store'
 import Home from './pages/Home'
 import Onboarding from './pages/Onboarding'
@@ -122,8 +126,42 @@ function Shell() {
   const [backup, setBackup] = useState<Record<string, unknown> | null>(null)
   const [backupDismissed, setBackupDismissed] = useState(false)
 
-  // Sauvegarde automatique à chaque changement ; proposition de restauration si les données ont disparu.
-  useEffect(() => useStore.subscribe(() => scheduleAutoBackup()), [])
+  // Sauvegarde automatique et widget à jour à chaque changement ; restauration si les données ont disparu.
+  useEffect(
+    () =>
+      useStore.subscribe(() => {
+        scheduleAutoBackup()
+        syncWidget()
+      }),
+    [],
+  )
+  useEffect(() => {
+    if (hydrated && profile) return listenWidget()
+  }, [hydrated, profile])
+
+  // Liens du widget et des raccourcis de l'icône : gravitas://done, log, rest, timer, calendar
+  const [pendingUrl, setPendingUrl] = useState<string | null>(null)
+  useEffect(() => {
+    CapApp.getLaunchUrl().then((r) => r?.url && setPendingUrl(r.url)).catch(() => {})
+    const h = CapApp.addListener('appUrlOpen', ({ url }) => setPendingUrl(url))
+    return () => void h.then((x) => x.remove())
+  }, [])
+  useEffect(() => {
+    if (!pendingUrl || !hydrated || !profile) return
+    const action = pendingUrl.replace(/^gravitas:\/\//, '').split(/[/?#]/)[0]
+    setPendingUrl(null)
+    if (action === 'done') {
+      const r = quickValidate()
+      nav('/')
+      toast(r.created ? 'Séance du jour validée' : 'Déjà validée aujourd\'hui', { label: 'Détailler', to: `/log/${r.id}` })
+    } else if (action === 'rest') {
+      quickRest()
+      nav('/')
+      toast('Jour de repos noté')
+    } else if (action === 'log') nav(`/log?date=${todayKey()}`)
+    else if (action === 'timer') nav('/timers')
+    else if (action === 'calendar') nav('/calendar')
+  }, [pendingUrl, hydrated, profile, nav])
   useEffect(() => {
     if (hydrated && !profile) readAutoBackup().then(setBackup)
   }, [hydrated, profile])
@@ -227,6 +265,7 @@ function Shell() {
         </nav>
       )}
       <TrainSheet open={train} onClose={() => setTrain(false)} />
+      <Toaster />
       <RankUpOverlay
         rank={celebrate !== null ? RANKS[celebrate] : null}
         onClose={() => {
