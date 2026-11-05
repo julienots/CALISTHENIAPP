@@ -26,14 +26,6 @@ export const HOWTO: Record<string, HowTo> = {
   'jumping-pullup': H('Dos, biceps', ['Barre accessible en sautant (ou une box)', 'Saute et aide-toi des jambes pour monter menton au-dessus', 'Descends lentement, 3 s'], ['Tout faire avec les jambes', 'Tomber en bas'], 'dead-hang', 'negative-pullup'),
   'negative-pullup': H('Dos, biceps, grip', ['Monte menton au-dessus de la barre (saut ou box)', 'Descends en 4 secondes jusqu\'aux bras tendus', 'Contrôle surtout la fin de la descente'], ['Lâcher à mi-chemin', 'Descente en 1 s'], 'jumping-pullup', 'pullup'),
   'band-pullup': H('Dos, biceps', ['Élastique accroché à la barre, un pied ou genou dedans', 'Traction complète : bras tendus → menton au-dessus', 'Change pour un élastique plus fin dès 8 reps propres'], ['Rebondir sur l\'élastique en bas', 'Rester sur le même élastique des mois'], 'negative-pullup', 'pullup'),
-  plank: H('Abdominaux, gainage complet', ['Avant-bras au sol, coudes sous les épaules', 'Fessiers serrés, bassin en rétroversion légère', 'Respire sans relâcher le ventre'], ['Fesses trop hautes ou dos creux', 'Bloquer la respiration'], undefined, 'hollow-hold'),
-  'dead-bug': H('Abdominaux profonds', ['Sur le dos, bras vers le plafond, genoux à 90°', 'Bas du dos plaqué au sol', 'Tends un bras et la jambe opposée, sans décoller le dos'], ['Dos qui se cambre', 'Aller trop vite'], undefined, 'hollow-hold'),
-  'glute-bridge': H('Fessiers, ischios', ['Sur le dos, pieds à plat près des fesses', 'Pousse dans les talons, monte le bassin', 'Serre les fessiers 1 s en haut'], ['Cambrer le bas du dos', 'Pousser sur les pointes'], undefined, 'bulgarian'),
-  lunge: H('Quadriceps, fessiers', ['Grand pas en avant, buste droit', 'Genou arrière vers le sol', 'Repousse sur le talon avant, alterne'], ['Genou avant qui rentre vers l\'intérieur', 'Pas trop court'], 'squat', 'bulgarian'),
-  'wall-sit': H('Quadriceps', ['Dos au mur, cuisses parallèles au sol', 'Genoux au-dessus des chevilles', 'Tiens en respirant'], ['Mains sur les cuisses', 'Genoux devant les orteils'], undefined, 'squat'),
-  'calf-raise': H('Mollets, chevilles', ['Debout, sur le bord d\'une marche si possible', 'Monte haut sur les pointes, 1 s en haut', 'Descends lentement sous le niveau de la marche'], ['Rebondir', 'Amplitude partielle'], undefined, 'pistol'),
-  'mountain-climber': H('Cardio, gainage, hanches', ['Position haute de pompe', 'Ramène les genoux vers la poitrine en alternance', 'Hanches basses et stables'], ['Fesses en l\'air', 'Épaules en arrière des mains'], undefined, 'burpee'),
-  'jumping-jack': H('Cardio, mollets', ['Saut pieds écartés + bras au-dessus de la tête', 'Saut retour pieds joints', 'Reste léger sur les pointes'], ['Atterrir sur les talons'], undefined, 'burpee'),
 
   // ——— Poussée
   pushup: H('Pectoraux, triceps, épaules, gainage', ['Mains sous les épaules, corps en planche', 'Coudes à 45°, poitrine à un poing du sol', 'Pousse le sol, termine en protraction (dos rond léger)'], ['Hanches qui tombent', 'Coudes à 90° du corps', 'Demi-amplitude'], 'negative-pushup', 'diamond-pushup'),
@@ -77,7 +69,7 @@ export const HOWTO: Record<string, HowTo> = {
   'skin-cat-reps': H('Épaules, mobilité, gainage', ['Suspension, monte les jambes entre les bras', 'Descends lentement vers le German hang', 'Remonte et repasse'], ['Aller trop loin trop vite'], 'hanging-leg-raise', 'german-hang-stretch', 'Épaules : amplitude très progressive'),
 
   // ——— Gainage
-  'hollow-hold': H('Abdominaux, gainage (base de tout)', ['Sur le dos, bas du dos plaqué au sol', 'Bras derrière la tête, jambes tendues décollées', 'Plus les membres sont bas, plus c\'est dur'], ['Dos qui décolle', 'Menton levé'], 'dead-bug', 'l-sit-hold'),
+  'hollow-hold': H('Abdominaux, gainage (base de tout)', ['Sur le dos, bas du dos plaqué au sol', 'Bras derrière la tête, jambes tendues décollées', 'Plus les membres sont bas, plus c\'est dur'], ['Dos qui décolle', 'Menton levé'], undefined, 'l-sit-hold'),
   'arch-hold': H('Lombaires, fessiers, dos', ['Sur le ventre, bras devant', 'Décolle bras, poitrine et jambes', 'Fessiers serrés'], ['Lever la tête vers le haut'], undefined, 'bridge'),
   'hanging-leg-raise': H('Abdominaux, fléchisseurs de hanche', ['Suspension, épaules actives', 'Monte les jambes tendues à l\'horizontale ou plus', 'Descente contrôlée, sans balancer'], ['Balancier', 'Genoux pliés sans le vouloir'], 'dead-hang', 'toes-to-bar'),
   'toes-to-bar': H('Abdominaux, compression', ['Suspension, jambes tendues', 'Monte les pieds jusqu\'à la barre', 'Bras tendus, compression maximale'], ['Élan des hanches'], 'hanging-leg-raise', 'windshield'),
@@ -85,18 +77,14 @@ export const HOWTO: Record<string, HowTo> = {
   'compression-pulse': H('Compression active (L-sit, press)', ['Assis jambes tendues, mains à côté des genoux', 'Décolle les talons par petites pulsations', 'Dos droit'], ['Se pencher en arrière'], 'pike-stretch', 'pike-lift'),
   'pike-lift': H('Compression, fléchisseurs', ['Assis jambes tendues, mains devant les hanches', 'Lève les jambes tendues le plus haut possible', 'Tiens 1 s'], ['Plier les genoux'], 'compression-pulse', 'l-sit-hold'),
   'l-sit-hold': H('Abdominaux, triceps, compression', ['Appui bras tendus, épaules basses', 'Jambes groupées (tuck) puis tendues', 'Pointes de pieds tendues'], ['Épaules qui montent', 'Genoux pliés'], 'hollow-hold', 'v-sit'),
-  'side-plank': H('Obliques, épaules', ['Sur un avant-bras, corps aligné de côté', 'Hanches hautes', 'Respire'], ['Hanches qui tombent'], 'plank', 'windshield'),
+  'side-plank': H('Obliques, épaules', ['Sur un avant-bras, corps aligné de côté', 'Hanches hautes', 'Respire'], ['Hanches qui tombent'], undefined, 'windshield'),
   windshield: H('Obliques, abdominaux', ['Suspension, jambes à la barre (toes to bar)', 'Balaye les jambes d\'un côté à l\'autre', 'Contrôle sans élan'], ['Plier les jambes'], 'toes-to-bar', undefined),
-  'ab-wheel': H('Abdominaux, dorsaux', ['À genoux, roulette sous les épaules', 'Roule vers l\'avant dos rond', 'Reviens en tirant avec les abdos'], ['Dos qui se creuse'], 'plank', undefined),
 
   // ——— Jambes
-  squat: H('Quadriceps, fessiers', ['Pieds largeur épaules, pointes légèrement ouvertes', 'Descends hanches sous les genoux, dos neutre', 'Remonte en poussant le sol'], ['Genoux qui rentrent', 'Talons qui décollent'], 'wall-sit', 'bulgarian'),
-  bulgarian: H('Quadriceps, fessiers (unilatéral)', ['Pied arrière sur un banc', 'Descends le genou arrière vers le sol', 'Pousse sur le talon avant'], ['Pied avant trop près du banc'], 'lunge', 'shrimp'),
-  pistol: H('Quadriceps, équilibre, mobilité de cheville', ['Sur une jambe, l\'autre tendue devant', 'Descends complètement, talon au sol', 'Remonte sans élan'], ['Talon qui décolle', 'Dos qui s\'arrondit fort'], 'bulgarian', undefined, 'Tiens-toi à un poteau au début'),
-  shrimp: H('Quadriceps, fessiers', ['Sur une jambe, tiens l\'autre pied derrière toi', 'Descends le genou arrière au sol', 'Remonte'], ['Perdre l\'équilibre vers l\'avant'], 'bulgarian', 'pistol'),
-  nordic: H('Ischios-jambiers', ['À genoux, chevilles bloquées', 'Descends le buste lentement, hanches tendues', 'Rattrape-toi avec les mains, remonte'], ['Plier aux hanches'], 'glute-bridge', undefined, 'Très intense : peu de reps au début'),
-  'jump-squat': H('Puissance des jambes', ['Squat puis saut explosif', 'Atterris souplement sur l\'avant du pied', 'Enchaîne'], ['Atterrir genoux tendus'], 'squat', 'broad-jump'),
-  'broad-jump': H('Puissance, coordination', ['Élan des bras', 'Saut le plus loin possible', 'Réception stable, genoux fléchis'], ['Réception déséquilibrée'], 'jump-squat', 'box-jump'),
+  squat: H('Quadriceps, fessiers', ['Pieds largeur épaules, pointes légèrement ouvertes', 'Descends hanches sous les genoux, dos neutre', 'Remonte en poussant le sol'], ['Genoux qui rentrent', 'Talons qui décollent'], undefined, 'shrimp'),
+  pistol: H('Quadriceps, équilibre, mobilité de cheville', ['Sur une jambe, l\'autre tendue devant', 'Descends complètement, talon au sol', 'Remonte sans élan'], ['Talon qui décolle', 'Dos qui s\'arrondit fort'], 'shrimp', undefined, 'Tiens-toi à un poteau au début'),
+  shrimp: H('Quadriceps, fessiers', ['Sur une jambe, tiens l\'autre pied derrière toi', 'Descends le genou arrière au sol', 'Remonte'], ['Perdre l\'équilibre vers l\'avant'], 'squat', 'pistol'),
+  nordic: H('Ischios-jambiers', ['À genoux, chevilles bloquées', 'Descends le buste lentement, hanches tendues', 'Rattrape-toi avec les mains, remonte'], ['Plier aux hanches'], undefined, undefined, 'Très intense : peu de reps au début'),
 
   // ——— Omoplates, mobilité, poignets
   'scap-pull': H('Bas des trapèzes, dorsaux', ['Suspension bras tendus', 'Abaisse les omoplates sans plier les bras', 'Relâche lentement'], ['Plier les coudes'], 'dead-hang', 'pullup'),
@@ -106,7 +94,7 @@ export const HOWTO: Record<string, HowTo> = {
   'german-hang-stretch': H('Mobilité d\'épaule (extension)', ['Depuis le skin the cat, laisse le corps descendre derrière', 'Pieds au sol si possible au début', 'Respire, 10–20 s'], ['Forcer l\'amplitude'], 'band-dislocate', 'skin-cat-reps', 'Arrête en cas de douleur vive au biceps'),
   pancake: H('Adducteurs, ischios', ['Assis jambes écartées tendues', 'Bascule le bassin vers l\'avant, dos long', 'Respire et descends un peu plus à chaque expiration'], ['Arrondir le dos à la place'], undefined, undefined),
   'pike-stretch': H('Ischios, mollets', ['Assis jambes tendues serrées', 'Bascule depuis les hanches, dos long', 'Mains vers les pieds'], ['Tirer avec les bras'], undefined, 'compression-pulse'),
-  bridge: H('Mobilité d\'épaules et de dos', ['Sur le dos, mains près des oreilles', 'Pousse pour monter en pont', 'Pousse les épaules au-dessus des mains'], ['Tout faire avec le bas du dos'], 'glute-bridge', undefined),
+  bridge: H('Mobilité d\'épaules et de dos', ['Sur le dos, mains près des oreilles', 'Pousse pour monter en pont', 'Pousse les épaules au-dessus des mains'], ['Tout faire avec le bas du dos'], 'arch-hold', undefined),
   'shoulder-flexion': H('Mobilité d\'épaule (flexion)', ['Face au mur, mains au mur', 'Pousse la poitrine vers le sol', 'Bras tendus, 30 s'], ['Cambrer le bas du dos'], undefined, 'wall-handstand'),
   'wrist-circles': H('Poignets, avant-bras', ['Rotations dans les deux sens', 'Appui à quatre pattes : doigts devant, côté, derrière', 'Bascule doucement le poids'], ['Sauter cette étape avant planche / handstand'], undefined, 'wrist-pushup'),
   'wrist-pushup': H('Poignets, avant-bras', ['À genoux, dos des mains au sol', 'Petites pompes de poignets', 'Progressif'], ['Forcer en cas de douleur'], 'wrist-circles', 'finger-pushup'),
@@ -115,10 +103,7 @@ export const HOWTO: Record<string, HowTo> = {
   // ——— Agilité / explosivité
   'kipping-swing': H('Coordination, épaules', ['Suspension, alterne hollow et arch', 'Le mouvement part des épaules', 'Bras toujours tendus'], ['Plier les bras', 'Balancer avec les jambes seulement'], 'dead-hang', 'bar-release-drill'),
   'bar-release-drill': H('Timing, grip', ['Balancier contrôlé', 'Lâche au point mort avant, rattrape', 'Augmente la hauteur progressivement'], ['Lâcher au mauvais moment'], 'kipping-swing', 'clap-pullup', 'Sol amorti sous la barre'),
-  'tuck-jump': H('Puissance, gainage', ['Saut vertical', 'Genoux vers la poitrine en l\'air', 'Réception souple'], ['Réception lourde'], 'jump-squat', 'box-jump'),
-  'box-jump': H('Puissance des jambes', ['Face à la box, élan des bras', 'Saute et atterris en squat sur la box', 'Redescends en marchant'], ['Box trop haute', 'Redescendre en sautant'], 'jump-squat', undefined),
+  'tuck-jump': H('Puissance, gainage', ['Saut vertical', 'Genoux vers la poitrine en l\'air', 'Réception souple'], ['Réception lourde'], 'squat', 'kipping-swing'),
   'clap-pullup': H('Puissance du tirage', ['Traction explosive', 'Lâche la barre en haut, frappe dans les mains', 'Rattrape la barre'], ['Pas assez de hauteur'], 'explosive-pullup', undefined, 'Maîtrise d\'abord la traction poitrine à la barre'),
   'clap-pushup': H('Puissance de poussée', ['Pompe explosive', 'Décolle les mains, frappe', 'Réception bras fléchis'], ['Réception bras tendus'], 'pushup', 'archer-pushup'),
-  burpee: H('Cardio, corps entier', ['Accroupi, mains au sol', 'Jambes en arrière, pompe', 'Ramène les pieds et saute'], ['Dos creux en planche'], 'mountain-climber', undefined),
-  'jump-rope': H('Cardio, mollets, coordination', ['Petits sauts sur l\'avant du pied', 'Rotation avec les poignets', 'Rythme régulier'], ['Sauter trop haut'], 'jumping-jack', undefined),
 }

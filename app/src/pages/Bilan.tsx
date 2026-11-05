@@ -16,7 +16,7 @@ import { uid, useStore } from '../lib/store'
 import { toast } from '../lib/toast'
 import type { Bilan as BilanT } from '../lib/types'
 
-const QCOLOR: Record<Quality, string> = { push: '#ff7a1a', pull: '#ff3d6e', core: '#ffcf3f', legs: '#ffb000', balance: '#ff4fa0', mobility: '#c9a27e' }
+const QCOLOR: Record<Quality, string> = { push: '#ff7a1a', pull: '#ff3d6e', core: '#ffcf3f', balance: '#ff4fa0', mobility: '#c9a27e' }
 
 /** Chrono précis (horloge réelle) avec compte à rebours 3-2-1. */
 function useClock() {

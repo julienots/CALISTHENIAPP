@@ -9,7 +9,7 @@ import { buildExpress, FOCUS, PLACES, type Focus, type Place } from '../lib/expr
 import { LEVEL_NAMES } from '../lib/scoring'
 import { useStore } from '../lib/store'
 
-const BLOCK_COLOR: Record<string, string> = { Échauffement: '#ffcf3f', Force: '#ff7a1a', Conditionnement: '#ff3d6e', Mobilité: '#c9a27e' }
+const BLOCK_COLOR: Record<string, string> = { Échauffement: '#ffcf3f', Force: '#ff7a1a', Skill: '#ff7a1a', Agilité: '#ff3d6e', Mobilité: '#c9a27e' }
 
 export default function Express() {
   const s = useStore()

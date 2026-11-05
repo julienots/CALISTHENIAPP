@@ -78,7 +78,7 @@ function templates(p: GeneratorParams): DayTemplate[] {
   const L: DayTemplate = { title: 'Pull statique', focus: 'Leviers, tirage, muscle-up', lines: 'pull', patterns: ['pull', 'core'] }
   const A: DayTemplate = { title: 'Agilité & freestyle', focus: 'Swing, rotations, lâchers', lines: 'agi', patterns: ['power', 'pull'] }
   const F: DayTemplate = { title: 'Full body', focus: 'Toutes les lignes, densité', lines: 'all', patterns: ['push', 'pull', 'legs'] }
-  const C: DayTemplate = { title: 'Combos & endurance', focus: 'Enchaînements, rounds de compétition', lines: 'all', patterns: ['core', 'cardio'], extra: 'competition' }
+  const C: DayTemplate = { title: 'Combos & endurance', focus: 'Enchaînements, rounds de compétition', lines: 'all', patterns: ['core', 'power'], extra: 'competition' }
   const M: DayTemplate = { title: 'Technique & mobilité', focus: 'Handstand, compression, souplesse', lines: 'push', patterns: ['mobility', 'core'], extra: 'mobility' }
   const S = p.specialty
   const byDays: Record<number, DayTemplate[]> =
@@ -199,7 +199,7 @@ function warmup(t: DayTemplate, equipment: string[], r: R): ProgramItem[] {
   const spec = t.lines === 'pull' ? ['scap-pull', 'german-hang-stretch', 'aus-row'] : t.lines === 'agi' ? ['kipping-swing', 'tuck-jump', 'scap-pull'] : ['scap-push', 'planche-lean-hold', 'pike-pushup']
   const ids = [...base, ...shuffle(r, spec).slice(0, 2)].filter((id) => hasEquip(EX_BY_ID[id].equipment, equipment) || id === 'band-dislocate')
   return [
-    { name: 'Cardio léger (corde, jumping jacks)', block: 'Échauffement', sets: 1, target: '3 min', rest: 0 },
+    { name: 'Mobilisation articulaire (épaules, coudes, poignets)', block: 'Échauffement', sets: 1, target: '3 min', rest: 0 },
     ...ids.map((id) => ({ name: EX_BY_ID[id].name, exerciseId: id, block: 'Échauffement' as const, sets: 2, target: EX_BY_ID[id].kind === 'hold' ? '20 s' : '10 reps', rest: 20 })),
   ]
 }
@@ -272,7 +272,7 @@ export function generateProgram(params: GeneratorParams, statuses: Record<string
         })
       }
       if (params.goal === 'endurance' || t.extra === 'competition') {
-        items.push({ name: pick(dr, ['EMOM pull-ups + dips', 'Pyramide tractions', 'Circuit burpees / muscle-ups']), block: 'Conditionnement', sets: 1, target: `${pick(dr, [8, 10, 12])} min`, rest: 0, rpe: 8 })
+        items.push({ name: pick(dr, ['EMOM pull-ups + dips', 'Pyramide tractions', 'Circuit muscle-ups / dips']), block: 'Conditionnement', sets: 1, target: `${pick(dr, [8, 10, 12])} min`, rest: 0, rpe: 8 })
       }
 
       // 4) Mobilité / retour au calme

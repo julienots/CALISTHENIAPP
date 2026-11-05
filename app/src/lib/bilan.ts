@@ -1,14 +1,13 @@
-// Bilan de forme : 9 tests standardisés, notés /100 par qualité physique.
+// Bilan de forme : tests de calisthenics standardisés, notés /100 par qualité physique.
 // Barèmes construits sur des repères courants en calisthenics (débutant → élite).
 import type { Bilan } from './types'
 
-export type Quality = 'push' | 'pull' | 'core' | 'legs' | 'balance' | 'mobility'
+export type Quality = 'push' | 'pull' | 'core' | 'balance' | 'mobility'
 
 export const QUALITY_LABEL: Record<Quality, string> = {
   push: 'Poussée',
   pull: 'Tirage',
   core: 'Gainage',
-  legs: 'Jambes',
   balance: 'Équilibre',
   mobility: 'Mobilité',
 }
@@ -95,14 +94,23 @@ export const BILAN_TESTS: BilanTest[] = [
     unit: 's',
   },
   {
-    id: 'squats',
-    quality: 'legs',
-    name: 'Squats en 60 secondes',
-    kind: 'timed-reps',
-    duration: 60,
-    how: ['Hanches sous les genoux à chaque rep', 'Debout complet en haut', 'Le plus possible en 60 s'],
-    scale: [0, 15, 25, 32, 40, 47, 54, 62],
-    unit: 'reps',
+    id: 'lsit',
+    quality: 'core',
+    name: 'L-sit jambes tendues',
+    kind: 'hold',
+    how: ['Au sol, sur parallettes ou aux barres', 'Bras verrouillés, épaules basses, jambes tendues à l\'horizontale', 'Arrête dès que les talons touchent'],
+    scale: [0, 2, 5, 10, 15, 20, 30, 45],
+    unit: 's',
+    fallback: 'tucklsit',
+  },
+  {
+    id: 'tucklsit',
+    quality: 'core',
+    name: 'Tuck L-sit',
+    kind: 'hold',
+    how: ['Même appui, genoux groupés contre la poitrine', 'Pieds décollés, bras verrouillés'],
+    scale: [0, 3, 8, 15, 20, 30, 45, 60],
+    unit: 's',
   },
   {
     id: 'wallhs',
@@ -159,7 +167,7 @@ export function testScore(t: BilanTest, value: number): number {
 }
 
 /** Plafonds pour les tests de remplacement : ils ne valent pas le test principal. */
-const CAP: Record<string, number> = { kneepushups: 30, hang: 30 }
+const CAP: Record<string, number> = { kneepushups: 30, hang: 30, tucklsit: 35 }
 
 export function scoreBilan(results: Record<string, number>): { scores: Record<Quality, number>; global: number; level: number } {
   const byQ: Partial<Record<Quality, number[]>> = {}
@@ -188,8 +196,7 @@ export function scoreBilan(results: Record<string, number>): { scores: Record<Qu
 export const ADVICE: Record<Quality, { low: string; ex: string[] }> = {
   push: { low: 'Monte ta base de poussée avant les figures : pompes propres puis dips.', ex: ['incline-pushup', 'negative-pushup', 'pushup', 'negative-dips', 'dips'] },
   pull: { low: 'Le tirage débloque muscle-up, front lever et protège les épaules.', ex: ['dead-hang', 'scap-pull', 'negative-pullup', 'aus-row', 'pullup'] },
-  core: { low: 'Le gainage est la base de toutes les figures statiques.', ex: ['plank', 'dead-bug', 'hollow-hold', 'hanging-leg-raise', 'l-sit-hold'] },
-  legs: { low: 'Des jambes fortes = meilleure explosivité et moins de blessures.', ex: ['squat', 'lunge', 'bulgarian', 'shrimp', 'pistol'] },
+  core: { low: 'Gainage et compression : la base de toutes les figures statiques.', ex: ['hollow-hold', 'arch-hold', 'compression-pulse', 'l-sit-hold', 'hanging-leg-raise'] },
   balance: { low: 'L\'équilibre sur les mains se travaille un peu tous les jours.', ex: ['pike-pushup', 'wall-handstand', 'chest-to-wall-shoulder-taps', 'kick-up-drill'] },
   mobility: { low: 'La mobilité ouvre la porte au L-sit, au press et au handstand.', ex: ['pike-stretch', 'pancake', 'shoulder-flexion', 'band-dislocate', 'wrist-circles'] },
 }

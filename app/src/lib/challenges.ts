@@ -21,7 +21,7 @@ const DAILY_POOL: ((r: () => number, lvl: number) => Omit<Challenge, 'id' | 'sco
   (_, l) => ({ title: 'Compression totale', text: `${3 + l} × 15 s de L-sit (ou tuck) + 3 × 10 pulses de compression.`, xp: 45 }),
   () => ({ title: 'Poignets blindés', text: '10 min de préparation des poignets : rotations, appuis doigts, pompes dos de main.', xp: 25 }),
   (_, l) => ({ title: 'EMOM du guerrier', text: `EMOM ${8 + l * 2} min : 3 tractions + 5 dips + 5 pompes.`, xp: 70 }),
-  (_, l) => ({ title: 'Burpee-pull', text: `${10 + l * 5} burpee pull-ups, chrono en main.`, xp: 60 }),
+  (_, l) => ({ title: 'Explosion', text: `${3 + l} × 5 tractions poitrine à la barre (ou transitions de muscle-up).`, xp: 60 }),
   () => ({ title: 'Mobilité épaules', text: '3 × 20 dislocations + 3 × 30 s de german hang ou étirement au mur.', xp: 30 }),
   (_, l) => ({ title: 'Lean extrême', text: `${4 + l} × 15 s de planche lean, épaules au maximum devant les mains.`, xp: 45 }),
   (_, l) => ({ title: 'Pistol power', text: `${5 + l * 2} pistol squats par jambe (assistés si besoin).`, xp: 40 }),

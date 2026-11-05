@@ -1,5 +1,5 @@
 // Exercices d'assistance utilisés par le générateur de programmes.
-export type Pattern = 'push' | 'pull' | 'core' | 'legs' | 'mobility' | 'wrist' | 'scap' | 'power' | 'cardio'
+export type Pattern = 'push' | 'pull' | 'core' | 'legs' | 'mobility' | 'wrist' | 'scap' | 'power'
 
 export interface Exercise {
   id: string
@@ -14,7 +14,7 @@ export interface Exercise {
 const E = (id: string, name: string, pattern: Pattern, kind: 'reps' | 'hold', level: number, equipment: string[] = ['sol'], cue?: string): Exercise => ({ id, name, pattern, kind, level, equipment, cue })
 
 export const EXERCISES: Exercise[] = [
-  // Premiers pas : pour démarrer de zéro, à la maison, sans matériel
+  // Premiers pas : progressions pour démarrer de zéro, à la maison
   E('wall-pushup', 'Pompes au mur', 'push', 'reps', 0),
   E('incline-pushup', 'Pompes inclinées (mains sur table / banc)', 'push', 'reps', 0),
   E('knee-pushup', 'Pompes sur les genoux', 'push', 'reps', 0),
@@ -26,14 +26,6 @@ export const EXERCISES: Exercise[] = [
   E('jumping-pullup', 'Tractions sautées', 'pull', 'reps', 0, ['barre']),
   E('negative-pullup', 'Tractions négatives (descente 4 s)', 'pull', 'reps', 1, ['barre']),
   E('band-pullup', 'Tractions avec élastique', 'pull', 'reps', 1, ['barre', 'élastique']),
-  E('plank', 'Gainage ventral', 'core', 'hold', 0),
-  E('dead-bug', 'Dead bug', 'core', 'reps', 0),
-  E('glute-bridge', 'Pont fessier', 'legs', 'reps', 0),
-  E('lunge', 'Fentes alternées', 'legs', 'reps', 0),
-  E('wall-sit', 'Chaise au mur', 'legs', 'hold', 0),
-  E('calf-raise', 'Montées sur pointes (mollets)', 'legs', 'reps', 0),
-  E('mountain-climber', 'Mountain climbers', 'cardio', 'reps', 0),
-  E('jumping-jack', 'Jumping jacks', 'cardio', 'reps', 0),
   // Push
   E('pushup', 'Pompes', 'push', 'reps', 1),
   E('diamond-pushup', 'Pompes diamant', 'push', 'reps', 2),
@@ -81,15 +73,11 @@ export const EXERCISES: Exercise[] = [
   E('l-sit-hold', 'L-sit / tuck L-sit', 'core', 'hold', 2, ['parallettes']),
   E('side-plank', 'Planche latérale', 'core', 'hold', 1),
   E('windshield', 'Essuie-glaces suspendu', 'core', 'reps', 4, ['barre']),
-  E('ab-wheel', 'Roulette abdominale', 'core', 'reps', 3, ['roulette']),
   // Legs
   E('squat', 'Squats', 'legs', 'reps', 1),
-  E('bulgarian', 'Fentes bulgares', 'legs', 'reps', 2, ['banc']),
   E('pistol', 'Pistol squats', 'legs', 'reps', 3),
   E('shrimp', 'Shrimp squats', 'legs', 'reps', 3),
   E('nordic', 'Nordic curls (négatives)', 'legs', 'reps', 4),
-  E('jump-squat', 'Squats sautés', 'power', 'reps', 1),
-  E('broad-jump', 'Sauts en longueur', 'power', 'reps', 2),
   // Scapula / épaules / poignets / mobilité
   E('scap-pull', 'Scapula pull-ups', 'scap', 'reps', 1, ['barre']),
   E('scap-push', 'Scapula push-ups', 'scap', 'reps', 1),
@@ -110,11 +98,8 @@ export const EXERCISES: Exercise[] = [
   E('kipping-swing', 'Balanciers (kip swings) contrôlés', 'power', 'reps', 1, ['barre']),
   E('bar-release-drill', 'Lâchers-reprises à la barre', 'power', 'reps', 3, ['barre']),
   E('tuck-jump', 'Tuck jumps', 'power', 'reps', 1),
-  E('box-jump', 'Box jumps', 'power', 'reps', 2, ['box']),
   E('clap-pullup', 'Tractions claquées / lâchers', 'power', 'reps', 4, ['barre']),
   E('clap-pushup', 'Pompes claquées', 'power', 'reps', 2),
-  E('burpee', 'Burpees', 'cardio', 'reps', 1),
-  E('jump-rope', 'Corde à sauter', 'cardio', 'hold', 1, ['corde']),
 ]
 
 export const EX_BY_ID: Record<string, Exercise> = Object.fromEntries(EXERCISES.map((e) => [e.id, e]))
@@ -138,7 +123,7 @@ export const LINE_DRILLS: Record<string, string[]> = {
   press: ['compression-pulse', 'pike-lift', 'elevated-pike-pushup', 'planche-lean-hold', 'pancake'],
   ppu: ['pseudo-pushup', 'tuck-planche-pushup', 'planche-lean-hold', 'weighted-dips'],
   flag: ['side-plank', 'windshield', 'pullup', 'pike-pushup'],
-  dragon: ['dragon-flag-neg', 'hollow-hold', 'ab-wheel', 'hanging-leg-raise'],
+  dragon: ['dragon-flag-neg', 'hollow-hold', 'hanging-leg-raise'],
   elbow: ['wrist-circles', 'side-plank', 'hollow-hold'],
   cross: ['rto-pushup', 'ring-dips', 'straight-arm-pulldown'],
   victorian: ['fl-negatives', 'german-hang-stretch', 'weighted-pullup'],
@@ -150,13 +135,13 @@ export const LINE_DRILLS: Record<string, string[]> = {
   swing: ['kipping-swing', 'bar-release-drill', 'tuck-jump'],
   giant: ['kipping-swing', 'skin-cat-reps', 'hollow-hold', 'arch-hold'],
   release: ['bar-release-drill', 'kipping-swing', 'clap-pullup'],
-  dismount: ['tuck-jump', 'kipping-swing', 'box-jump'],
-  ground: ['tuck-jump', 'box-jump', 'bridge', 'broad-jump'],
+  dismount: ['tuck-jump', 'kipping-swing', 'bar-release-drill'],
+  ground: ['tuck-jump', 'bridge', 'kick-up-drill'],
   'bar-basics': ['hanging-leg-raise', 'skin-cat-reps', 'aus-row'],
   'base-push': ['incline-pushup', 'negative-pushup', 'pushup', 'diamond-pushup', 'archer-pushup'],
   'base-pull': ['dead-hang', 'negative-pullup', 'band-pullup', 'aus-row', 'pullup', 'scap-pull'],
   'base-dips': ['bench-dips', 'negative-dips', 'scap-dips', 'dips'],
-  'base-legs': ['squat', 'bulgarian', 'shrimp'],
+  'base-legs': ['squat', 'shrimp', 'pistol'],
   skin: ['german-hang-stretch', 'skin-cat-reps'],
   support: ['scap-dips', 'dips'],
   'balance-arm': ['wrist-circles', 'wrist-pushup'],

@@ -15,7 +15,7 @@ const GROUPS: { id: string; label: string; patterns: Pattern[] }[] = [
   { id: 'core', label: 'Gainage', patterns: ['core'] },
   { id: 'legs', label: 'Jambes', patterns: ['legs'] },
   { id: 'mob', label: 'Mobilité', patterns: ['mobility', 'wrist', 'scap'] },
-  { id: 'power', label: 'Explosivité', patterns: ['power', 'cardio'] },
+  { id: 'power', label: 'Agilité', patterns: ['power'] },
 ]
 const LEVELS = [
   { id: 'all', label: 'Tous niveaux', test: () => true },

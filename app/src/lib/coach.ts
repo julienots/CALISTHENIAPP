@@ -151,7 +151,7 @@ export function coachInsights(s: S): Insight[] {
   const bil: Bilan[] = s.bilans ?? []
   const lastB = bil.at(-1)
   if (!lastB) {
-    if (s.sessions.length >= 2) out.push({ tone: 'info', title: 'Fais ton bilan de forme', text: '9 tests guidés (15 min) pour connaître ton vrai niveau en poussée, tirage, gainage, jambes, équilibre et mobilité.', to: '/bilan', cta: 'Passer le bilan' })
+    if (s.sessions.length >= 2) out.push({ tone: 'info', title: 'Fais ton bilan de forme', text: '8 tests guidés (15 min) pour connaître ton vrai niveau en poussée, tirage, gainage, équilibre et mobilité.', to: '/bilan', cta: 'Passer le bilan' })
   } else {
     const age = (Date.now() - new Date(lastB.date).getTime()) / DAY
     if (age > 42) out.push({ tone: 'info', title: 'Nouveau bilan conseillé', text: `Ton dernier bilan date de ${Math.floor(age)} jours (${lastB.global}/100). Refais-le pour mesurer tes progrès et recaler ton programme.`, to: '/bilan', cta: 'Refaire le bilan' })
@@ -173,7 +173,7 @@ const KB: { k: RegExp; a: string }[] = [
   { k: /récup|repos|courbature|fatigu/i, a: 'Récupération : 7-9 h de sommeil, 1.6-2.2 g/kg de protéines, 48 h entre deux séances lourdes sur le même pattern. Une décharge toutes les 4-6 semaines.' },
   { k: /nutri|manger|protéin|poids|sèche/i, a: 'Nutrition : le ratio force/poids est roi en calisthenics. Protéines 1.6-2.2 g/kg, léger déficit (−300 kcal) si tu veux gagner en relatif, sans sacrifier la récupération.' },
   { k: /compét|battle|freestyle|jury|juge/i, a: 'Compétition : prépare 2-3 routines fixes, simule-les au timer (45 s/45 s ou 1 min/1 min) 2×/sem dans les 6 dernières semaines, et affûte la dernière semaine (−50 % de volume). Les juges notent difficulté, exécution, créativité et enchaînements.' },
-  { k: /échauff/i, a: 'Échauffement type (8-10 min) : cardio léger, poignets, dislocations, scapula pull/push-ups, puis 2 séries faciles de la figure du jour.' },
+  { k: /échauff/i, a: 'Échauffement type (8-10 min) : mobilisation articulaire, poignets, dislocations, scapula pull/push-ups, puis 2 séries faciles de la figure du jour.' },
   { k: /l.?sit|v.?sit|manna|compression/i, a: 'Compression : pike stretch + pancake chaque jour, pulses jambes tendues, L-sit sur parallettes. Pour V-sit/manna, la souplesse ischios et la force des fléchisseurs de hanche sont la clé.' },
   { k: /hspu|pompe.*renvers/i, a: 'HSPU : pike push-ups → pieds surélevés → au mur → déficit → freestanding. Coudes à 45°, tête qui forme un triangle avec les mains.' },
   { k: /flag|drapeau/i, a: 'Human flag : bras du haut tire, bras du bas pousse, épaules verrouillées. Commence en tuck, puis straddle, avec des holds courts de 3-5 s.' },
