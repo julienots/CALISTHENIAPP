@@ -103,7 +103,7 @@ export default function Coaches() {
           </Section>
           <Section title="Programmes publiés">
             <div className="space-y-1.5">
-              {s.programs.map((p) => {
+              {s.programs.filter((p) => p.id !== 'express').map((p) => {
                 const on = me.programs.some((x) => x.id === p.id)
                 return (
                   <button key={p.id} className={`flex w-full items-center justify-between rounded-xl border p-3 text-left ${on ? 'border-volt/50 bg-volt/10' : 'border-white/5 bg-ink-800/70'}`} onClick={() => setMe({ ...me, programs: on ? me.programs.filter((x) => x.id !== p.id) : [...me.programs, { ...p, author: me.name || p.author }] })}>

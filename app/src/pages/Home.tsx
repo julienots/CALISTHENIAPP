@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { CoachTour } from '../components/CoachTour'
 import { DailyReward } from '../components/DailyReward'
-import { Icon } from '../components/Icon'
+import { Icon, IconTile } from '../components/Icon'
 import { RankBadge } from '../components/RankBadge'
 import { TrainingGrid } from '../components/TrainingGrid'
 import { Bar, Page, toneColor } from '../components/ui'
@@ -24,6 +24,8 @@ export default function Home() {
   const today = dayKey(new Date())
   const doneToday = s.sessions.some((x) => dayKey(x.date) === today)
   const restToday = s.restDays.includes(today)
+  const lastBilan = (s.bilans ?? []).at(-1)
+  const bilanAge = lastBilan ? Math.floor((Date.now() - new Date(lastBilan.date).getTime()) / 864e5) : 0
 
   const hour = new Date().getHours()
   const hello = hour < 6 ? 'Nuit blanche' : hour < 12 ? 'Bonjour' : hour < 18 ? 'Bon après-midi' : 'Bonsoir'
@@ -107,6 +109,25 @@ export default function Home() {
             </Link>
           </>
         )}
+      </div>
+
+      {/* Raccourcis utiles à tous */}
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        <Link to="/express" className="card flex items-center gap-2.5 !p-3 active:scale-[0.98]">
+          <IconTile name="rocket" color="#ff3d6e" size={38} />
+          <div className="min-w-0">
+            <div className="text-[13px] font-extrabold leading-tight">Séance express</div>
+            <div className="truncate text-[11px] text-white/55">10 à 45 min, où tu veux</div>
+          </div>
+        </Link>
+        <Link to="/bilan" className="card relative flex items-center gap-2.5 !p-3 active:scale-[0.98]">
+          <IconTile name="target" color="#ff7a1a" size={38} />
+          <div className="min-w-0">
+            <div className="text-[13px] font-extrabold leading-tight">Bilan de forme</div>
+            <div className="truncate text-[11px] text-white/55">{lastBilan ? `${lastBilan.global}/100 · il y a ${bilanAge} j` : 'Mesure ton niveau'}</div>
+          </div>
+          {(!lastBilan || bilanAge > 42) && <span className="absolute right-2 top-2 h-2 w-2 animate-pulse rounded-full bg-plasma" />}
+        </Link>
       </div>
 
       {/* 3. Rang */}

@@ -107,7 +107,10 @@ export default function Onboarding() {
     </div>,
     <div key="2">
       <h2 className="h-display text-4xl">Tes fondamentaux</h2>
-      <p className="text-sm text-white/70">Max de répétitions strictes, d'une traite.</p>
+      <p className="text-sm text-white/70">Max de répétitions strictes, d'une traite. Aucune ? Mets 0 : GRAVITAS part de zéro avec toi.</p>
+      <button className="chip mt-2" onClick={() => (setTests({ maxPullups: 0, maxDips: 0, maxPushups: 3 }), setLevelOverride(1))}>
+        Je débute complètement
+      </button>
       {(
         [
           ['maxPullups', 'Tractions'],
@@ -209,6 +212,7 @@ export default function Onboarding() {
         <Stepper value={bw} onChange={setBw} min={35} max={150} unit="kg" />
       </div>
       <label className="label mt-4">Matériel disponible</label>
+      <p className="mb-2 text-[12px] text-white/55">Rien du tout ? Ne coche rien : tout le programme se fera au sol, à la maison.</p>
       <div className="flex flex-wrap gap-2">
         {EQUIP.map((e) => (
           <button key={e} className={equipment.includes(e) ? 'chip-on' : 'chip'} onClick={() => setEquipment(equipment.includes(e) ? equipment.filter((x) => x !== e) : [...equipment, e])}>

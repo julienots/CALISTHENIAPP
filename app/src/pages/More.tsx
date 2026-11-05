@@ -9,15 +9,18 @@ const GROUPS: { title: string; items: Item[] }[] = [
   {
     title: "S'entraîner",
     items: [
+      ['/express', 'rocket', 'Séance express', '10 à 45 min, où tu veux', '#ff3d6e'],
       ['/timers', 'timer', 'Timers', 'Chrono, minuteur, holds', '#ffcf3f'],
       ['/programs', 'clipboard', 'Programmes', 'Générer et suivre', '#ff7a1a'],
       ['/combos', 'link', 'Combos', 'Tes enchaînements', '#ff4fa0'],
       ['/competition', 'swords', 'Prépa compét', 'Simulation & jury', '#ff3b30'],
+      ['/exercices', 'book', 'Exercices', 'Fiches techniques & progressions', '#ffb000'],
     ],
   },
   {
     title: 'Progresser',
     items: [
+      ['/bilan', 'target', 'Bilan de forme', 'Ton niveau réel, qualité par qualité', '#ff7a1a'],
       ['/ranks', 'gem', 'Rangs', "Jusqu'au sommet", '#ff7a1a'],
       ['/stats', 'chart', 'Statistiques', 'Volume et profil', '#ffcf3f'],
       ['/challenges', 'trophy', 'Défis', 'Jour, semaine', '#ffb000'],

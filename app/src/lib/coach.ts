@@ -1,5 +1,7 @@
 // Le coach : moteur de règles hors ligne (charge, récupération, plateaux,
 // technique, équilibre push/pull, rang) + conversation Claude en ligne.
+import { ADVICE, QUALITY_LABEL, weakest } from './bilan'
+import type { Bilan } from './types'
 import Anthropic from '@anthropic-ai/sdk'
 import { SKILL_BY_ID, CUES } from '../data/skills'
 import { computeRank, LEVEL_NAMES, skillStatuses, type SkillStatus } from './scoring'
@@ -144,6 +146,18 @@ export function coachInsights(s: S): Insight[] {
   if (rank.next && rank.missing.length) out.push({ tone: 'info', title: `Vers ${rank.next.name}`, text: rank.missing.join(' · '), to: '/ranks', cta: 'Voir les rangs' })
   const st = streak(s.sessions)
   if (st >= 3) out.push({ tone: 'good', title: `Série de ${st} jours 🔥`, text: 'La régularité est ton arme. Garde au moins 1 jour de repos complet par semaine.' })
+
+  // Bilan de forme : le calibrer, le refaire, et travailler le maillon faible.
+  const bil: Bilan[] = s.bilans ?? []
+  const lastB = bil.at(-1)
+  if (!lastB) {
+    if (s.sessions.length >= 2) out.push({ tone: 'info', title: 'Fais ton bilan de forme', text: '9 tests guidés (15 min) pour connaître ton vrai niveau en poussée, tirage, gainage, jambes, équilibre et mobilité.', to: '/bilan', cta: 'Passer le bilan' })
+  } else {
+    const age = (Date.now() - new Date(lastB.date).getTime()) / DAY
+    if (age > 42) out.push({ tone: 'info', title: 'Nouveau bilan conseillé', text: `Ton dernier bilan date de ${Math.floor(age)} jours (${lastB.global}/100). Refais-le pour mesurer tes progrès et recaler ton programme.`, to: '/bilan', cta: 'Refaire le bilan' })
+    const [w] = weakest(lastB, 1)
+    if (w && lastB.scores[w] < 50) out.push({ tone: 'warn', title: `Maillon faible : ${QUALITY_LABEL[w]} (${lastB.scores[w]}/100)`, text: ADVICE[w].low, to: `/exercices?id=${ADVICE[w].ex[0]}`, cta: 'Voir les exercices' })
+  }
   return out
 }
 

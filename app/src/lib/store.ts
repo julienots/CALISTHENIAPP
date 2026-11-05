@@ -3,6 +3,7 @@ import { del, get, set as idbSet } from 'idb-keyval'
 import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware'
 import type {
   Analysis,
+  Bilan,
   ChallengeState,
   CoachProfile,
   Combo,
@@ -69,6 +70,9 @@ export interface Settings {
   haptics: boolean
   anthropicKey: string
   feedUrl: string
+  /** Taille de l'interface (accessibilité) : 1, 1.1 ou 1.2. */
+  textScale?: number
+  reduceMotion?: boolean
 }
 
 interface State {
@@ -87,6 +91,7 @@ interface State {
   challenges: ChallengeState[]
   bonusXp: number
   restDays: string[]
+  bilans: Bilan[]
   skin: string
   toursSeen: string[]
   dailyClaims: string[]
@@ -117,6 +122,8 @@ interface State {
   completeChallenge: (c: ChallengeState) => void
   setLastRankSeen: (n: number) => void
   toggleRest: (day: string) => void
+  addBilan: (b: Bilan) => void
+  deleteBilan: (id: string) => void
   setSkin: (id: string) => void
   markTour: (id: string) => void
   claimDaily: (day: string, xp: number) => void
@@ -143,6 +150,7 @@ const initial = {
   bonusXp: 0,
   lastRankSeen: 0,
   restDays: [] as string[],
+  bilans: [] as Bilan[],
   skin: 'braise',
   toursSeen: [] as string[],
   dailyClaims: [] as string[],
@@ -213,6 +221,8 @@ export const useStore = create<State>()(
       markTour: (id) => set((s) => ({ toursSeen: s.toursSeen.includes(id) ? s.toursSeen : [...s.toursSeen, id] })),
       claimDaily: (day, xp) => set((s) => (s.dailyClaims.includes(day) ? {} : { dailyClaims: [...s.dailyClaims, day], bonusXp: s.bonusXp + xp })),
       toggleRest: (day) => set((s) => ({ restDays: s.restDays.includes(day) ? s.restDays.filter((d) => d !== day) : [...s.restDays, day] })),
+      addBilan: (b) => set((s) => ({ bilans: [...(s.bilans ?? []), b] })),
+      deleteBilan: (id) => set((s) => ({ bilans: (s.bilans ?? []).filter((b) => b.id !== id) })),
       setSettings: (p) => set((s) => ({ settings: { ...s.settings, ...p } })),
       setChat: (chat) => set({ chat }),
       importAll: (data) => set((s) => ({ ...s, ...data })),

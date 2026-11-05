@@ -189,3 +189,13 @@ export interface ChallengeState {
   completedAt: string
   xp: number
 }
+
+/** Bilan de forme : résultats bruts des tests et notes /100 par qualité. */
+export interface Bilan {
+  id: string
+  date: string
+  results: Record<string, number>
+  scores: Record<string, number>
+  global: number
+  level: number
+}

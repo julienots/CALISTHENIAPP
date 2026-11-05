@@ -209,3 +209,43 @@ describe('validation rapide (widget)', () => {
     expect(p.rest).not.toContain(k)
   })
 })
+
+describe('fiches, bilan et séance express', () => {
+  it('chaque exercice a une fiche et les liens de progression existent', async () => {
+    const { HOWTO } = await import('../data/howto')
+    for (const e of EXERCISES) expect(HOWTO[e.id], e.id).toBeDefined()
+    for (const [id, h] of Object.entries(HOWTO)) {
+      expect(EX_BY_ID[id], id).toBeDefined()
+      for (const l of [h.easier, h.harder]) if (l) expect(EX_BY_ID[l] ?? SKILL_BY_ID[l], `${id} → ${l}`).toBeDefined()
+      expect(h.how.length).toBeGreaterThan(0)
+      expect(h.mistakes.length).toBeGreaterThan(0)
+    }
+  })
+  it('le bilan note de façon cohérente et bascule sur les tests de remplacement', async () => {
+    const { scoreBilan } = await import('../lib/bilan')
+    const zero = scoreBilan({ pushups: 0, kneepushups: 10, pullups: 0, hang: 20, hollow: 15, squats: 20, wallhs: 0, pike: 35, shoulders: 15 })
+    expect(zero.level).toBe(1)
+    expect(zero.scores.push).toBeGreaterThan(0)
+    expect(zero.scores.push).toBeLessThanOrEqual(30)
+    const elite = scoreBilan({ pushups: 60, dips: 40, pullups: 28, hollow: 120, squats: 62, wallhs: 120, pike: 100, shoulders: 100 })
+    expect(elite.global).toBe(100)
+    expect(elite.level).toBe(5)
+    const mid = scoreBilan({ pushups: 25, pullups: 10, hollow: 45, squats: 40 })
+    expect(mid.scores.balance).toBe(-1)
+    expect(mid.global).toBeGreaterThan(zero.global)
+    expect(mid.global).toBeLessThan(elite.global)
+  })
+  it('la séance express respecte le matériel, le temps et le niveau', async () => {
+    const { buildExpress } = await import('../lib/express')
+    for (const focus of ['full', 'haut', 'bas', 'gainage', 'cardio', 'mobilite'] as const)
+      for (const minutes of [10, 20, 30, 45]) {
+        const p = buildExpress({ minutes, place: 'maison', focus, level: 1, equipment: [], seed: minutes * 7 })
+        const items = p.days[0].items
+        expect(items.length).toBeGreaterThan(2)
+        for (const it of items) if (it.exerciseId) expect(EX_BY_ID[it.exerciseId].equipment.every((x) => x === 'sol'), `${focus} ${it.exerciseId}`).toBe(true)
+        expect(p.days[0].estMinutes).toBeLessThanOrEqual(minutes + 8)
+      }
+    const adv = buildExpress({ minutes: 30, place: 'parc', focus: 'haut', level: 4, equipment: [], seed: 3 })
+    expect(adv.days[0].items.filter((i) => i.block === 'Force').every((i) => EX_BY_ID[i.exerciseId!].level >= 2)).toBe(true)
+  })
+})

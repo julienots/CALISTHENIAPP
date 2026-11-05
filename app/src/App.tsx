@@ -1,5 +1,5 @@
 import { App as CapApp } from '@capacitor/app'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, MotionConfig, motion } from 'framer-motion'
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { HashRouter, NavLink, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import { ErrorBoundary } from './components/ErrorBoundary'
@@ -41,6 +41,9 @@ const Calendar = lazy(() => import('./pages/Calendar'))
 const Records = lazy(() => import('./pages/Records'))
 const Gallery = lazy(() => import('./pages/Gallery'))
 const Voies = lazy(() => import('./pages/Voies'))
+const Bilan = lazy(() => import('./pages/Bilan'))
+const Express = lazy(() => import('./pages/Express'))
+const Exercises = lazy(() => import('./pages/Exercises'))
 
 const NAV: { to: string; label: string; icon: IconName }[] = [
   { to: '/', label: 'Accueil', icon: 'home' },
@@ -55,11 +58,11 @@ function TrainSheet({ open, onClose }: { open: boolean; onClose: () => void }) {
   const go = (p: string) => (onClose(), nav(p))
   const items = [
     { t: 'Séance du programme', d: 'Guidée pas à pas avec voix et timers', p: '/programs', i: 'target' as IconName, c: '#ff7a1a' },
+    { t: 'Séance express', d: '10 à 45 min, maison ou parc, prête en 3 choix', p: '/express', i: 'rocket' as IconName, c: '#ff3d6e' },
     { t: 'Séance libre guidée', d: 'Choisis tes figures, le coach te suit', p: '/workout/free/free', i: 'bolt' as IconName, c: '#ffb000' },
     { t: 'Noter une séance', d: 'Tout enregistrer : séries, RPE, sommeil…', p: '/log', i: 'pencil' as IconName, c: '#ff3d6e' },
     { t: 'Chrono & minuteur', d: 'Chrono, minuteur, holds, 45/45, EMOM', p: '/timers', i: 'timer' as IconName, c: '#ffcf3f' },
     { t: 'Analyser une figure', d: 'Vidéo, photo ou caméra en direct', p: '/analyzer', i: 'camera' as IconName, c: '#ff6b4a' },
-    { t: 'Combos', d: 'Concevoir et répéter tes enchaînements', p: '/combos', i: 'link' as IconName, c: '#ff4fa0' },
   ]
   return (
     <AnimatePresence>
@@ -232,6 +235,9 @@ function Shell() {
           <Route path="/records" element={<Records />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/voies" element={<Voies />} />
+          <Route path="/bilan" element={<Bilan />} />
+          <Route path="/express" element={<Express />} />
+          <Route path="/exercices" element={<Exercises />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Suspense>
@@ -277,12 +283,27 @@ function Shell() {
   )
 }
 
+/** Accessibilité : taille de l'interface et animations réduites, réglables dans Réglages. */
+function useAccessibility() {
+  const scale = useStore((s) => s.settings.textScale ?? 1)
+  const reduce = useStore((s) => !!s.settings.reduceMotion)
+  useEffect(() => {
+    const root = document.getElementById('root')
+    if (root) root.style.zoom = scale === 1 ? '' : String(scale)
+    document.documentElement.classList.toggle('reduce-motion', reduce)
+  }, [scale, reduce])
+  return reduce
+}
+
 export default function App() {
+  const reduce = useAccessibility()
   return (
     <ErrorBoundary>
-      <HashRouter>
-        <Shell />
-      </HashRouter>
+      <MotionConfig reducedMotion={reduce ? 'always' : 'user'}>
+        <HashRouter>
+          <Shell />
+        </HashRouter>
+      </MotionConfig>
     </ErrorBoundary>
   )
 }

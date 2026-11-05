@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Ring } from '../components/charts'
 import { SkillPicker, Stepper } from '../components/ui'
 import { EXERCISES } from '../data/exercises'
+import { HOWTO } from '../data/howto'
 import { CUES, SKILL_BY_ID } from '../data/skills'
 import { buzz, countdownBeep, endBeep, goBeep, keepAwake, say } from '../lib/feedback'
 import { fmtSec } from '../lib/stats'
@@ -65,7 +66,8 @@ export default function Workout() {
     const it = items[i]
     if (!it) return
     const sk = it.skillId ? SKILL_BY_ID[it.skillId] : undefined
-    say(`${it.name}. ${it.sets} séries de ${it.target.replace('reps', 'répétitions').replace(/(\d+) s\b/, '$1 secondes')}. ${sk ? CUES[sk.profile][0] : it.note ?? ''}`)
+    const h = it.exerciseId ? HOWTO[it.exerciseId] : undefined
+    say(`${it.name}. ${it.sets} séries de ${it.target.replace('reps', 'répétitions').replace(/(\d+) s\b/, '$1 secondes')}. ${sk ? CUES[sk.profile][0] : it.note ?? h?.how.at(-1) ?? ''}`)
   }
 
   useEffect(() => {
@@ -307,9 +309,16 @@ export default function Workout() {
               )}
               {phase === 'ready' && (
                 <motion.div key="rd" className="w-full space-y-2">
-                  {(sk ? CUES[sk.profile] : item.note ? [item.note] : ['Exécution propre, gainage permanent']).slice(0, 4).map((c) => (
+                  {(sk ? CUES[sk.profile] : item.exerciseId && HOWTO[item.exerciseId] ? HOWTO[item.exerciseId].how : item.note ? [item.note] : ['Exécution propre, gainage permanent']).slice(0, 4).map((c) => (
                     <div key={c} className="card flex gap-2 !p-3 text-sm"><span className="text-volt">▸</span>{c}</div>
                   ))}
+                  {!sk && item.exerciseId && HOWTO[item.exerciseId] && (
+                    <div className="flex gap-2 rounded-xl bg-ember/10 p-3 text-xs text-white/80">
+                      <span className="font-black text-ember">✕</span>À éviter : {HOWTO[item.exerciseId].mistakes[0].toLowerCase()}
+                      {HOWTO[item.exerciseId].easier && <span className="text-white/55"> · Trop dur ? {EXERCISES.find((e) => e.id === HOWTO[item.exerciseId!].easier)?.name ?? ''}</span>}
+                    </div>
+                  )}
+                  {!sk && item.note && item.exerciseId && HOWTO[item.exerciseId] && <div className="rounded-xl bg-plasma/10 p-3 text-xs text-white/80">{item.note}</div>}
                   {item.note && sk && <div className="rounded-xl bg-plasma/10 p-3 text-xs text-white/80">{item.note}</div>}
                 </motion.div>
               )}

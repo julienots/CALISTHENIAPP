@@ -23,8 +23,8 @@ export default function Settings() {
   const [key, setKey] = useState(s.settings.anthropicKey)
 
   const backup = () => {
-    const { profile, records, sessions, analyses, programs, activeProgramId, completedDays, combos, userCompetitions, myCoach, importedCoaches, challenges, bonusXp } = useStore.getState()
-    const data = { app: 'GRAVITAS', version: 1, exportedAt: new Date().toISOString(), profile, records, sessions, analyses, programs, activeProgramId, completedDays, combos, userCompetitions, myCoach, importedCoaches, challenges, bonusXp }
+    const { profile, records, sessions, analyses, programs, activeProgramId, completedDays, combos, userCompetitions, myCoach, importedCoaches, challenges, bonusXp, restDays, bilans } = useStore.getState()
+    const data = { app: 'GRAVITAS', version: 1, exportedAt: new Date().toISOString(), profile, records, sessions, analyses, programs, activeProgramId, completedDays, combos, userCompetitions, myCoach, importedCoaches, challenges, bonusXp, restDays, bilans }
     exportFile(`gravitas-sauvegarde-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify(data), 'application/json')
   }
   const restore = async () => {
@@ -59,6 +59,26 @@ export default function Settings() {
           <Toggle label="Voix du coach" on={s.settings.voice} onChange={(v) => (s.setSettings({ voice: v }), v && say('Voix activée'))} />
           <Toggle label="Bips des timers" on={s.settings.beeps} onChange={(v) => s.setSettings({ beeps: v })} />
           <Toggle label="Vibrations" on={s.settings.haptics} onChange={(v) => s.setSettings({ haptics: v })} />
+        </div>
+      </Section>
+
+      <Section title="Lisibilité">
+        <div className="card space-y-3">
+          <div>
+            <div className="mb-1.5 text-sm font-semibold">Taille de l'affichage</div>
+            <div className="flex gap-1 rounded-xl border border-white/10 bg-ink-900 p-1">
+              {([
+                [1, 'Normale'],
+                [1.1, 'Grande'],
+                [1.2, 'Très grande'],
+              ] as const).map(([v, l]) => (
+                <button key={v} onClick={() => s.setSettings({ textScale: v })} className={`flex-1 rounded-lg px-2 py-2 font-bold transition ${(s.settings.textScale ?? 1) === v ? 'bg-volt text-ink-950' : 'text-white/60'}`} style={{ fontSize: 12 * v }}>
+                  {l}
+                </button>
+              ))}
+            </div>
+          </div>
+          <Toggle label="Réduire les animations" on={!!s.settings.reduceMotion} onChange={(v) => s.setSettings({ reduceMotion: v })} />
         </div>
       </Section>
 
@@ -98,7 +118,7 @@ export default function Settings() {
       <Section title="Zone sensible">
         <button className="btn-danger w-full" onClick={() => confirm('Effacer TOUTES les données ? Action irréversible.') && (s.resetAll(), nav('/onboarding', { replace: true }))}>Réinitialiser l'application</button>
       </Section>
-      <p className="text-center text-[11px] text-white/45">GRAVITAS v1.3 · 100 % hors ligne · Défie la gravité</p>
+      <p className="text-center text-[11px] text-white/45">GRAVITAS v1.4 · 100 % hors ligne · Défie la gravité</p>
     </Page>
   )
 }

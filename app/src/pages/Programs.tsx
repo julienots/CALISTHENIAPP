@@ -142,7 +142,7 @@ export default function Programs() {
 
       <Section title="Mes programmes">
         <div className="space-y-2">
-          {s.programs.map((prog) => {
+          {s.programs.filter((p) => p.id !== 'express').map((prog) => {
             const done = s.completedDays[prog.id]?.length ?? 0
             return (
               <Link key={prog.id} to={`/program/${prog.id}`} className={`card block ${s.activeProgramId === prog.id ? '!border-volt/50' : ''}`}>
@@ -167,7 +167,7 @@ export default function Programs() {
               </Link>
             )
           })}
-          {!s.programs.length && <p className="text-sm text-white/55">Aucun programme. Génère ton premier ci-dessus.</p>}
+          {!s.programs.some((p) => p.id !== 'express') && <p className="text-sm text-white/55">Aucun programme. Génère ton premier ci-dessus.</p>}
         </div>
       </Section>
 

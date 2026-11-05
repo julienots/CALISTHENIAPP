@@ -204,7 +204,7 @@ function warmup(t: DayTemplate, equipment: string[], r: R): ProgramItem[] {
   ]
 }
 
-function estimate(items: ProgramItem[]) {
+export function estimate(items: ProgramItem[]) {
   let sec = 0
   for (const it of items) {
     const m = it.target.match(/(\d+)\s*(s|reps|min)/)
@@ -249,13 +249,13 @@ export function generateProgram(params: GeneratorParams, statuses: Record<string
         if (next && next.id !== work?.id && phase.name !== 'Décharge' && (!goal || next.tier <= goal.tier))
           items.push(...skillBlock(next, statuses[next.id], { ...phase, volume: phase.volume * 0.6 }, level, dr, true))
         // Exercices spécifiques de la ligne
-        const drills = (LINE_DRILLS[line] ?? []).map((id) => EX_BY_ID[id]).filter((e) => e && e.level <= level + 1 && hasEquip(e.equipment, equipment))
+        const drills = (LINE_DRILLS[line] ?? []).map((id) => EX_BY_ID[id]).filter((e) => e && e.level <= level + 1 && (level <= 1 || e.level >= 1) && hasEquip(e.equipment, equipment))
         for (const ex of shuffle(dr, drills).slice(0, level >= 3 ? 2 : 1)) items.push(exerciseItem(ex, params.goal, level, phase, phase.week, dr, 'Assistance'))
       }
 
       // 2) Force générale selon les patterns du jour
       for (const pat of t.patterns) {
-        const pool = EXERCISES.filter((e) => e.pattern === pat && e.level <= level + 1 && e.level >= Math.max(1, level - 2) && hasEquip(e.equipment, equipment) && !items.some((i) => i.exerciseId === e.id))
+        const pool = EXERCISES.filter((e) => e.pattern === pat && e.level <= level + 1 && e.level >= (level <= 1 ? 0 : Math.max(1, level - 2)) && hasEquip(e.equipment, equipment) && !items.some((i) => i.exerciseId === e.id))
         if (pool.length) items.push(exerciseItem(pick(dr, pool), params.goal, level, phase, phase.week, dr))
       }
 
